@@ -76,7 +76,9 @@
 - ExtendScript (JSX) для взаимодействия с After Effects.
 - Sapphire Effects.
 
-## 📄 Лицензия / License
+#### Лицензия / License
 
-Этот проект распространяется под лицензией GNU GPL v3. Подробности в файле `LICENSE`. / This project is licensed under the GNU GPL v3 License. See the `LICENSE` file for details.
+Этот проект распространяется под лицензией **Creative Commons CC BY-NC-ND 4.0**. Плагин бесплатный: продавать его, изменять код или присваивать авторство строго запрещено. Подробности в файле LICENSE. 
+
+This project is licensed under **CC BY-NC-ND 4.0**. The plugin is free: selling it, modifying the code, or claiming authorship is strictly prohibited. See the LICENSE file for details.
 
