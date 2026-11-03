@@ -78,4 +78,5 @@
 
 ## 📄 Лицензия / License
 
-Этот проект распространяется под лицензией MIT. Подробности в файле `LICENSE`. / This project is licensed under the MIT License. See the `LICENSE` file for details.
+Этот проект распространяется под лицензией GNU GPL v3. Подробности в файле `LICENSE`. / This project is licensed under the GNU GPL v3 License. See the `LICENSE` file for details.
+
