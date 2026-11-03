@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shake Presets</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/panels.css">
+    <link rel="stylesheet" href="css/effects.css">
+</head>
+<body class="smooth-scroll theme-default">
+    <!-- Контейнер для частиц -->
+    <div id="particles-js"></div>
+
+    <!-- Неоновый курсор -->
+    <div id="custom-cursor"></div>
+
+    <!-- Всплывающая подсказка -->
+    <div id="custom-tooltip"></div>
+
+    <!-- Свечение за курсором -->
+    <div id="mouse-glow"></div>
+    
+    <div id="error-toast">Please select a video clip first!</div>
+    <div id="success-toast">Shake applied successfully!</div>
+
+    <!-- Панель с темами -->
+    <div id="theme-panel" class="theme-panel">
+        <div class="help-box">
+            <h2 style="text-align: center; margin-top: 0; margin-bottom: 25px;">Select Theme</h2>
+            <div class="theme-grid">
+                <div class="theme-option active" data-theme="default">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #00ffcc, #ff00cc);"></div>
+                    <span>Neon Classic</span>
+                </div>
+                <div class="theme-option" data-theme="gold">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #ffcc00, #ff6600);"></div>
+                    <span>Golden Glow</span>
+                </div>
+                <div class="theme-option" data-theme="blue">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #00ccff, #0033ff);"></div>
+                    <span>Deep Blue</span>
+                </div>
+                <div class="theme-option" data-theme="red">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #ff0033, #990000);"></div>
+                    <span>Crimson Fire</span>
+                </div>
+                <div class="theme-option" data-theme="green">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #00ff88, #00cc44);"></div>
+                    <span>Neon Green</span>
+                </div>
+                <div class="theme-option" data-theme="purple">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #aa55ff, #ff00ff);"></div>
+                    <span>Neon Purple</span>
+                </div>
+            </div>
+            <button id="close-theme" class="close-btn" type="button" style="margin-top: 10px;">Done</button>
+        </div>
+    </div>
+
+    <!-- Панель настроек -->
+    <div id="settings-panel" class="theme-panel">
+        <div class="help-box settings-box">
+            <h2 style="text-align: center; margin-top: 0; margin-bottom: 20px;">Settings</h2>
+            
+            <!-- Навигация по настройкам (Табы) -->
+            <div class="settings-tabs">
+                <button class="settings-tab active" data-tab="general">General</button>
+                <button class="settings-tab" data-tab="interface">Interface</button>
+                <button class="settings-tab" data-tab="cursor">Cursor</button>
+            </div>
+
+            <!-- Контент настроек -->
+            <div class="settings-content">
+                
+                <!-- 1. Общие настройки (General) -->
+                <div class="settings-tab-content active" id="tab-general">
+                    
+                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Interface Scale</h3>
+                    <div class="scale-list-container" style="margin-bottom: 25px;">
+                        <!-- Сюда JS вставит кнопки масштаба -->
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Size</h3>
+                    <div class="slider-container" style="margin-bottom: 25px;">
+                        <input type="range" class="cursor-slider" min="50" max="150" value="100" step="5">
+                        <div class="slider-value"><span class="cursor-size-text">100</span>%</div>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Effects</h3>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Custom Cursor</span>
+                            <span class="toggle-desc">Enable the neon cursor</span>
+                        </div>
+                        <div class="toggle-switch active" id="toggle-custom-cursor-general">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                    <div class="toggle-row" style="margin-bottom: 25px;">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Cursor Glow</span>
+                            <span class="toggle-desc">Show glow behind cursor</span>
+                        </div>
+                        <div class="toggle-switch active" id="toggle-cursor-glow-general">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Style</h3>
+                    <div class="cursor-styles-grid">
+                        <div class="cursor-style-option active" data-style="circle">
+                            <div class="preview-icon icon-circle"></div>
+                            <span>Circle</span>
+                        </div>
+                        <div class="cursor-style-option" data-style="diamond">
+                            <div class="preview-icon icon-diamond"></div>
+                            <span>Diamond</span>
+                        </div>
+                        <div class="cursor-style-option" data-style="square">
+                            <div class="preview-icon icon-square"></div>
+                            <span>Square</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Только масштаб интерфейса (Interface) -->
+                <div class="settings-tab-content" id="tab-interface">
+                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Interface Scale</h3>
+                    <div class="scale-list-container">
+                        <!-- Сюда JS вставит кнопки масштаба -->
+                    </div>
+                </div>
+
+                <!-- 3. Только курсор (Cursor) -->
+                <div class="settings-tab-content" id="tab-cursor">
+                    <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Size</h3>
+                    <p style="color: #8e8e9c; font-size: 12px; text-align: left; margin-bottom: 20px;">Adjust the size of the custom neon cursor.</p>
+                    
+                    <div class="slider-container" style="margin-bottom: 25px;">
+                        <input type="range" class="cursor-slider" min="50" max="150" value="100" step="5">
+                        <div class="slider-value"><span class="cursor-size-text">100</span>%</div>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Effects</h3>
+                    
+                    <!-- Переключатель кастомного курсора -->
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Custom Cursor</span>
+                            <span class="toggle-desc">Enable the neon cursor</span>
+                        </div>
+                        <div class="toggle-switch active" id="toggle-custom-cursor">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <!-- Переключатель свечения за курсором -->
+                    <div class="toggle-row" style="margin-bottom: 25px;">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Cursor Glow</span>
+                            <span class="toggle-desc">Show glow behind cursor</span>
+                        </div>
+                        <div class="toggle-switch active" id="toggle-cursor-glow">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <!-- Стили курсора -->
+                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Style</h3>
+                    
+                    <div class="cursor-styles-grid">
+                        <div class="cursor-style-option active" data-style="circle">
+                            <div class="preview-icon icon-circle"></div>
+                            <span>Circle</span>
+                        </div>
+                        <div class="cursor-style-option" data-style="diamond">
+                            <div class="preview-icon icon-diamond"></div>
+                            <span>Diamond</span>
+                        </div>
+                        <div class="cursor-style-option" data-style="square">
+                            <div class="preview-icon icon-square"></div>
+                            <span>Square</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <button id="close-settings" class="close-btn" type="button" style="margin-top: 20px; width: 100%; max-width: 200px; flex-shrink: 0;">Done</button>
+        </div>
+    </div>
+
+    <!-- Панель избранного -->
+    <div id="favorites-panel" class="theme-panel">
+        <div class="help-box">
+            <h2 style="text-align: center; margin-top: 0; margin-bottom: 20px;">Favorite Shakes</h2>
+            <div id="favorites-list" style="width: 100%; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; padding-right: 5px; box-sizing: border-box; flex: 1;">
+                <!-- Сюда будут добавляться избранные шейки -->
+            </div>
+            <button id="close-favorites" class="close-btn" type="button" style="margin-top: 20px;">Done</button>
+        </div>
+    </div>
+
+    <!-- Панель превью -->
+    <div id="preview-panel" class="theme-panel">
+        <h2>Shake Preview</h2>
+        <div class="preview-stage">
+            <div class="preview-layer" id="preview-layer">
+                <div class="preview-content">SHAKE</div>
+            </div>
+            <div class="preview-grid"></div>
+        </div>
+        <div id="preview-title" style="margin-top: 20px; font-size: 16px; color: var(--primary); font-weight: bold; letter-spacing: 2px;">Select a shake...</div>
+        <button id="close-preview" class="close-btn" type="button" style="margin-top: 20px;">Done</button>
+    </div>
+
+    <!-- Панель справки -->
+    <div id="help-panel" class="theme-panel">
+        <div class="help-box">
+            <div class="help-header">
+                <h2>How to use</h2>
+                <div class="lang-toggle">
+                    <button id="btn-lang-ru" class="lang-btn active">RU</button>
+                    <button id="btn-lang-en" class="lang-btn">EN</button>
+                </div>
+            </div>
+            <div class="help-content" id="help-text-ru">
+                <h3>📖 Основы работы</h3>
+                <p>Этот плагин — твой быстрый помощник для создания крутых шейков в After Effects.</p>
+                <ul>
+                    <li><strong>Применение:</strong> Выдели слой в таймлайне AE и нажми на текст любого шейка (например, "Soft Shake 1").</li>
+                    <li><strong>Случайный шейк:</strong> Нажми большую кнопку "RANDOM SHAKE", чтобы применить случайный пресет.</li>
+                    <li><strong>Превью:</strong> Нажми на иконку глаза 👁️ рядом с шейком, чтобы посмотреть, как он трясется.</li>
+                    <li><strong>Избранное:</strong> Нажми на звездочку ⭐, чтобы сохранить любимый шейк.</li>
+                    <li><strong>Темы:</strong> Нажми на палитру 🎨, чтобы изменить цвет интерфейса.</li>
+                </ul>
+                <h3>⚙️ Требования</h3>
+                <p>Для работы плагина обязательно должен быть установлен <strong>Sapphire Plugin</strong> (эффекты S_Shake и S_DissolveShake).</p>
+            </div>
+            <div class="help-content" id="help-text-en" style="display: none;">
+                <h3>📖 Basics</h3>
+                <p>This plugin is your quick assistant for creating awesome shakes in After Effects.</p>
+                <ul>
+                    <li><strong>Apply:</strong> Select a layer in the AE timeline and click on the text of any shake (e.g., "Soft Shake 1").</li>
+                    <li><strong>Random:</strong> Hit the big "RANDOM SHAKE" button to apply a random preset.</li>
+                    <li><strong>Preview:</strong> Click the eye icon 👁️ next to a shake to see how it animates.</li>
+                    <li><strong>Favorites:</strong> Click the star ⭐ to save a shake.</li>
+                    <li><strong>Themes:</strong> Click the palette 🎨 to change the UI color.</li>
+                </ul>
+                <h3>⚙️ Requirements</h3>
+                <p>The <strong>Sapphire Plugin</strong> (S_Shake and S_DissolveShake effects) is required.</p>
+            </div>
+            <button id="close-help" class="close-btn" type="button" style="margin-top: 20px;">Close / Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <div class="header">
+            <div id="settings-toggle" class="theme-toggle" title="Settings" style="left: 0; right: auto;">
+                <span style="transform: translate(1px, -1px); display: block;">⚙️</span>
+            </div>
+            <div id="theme-toggle" class="theme-toggle" title="Change Theme">🎨</div>
+            <div id="favorites-toggle" class="theme-toggle" title="Favorites" style="right: 55px;">⭐</div>
+            <div id="help-toggle" class="theme-toggle" title="Help / Info" style="right: 110px;">📜</div>
+            
+            <h1>SHAKE PACK</h1>
+            <div class="subtitle">Created by <span id="secret-xote" data-text="Xote">Xote</span></div>
+        </div>
+        
+        <button class="random-btn" id="random-shake-btn" type="button">
+            <span class="random-text">RANDOM SHAKE</span>
+        </button>
+
+        <button class="random-btn" id="apply-all-btn" type="button">
+            <span class="random-text">APPLY TO ALL SELECTED</span>
+        </button>
+        
+        <!-- ПАПКА 1: SOFT -->
+        <div class="category cat-soft">
+            <button class="category-btn" type="button" onclick="toggleCategory('cat-soft', this)">
+                <div class="category-title">
+                    <span class="count"></span>
+                    <span>Soft &amp; Smooth</span>
+                </div>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="category-content" id="cat-soft">
+                <div class="category-content-inner">
+                    <button class="shake-btn" id="soft-shake-1" type="button"><span class="btn-title">Soft Shake 1</span><span class="btn-desc">S_Shake smooth</span></button>
+                    <button class="shake-btn" id="soft-shake-2" type="button"><span class="btn-title">Soft Shake 2</span><span class="btn-desc">S_DissolveShake smooth</span></button>
+                    <button class="shake-btn" id="soft-shake-3" type="button"><span class="btn-title">Soft Shake 3</span><span class="btn-desc">S_DissolveShake soft</span></button>
+                    <button class="shake-btn" id="soft-shake-4" type="button"><span class="btn-title">Soft Shake 4</span><span class="btn-desc">S_Shake wide</span></button>
+                    <button class="shake-btn" id="soft-shake-5" type="button"><span class="btn-title">Soft Shake 5</span><span class="btn-desc">S_Shake heavy</span></button>
+                    <button class="shake-btn" id="soft-shake-6" type="button"><span class="btn-title">Soft Shake 6</span><span class="btn-desc">S_Shake feather hit</span></button>
+                    <button class="shake-btn" id="soft-shake-7" type="button"><span class="btn-title">Soft Shake 7</span><span class="btn-desc">S_Shake velvet pulse</span></button>
+                    <button class="shake-btn" id="soft-shake-8" type="button"><span class="btn-title">Soft Shake 8</span><span class="btn-desc">S_Shake deep glide</span></button>
+                    <button class="shake-btn" id="soft-shake-9" type="button"><span class="btn-title">Soft Shake 9</span><span class="btn-desc">S_DissolveShake shadow fade</span></button>
+                    <button class="shake-btn" id="soft-shake-10" type="button"><span class="btn-title">Soft Shake 10</span><span class="btn-desc">S_DissolveShake neon drift</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ПАПКА 2: HARD -->
+        <div class="category cat-hard">
+            <button class="category-btn" type="button" onclick="toggleCategory('cat-hard', this)">
+                <div class="category-title">
+                    <span class="count"></span>
+                    <span>Hard &amp; Punchy</span>
+                </div>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="category-content" id="cat-hard">
+                <div class="category-content-inner">
+                    <button class="shake-btn" id="hard-shake-1" type="button"><span class="btn-title">Hard Shake 1</span><span class="btn-desc">S_DissolveShake (Off to Bg)</span></button>
+                    <button class="shake-btn" id="hard-shake-2" type="button"><span class="btn-title">Hard Shake 2</span><span class="btn-desc">S_Shake powerful</span></button>
+                    <button class="shake-btn" id="hard-shake-3" type="button"><span class="btn-title">Hard Shake 3</span><span class="btn-desc">S_DissolveShake (Sharp)</span></button>
+                    <button class="shake-btn" id="hard-shake-4" type="button"><span class="btn-title">Hard Shake 4</span><span class="btn-desc">S_DissolveShake new</span></button>
+                    <button class="shake-btn" id="hard-shake-5" type="button"><span class="btn-title">Hard Shake 5</span><span class="btn-desc">S_Shake heavy impact</span></button>
+                    <button class="shake-btn" id="hard-shake-6" type="button"><span class="btn-title">Hard Shake 6</span><span class="btn-desc">S_DissolveShake ground zero</span></button>
+                    <button class="shake-btn" id="hard-shake-7" type="button"><span class="btn-title">Hard Shake 7</span><span class="btn-desc">S_Shake sharp</span></button>
+                    <button class="shake-btn" id="hard-shake-8" type="button"><span class="btn-title">Hard Shake 8</span><span class="btn-desc">S_DissolveShake punch</span></button>
+                    <button class="shake-btn" id="hard-shake-9" type="button"><span class="btn-title">Hard Shake 9</span><span class="btn-desc">S_DissolveShake hit</span></button>
+                    <button class="shake-btn" id="hard-shake-10" type="button"><span class="btn-title">Hard Shake 10</span><span class="btn-desc">S_DissolveShake smooth heavy</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ПАПКА 3: DIRTY -->
+        <div class="category cat-dirty">
+            <button class="category-btn" type="button" onclick="toggleCategory('cat-dirty', this)">
+                <div class="category-title">
+                    <span class="count"></span>
+                    <span>Dirty &amp; Rough</span>
+                </div>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="category-content" id="cat-dirty">
+                <div class="category-content-inner">
+                    <button class="shake-btn" id="dirty-shake-1" type="button"><span class="btn-title">Dirty Shake 1</span><span class="btn-desc">Heavy shake</span></button>
+                    <button class="shake-btn" id="dirty-shake-2" type="button"><span class="btn-title">Dirty Shake 2</span><span class="btn-desc">Aggressive drop</span></button>
+                    <button class="shake-btn" id="dirty-shake-3" type="button"><span class="btn-title">Dirty Shake 3</span><span class="btn-desc">Very high frequency</span></button>
+                    <button class="shake-btn" id="dirty-shake-4" type="button"><span class="btn-title">Dirty Shake 4</span><span class="btn-desc">Extreme shake</span></button>
+                    <button class="shake-btn" id="dirty-shake-5" type="button"><span class="btn-title">Dirty Shake 5</span><span class="btn-desc">Raw impact</span></button>
+                    <button class="shake-btn" id="dirty-shake-6" type="button"><span class="btn-title">Dirty Shake 6</span><span class="btn-desc">Shockwave</span></button>
+                    <button class="shake-btn" id="dirty-shake-7" type="button"><span class="btn-title">Dirty Shake 7</span><span class="btn-desc">Wreck</span></button>
+                    <button class="shake-btn" id="dirty-shake-8" type="button"><span class="btn-title">Dirty Shake 8</span><span class="btn-desc">Distortion</span></button>
+                    <button class="shake-btn" id="dirty-shake-9" type="button"><span class="btn-title">Dirty Shake 9</span><span class="btn-desc">Fracture</span></button>
+                    <button class="shake-btn" id="dirty-shake-10" type="button"><span class="btn-title">Dirty Shake 10</span><span class="btn-desc">Chaos</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ПАПКА 4: FAST -->
+        <div class="category cat-fast">
+            <button class="category-btn" type="button" onclick="toggleCategory('cat-fast', this)">
+                <div class="category-title">
+                    <span class="count"></span>
+                    <span>Fast Shakes</span>
+                </div>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="category-content" id="cat-fast">
+                <div class="category-content-inner">
+                    <button class="shake-btn" id="fast-shake-1" type="button"><span class="btn-title">Fast Shake 1</span><span class="btn-desc">S_DissolveShake quick</span></button>
+                    <button class="shake-btn" id="fast-shake-2" type="button"><span class="btn-title">Fast Shake 2</span><span class="btn-desc">High frequency quick</span></button>
+                    <button class="shake-btn" id="fast-shake-3" type="button"><span class="btn-title">Fast Shake 3</span><span class="btn-desc">Quick Drop</span></button>
+                    <button class="shake-btn" id="fast-shake-4" type="button"><span class="btn-title">Fast Shake 4</span><span class="btn-desc">Snap Hit</span></button>
+                    <button class="shake-btn" id="fast-shake-5" type="button"><span class="btn-title">Fast Shake 5</span><span class="btn-desc">Flash Cut</span></button>
+                    <button class="shake-btn" id="fast-shake-6" type="button"><span class="btn-title">Fast Shake 6</span><span class="btn-desc">Pulse snap</span></button>
+                    <button class="shake-btn" id="fast-shake-7" type="button"><span class="btn-title">Fast Shake 7</span><span class="btn-desc">S_Shake fast</span></button>
+                    <button class="shake-btn" id="fast-shake-8" type="button"><span class="btn-title">Fast Shake 8</span><span class="btn-desc">S_DissolveShake quick</span></button>
+                    <button class="shake-btn" id="fast-shake-9" type="button"><span class="btn-title">Fast Shake 9</span><span class="btn-desc">S_DissolveShake smooth</span></button>
+                    <button class="shake-btn" id="fast-shake-10" type="button"><span class="btn-title">Fast Shake 10</span><span class="btn-desc">S_DissolveShake sharp</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МИНИ-ИГРА (ПАСХАЛКА) -->
+    <div id="mini-game-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 15, 0.85); z-index: 99999999; justify-content: center; align-items: center;">
+        <div id="mini-game-area">
+            <div class="game-grid"></div>
+            <div style="position: absolute; top: 15px; left: 20px; color: #fff; font-size: 14px; z-index: 10; font-weight: bold; letter-spacing: 1px;">Score: <span id="game-score" style="color: var(--primary);">0</span></div>
+            <div id="game-close" style="position: absolute; top: 15px; right: 20px; cursor: pointer; color: #fff; font-size: 20px; z-index: 10;">✖</div>
+            <div id="game-stars-container"></div>
+            <div id="game-over-screen" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 8, 0.9); z-index: 20; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+                <h2 style="color: var(--primary); font-size: 28px; letter-spacing: 3px; text-shadow: 0 0 15px var(--primary);">GAME OVER</h2>
+                <p style="color: #fff; font-size: 16px;">Your Score: <span id="final-score" style="color: var(--primary); font-weight: bold;">0</span></p>
+                <div style="display: flex; gap: 15px;">
+                    <button id="btn-restart" style="background: transparent; border: 2px solid var(--primary); color: #fff; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; letter-spacing: 1px; transition: all 0.3s; box-shadow: 0 0 10px var(--primary);">Try Again</button>
+                    <button id="btn-close-game" style="background: transparent; border: 2px solid #ff3366; color: #fff; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; letter-spacing: 1px; transition: all 0.3s; box-shadow: 0 0 10px #ff3366;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПОДКЛЮЧЕНИЕ БИБЛИОТЕК -->
+    <script src="CSInterface.js"></script>
+    <script src="particles.min.js"></script>
+    
+    <!-- ПОДКЛЮЧЕНИЕ НАШИХ МОДУЛЕЙ (СТРОГО В ТАКОМ ПОРЯДКЕ) -->
+    <script src="js/presets.js"></script>
+    <script src="js/legacy-effects.js"></script>
+    <script src="js/ui-core.js"></script>
+    <script src="js/ui-panels.js"></script>
+    <script src="js/themes.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

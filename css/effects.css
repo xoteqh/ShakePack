@@ -1,0 +1,223 @@
+/* css/effects.css */
+
+/* --- КУРСОР --- */
+/* КОГДА КАСТОМНЫЙ КУРСОР ВКЛЮЧЕН (класса system-cursor нет) - скрываем ВСЁ */
+body:not(.system-cursor),
+body:not(.system-cursor) * {
+    cursor: none !important;
+}
+
+/* КОГДА СИСТЕМНЫЙ КУРСОР (класс system-cursor есть) - возвращаем стандартные */
+body.system-cursor { cursor: auto !important; }
+body.system-cursor * { cursor: auto !important; }
+
+/* Точечные исключения для системного режима */
+body.system-cursor input, 
+body.system-cursor textarea { cursor: text !important; }
+
+body.system-cursor button, 
+body.system-cursor .theme-toggle, 
+body.system-cursor .category-btn, 
+body.system-cursor .shake-btn, 
+body.system-cursor .theme-option, 
+body.system-cursor .scale-option, 
+body.system-cursor .toggle-switch,
+body.system-cursor input[type="range"] { 
+    cursor: pointer !important; 
+}
+
+#custom-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 12px; height: 12px;
+    background: transparent;
+    pointer-events: none;
+    z-index: 100000000;
+    transform: translate(-50%, -50%) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
+    transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s, transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+    will-change: left, top, transform;
+    opacity: 1;
+    /* Стили по умолчанию (Круг) */
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary), inset 0 0 5px var(--primary);
+}
+
+/* Плавное скрытие курсора, когда мышка уходит за пределы окна */
+#custom-cursor.hidden {
+    opacity: 0 !important;
+    transform: translate(-50%, -50%) scale(0.5) scale(var(--cursor-scale, 1)) !important;
+}
+
+#custom-cursor.hover-active {
+    width: 20px; height: 20px;
+    background: color-mix(in srgb, var(--primary) 30%, transparent);
+    border-color: #fff;
+    box-shadow: 0 0 15px var(--primary), inset 0 0 8px var(--primary);
+}
+
+/* --- НОВЫЕ ФОРМЫ КУРСОРА --- */
+
+/* Квадрат */
+#custom-cursor.style-square {
+    border-radius: 2px;
+}
+
+/* Алмаз (поворачиваем на 45 градусов) */
+#custom-cursor.style-diamond {
+    border-radius: 2px;
+    transform: translate(-50%, -50%) rotate(45deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
+}
+#custom-cursor.style-diamond.hover-active {
+    /* При наведении крутим дальше, чтобы было красиво */
+    transform: translate(-50%, -50%) rotate(135deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
+}
+
+/* Стрелочка (повернута как в Windows) */
+#custom-cursor.style-arrow {
+    border: none;
+    background: var(--primary);
+    /* Рисуем форму стрелки */
+    clip-path: polygon(0% 0%, 100% 50%, 0% 100%, 25% 50%);
+    width: 18px; height: 18px;
+    box-shadow: none;
+    /* Поворачиваем её на -45 градусов (влево-вверх) и смещаем точку клика в острый кончик */
+    transform: translate(-30%, -30%) rotate(225deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
+}
+#custom-cursor.style-arrow.hover-active {
+    width: 26px; height: 26px;
+    background: #fff;
+}
+
+/* --- СВЕЧЕНИЕ ЗА КУРСОРОМ --- */
+#mouse-glow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at center, color-mix(in srgb, var(--primary) 20%, transparent) 0%, transparent 50%); 
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999; 
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    will-change: left, top, opacity;
+}
+
+#mouse-glow.active { opacity: 1; }
+
+/* --- ЧАСТИЦЫ ПРИ КЛИКЕ --- */
+.click-particle {
+    position: fixed;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 999999;
+}
+
+@keyframes particleFly {
+    0% { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
+}
+
+/* --- ТУЛТИПЫ --- */
+#custom-tooltip {
+    position: fixed;
+    top: 0; left: 0;
+    background: #050508;
+    border: 1px solid var(--primary);
+    border-radius: 6px;
+    padding: 6px 10px; 
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    pointer-events: none; 
+    z-index: 100000000; 
+    box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 30%, transparent);
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.95); 
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+    backdrop-filter: blur(5px);
+    text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 8px 8px;
+}
+
+#custom-tooltip.show {
+    opacity: 1;
+    transform: translate(-50%, 22px) scale(1);
+}
+
+#custom-tooltip::before {
+    content: '';
+    position: absolute;
+    top: -4px; left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 6px; height: 6px;
+    background: #050508;
+    border-top: 1px solid var(--primary);
+    border-left: 1px solid var(--primary);
+}
+
+/* --- ПАСХАЛКА (БУКВЫ) --- */
+.secret-letter {
+    position: absolute;
+    font-size: 24px;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: flyAway 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes flyAway {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.5) rotate(var(--r)); }
+}
+
+/* --- ПЛАШКИ ОШИБКИ И УСПЕХА --- */
+#error-toast, #success-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+    z-index: 999999;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#error-toast { background: #ff3366; box-shadow: 0 4px 20px rgba(255, 51, 102, 0.6); }
+#success-toast { 
+    background: #00ff88; 
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.6); 
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5), 0 0 10px #ffffff; 
+}
+
+#error-toast.show, #success-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+/* Жесткий фикс для ползунков, чтобы не вылезал дефолтный курсор */
+body:not(.system-cursor) input[type="range"],
+body:not(.system-cursor) input[type="range"]:active,
+body:not(.system-cursor) input[type="range"]:hover,
+body:not(.system-cursor) input[type="range"]::-webkit-slider-thumb,
+body:not(.system-cursor) input[type="range"]::-webkit-slider-runnable-track {
+    cursor: none !important;
+}
+
+body.system-cursor input[type="range"],
+body.system-cursor input[type="range"]:active,
+body.system-cursor input[type="range"]:hover {
+    cursor: pointer !important;
+}
