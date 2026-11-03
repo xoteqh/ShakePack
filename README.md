@@ -6,34 +6,34 @@
 
 ShakePack comes with **6 built-in color themes** to match your workflow. You can easily switch between them in the settings menu.
 
-<table align="center">
+<table align="center" width="100%">
   <tr>
-    <td align="center">
-      <img src="screenshots/mainblue-screenshot.png" width="600" /><br>
+    <td align="center" width="50%">
+      <img src="screenshots/mainblue-screenshot.png" width="100%" /><br>
       🔵 <b>Blue (Default)</b>
     </td>
-    <td align="center">
-      <img src="screenshots/maingold-screenshot.png" width="600" /><br>
+    <td align="center" width="50%">
+      <img src="screenshots/maingold-screenshot.png" width="100%" /><br>
       🟡 <b>Gold</b>
     </td>
   </tr>
   <tr>
-    <td align="center">
-      <img src="screenshots/maingreen-screenshot.png" width="600" /><br>
+    <td align="center" width="50%">
+      <img src="screenshots/maingreen-screenshot.png" width="100%" /><br>
       🟢 <b>Green</b>
     </td>
-    <td align="center">
-      <img src="screenshots/mainpurple-screenshot.png" width="600" /><br>
+    <td align="center" width="50%">
+      <img src="screenshots/mainpurple-screenshot.png" width="100%" /><br>
       🟣 <b>Purple</b>
     </td>
   </tr>
   <tr>
-    <td align="center">
-      <img src="screenshots/mainred-screenshot.png" width="600" /><br>
+    <td align="center" width="50%">
+      <img src="screenshots/mainred-screenshot.png" width="100%" /><br>
       🔴 <b>Red</b>
     </td>
-    <td align="center">
-      <img src="screenshots/main-screenshot.png" width="600" /><br>
+    <td align="center" width="50%">
+      <img src="screenshots/main-screenshot.png" width="100%" /><br>
       🌸 <b>Original / Default UI</b>
     </td>
   </tr>
