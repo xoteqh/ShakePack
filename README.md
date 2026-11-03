@@ -2,6 +2,41 @@
 
 **ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects.
 
+## 🎨 UI Themes
+
+ShakePack comes with **6 built-in color themes** to match your workflow. You can easily switch between them in the settings menu.
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="screenshots/mainblue-screenshot.png" width="300" /><br>
+      🔵 <b>Blue (Default)</b>
+    </td>
+    <td align="center">
+      <img src="screenshots/maingold-screenshot.png" width="300" /><br>
+      🟡 <b>Gold</b>
+    </td>
+    <td align="center">
+      <img src="screenshots/maingreen-screenshot.png" width="300" /><br>
+      🟢 <b>Green</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/mainpurple-screenshot.png" width="300" /><br>
+      🟣 <b>Purple</b>
+    </td>
+    <td align="center">
+      <img src="screenshots/mainred-screenshot.png" width="300" /><br>
+      🔴 <b>Red</b>
+    </td>
+    <td align="center">
+      <img src="screenshots/main-screenshot.png" width="300" /><br>
+      🌸 <b>Original / Default UI</b>
+    </td>
+  </tr>
+</table>
+
 > ⚠️ **IMPORTANT: THIS IS AN ALPHA VERSION (Alpha 0.0.1)**
 >
 > **The plugin may contain bugs, crashes, or unexpected behavior.** Please bear with me. I am actively working on improvements and bug fixes.
@@ -78,7 +113,6 @@
 
 ## 📄 Лицензия / License
 
-Этот проект распространяется под лицензией **PolyForm Noncommercial License 1.0.0**. Плагин бесплатный: продавать его, использовать в коммерческих целях или присваивать авторство строго запрещено. Подробности в файле LICENSE. 
+Этот проект распространяется под лицензией **PolyForm Noncommercial License 1.0.0**. Плагин бесплатный: продавать его, использовать в коммерческих целях или присваивать авторство строго запрещено. Подробности в файле LICENSE. 
 
 This project is licensed under the **PolyForm Noncommercial License 1.0.0**. The plugin is free: selling it, using it for commercial purposes, or claiming authorship is strictly prohibited. See the LICENSE file for details.
-
