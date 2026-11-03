@@ -39,6 +39,8 @@ ShakePack comes with **6 built-in color themes** to match your workflow. You can
   </tr>
 </table>
 
+<br>
+
 > ⚠️ **IMPORTANT: THIS IS AN ALPHA VERSION (Alpha 0.0.1)**
 >
 > **The plugin may contain bugs, crashes, or unexpected behavior.** Please bear with me. I am actively working on improvements and bug fixes.
