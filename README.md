@@ -94,12 +94,6 @@ ShakePack comes with **6 built-in color themes** to match your workflow. You can
 - **After Effects** (рекомендуется 2020 и выше).
 - **Sapphire Plugin** (эффекты `S_Shake` и `S_DissolveShake`). Без него плагин не сможет создавать шейки.
 
-## 🛠 Технологии
-
-- HTML, CSS, JavaScript (CEP Panel)
-- ExtendScript (JSX) для взаимодействия с After Effects.
-- Sapphire Effects.
-
 ## 📄 Лицензия / License
 
 Этот проект распространяется под лицензией **PolyForm Noncommercial License 1.0.0**. Плагин бесплатный: продавать его, использовать в коммерческих целях или присваивать авторство строго запрещено. Подробности в файле LICENSE. 
