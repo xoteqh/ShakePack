@@ -78,7 +78,7 @@
 
 ## 📄 Лицензия / License
 
-Этот проект распространяется под лицензией **Creative Commons CC BY-NC-ND 4.0**. Плагин бесплатный: продавать его, изменять код или присваивать авторство строго запрещено. Подробности в файле LICENSE. 
+Этот проект распространяется под лицензией **PolyForm Noncommercial License 1.0.0**. Плагин бесплатный: продавать его, использовать в коммерческих целях или присваивать авторство строго запрещено. Подробности в файле LICENSE. 
 
-This project is licensed under **CC BY-NC-ND 4.0**. The plugin is free: selling it, modifying the code, or claiming authorship is strictly prohibited. See the LICENSE file for details.
+This project is licensed under the **PolyForm Noncommercial License 1.0.0**. The plugin is free: selling it, using it for commercial purposes, or claiming authorship is strictly prohibited. See the LICENSE file for details.
 
