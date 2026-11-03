@@ -2,50 +2,35 @@
 
 **ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects.
 
-## 🎨 UI Themes
-
-ShakePack comes with **6 built-in color themes** to match your workflow. You can easily switch between them in the settings menu.
-
-<table align="center" width="100%">
-  <tr>
-    <td align="center" width="50%">
-      <img src="screenshots/mainblue-screenshot.png" width="100%" /><br>
-      🔵 <b>Blue (Default)</b>
-    </td>
-    <td align="center" width="50%">
-      <img src="screenshots/maingold-screenshot.png" width="100%" /><br>
-      🟡 <b>Gold</b>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="screenshots/maingreen-screenshot.png" width="100%" /><br>
-      🟢 <b>Green</b>
-    </td>
-    <td align="center" width="50%">
-      <img src="screenshots/mainpurple-screenshot.png" width="100%" /><br>
-      🟣 <b>Purple</b>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="screenshots/mainred-screenshot.png" width="100%" /><br>
-      🔴 <b>Red</b>
-    </td>
-    <td align="center" width="50%">
-      <img src="screenshots/main-screenshot.png" width="100%" /><br>
-      🌸 <b>Original / Default UI</b>
-    </td>
-  </tr>
-</table>
-
-<br>
-
 > ⚠️ **IMPORTANT: THIS IS AN ALPHA VERSION (Alpha 0.0.1)**
 >
 > **The plugin may contain bugs, crashes, or unexpected behavior.** Please bear with me. I am actively working on improvements and bug fixes.
 >
 > **If you found a bug or have a suggestion — please contact me on Discord: `xote._.`** I will try to fix everything as soon as possible!
+
+## 🎨 UI Themes
+
+ShakePack comes with **6 built-in color themes** to match your workflow. You can easily switch between them in the settings menu.
+
+<div align="center">
+  <img src="screenshots/mainblue-screenshot.png" width="100%" /><br>
+  🔵 <b>Blue (Default)</b><br><br>
+  
+  <img src="screenshots/maingold-screenshot.png" width="100%" /><br>
+  🟡 <b>Gold</b><br><br>
+  
+  <img src="screenshots/maingreen-screenshot.png" width="100%" /><br>
+  🟢 <b>Green</b><br><br>
+  
+  <img src="screenshots/mainpurple-screenshot.png" width="100%" /><br>
+  🟣 <b>Purple</b><br><br>
+  
+  <img src="screenshots/mainred-screenshot.png" width="100%" /><br>
+  🔴 <b>Red</b><br><br>
+  
+  <img src="screenshots/main-screenshot.png" width="100%" /><br>
+  🌸 <b>Original / Default UI</b>
+</div>
 
 ## ✨ Features
 
