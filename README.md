@@ -9,29 +9,29 @@ ShakePack comes with **6 built-in color themes** to match your workflow. You can
 <table align="center">
   <tr>
     <td align="center">
-      <img src="screenshots/mainblue-screenshot.png" width="300" /><br>
+      <img src="screenshots/mainblue-screenshot.png" width="450" /><br>
       🔵 <b>Blue (Default)</b>
     </td>
     <td align="center">
-      <img src="screenshots/maingold-screenshot.png" width="300" /><br>
+      <img src="screenshots/maingold-screenshot.png" width="450" /><br>
       🟡 <b>Gold</b>
     </td>
     <td align="center">
-      <img src="screenshots/maingreen-screenshot.png" width="300" /><br>
+      <img src="screenshots/maingreen-screenshot.png" width="450" /><br>
       🟢 <b>Green</b>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="screenshots/mainpurple-screenshot.png" width="300" /><br>
+      <img src="screenshots/mainpurple-screenshot.png" width="450" /><br>
       🟣 <b>Purple</b>
     </td>
     <td align="center">
-      <img src="screenshots/mainred-screenshot.png" width="300" /><br>
+      <img src="screenshots/mainred-screenshot.png" width="450" /><br>
       🔴 <b>Red</b>
     </td>
     <td align="center">
-      <img src="screenshots/main-screenshot.png" width="300" /><br>
+      <img src="screenshots/main-screenshot.png" width="450" /><br>
       🌸 <b>Original / Default UI</b>
     </td>
   </tr>
