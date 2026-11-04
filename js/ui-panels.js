@@ -106,7 +106,6 @@
     };
 
     // --- 3. АККОРДЕОНЫ (ПАПКИ С ШЕЙКАМИ) ---
-    // Заменяем старую функцию toggleCategory на более плавную и защищенную от двойных кликов
     window.toggleCategory = function(id, btn) {
         var content = document.getElementById(id);
         var category = btn.parentElement;

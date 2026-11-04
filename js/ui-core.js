@@ -4,6 +4,44 @@
  */
 
 (function() {
+    // --- УПРАВЛЕНИЕ ПОЛОСОЙ ЗАГРУЗКИ ---
+    window.showLoadingBar = function() {
+        const barContainer = document.getElementById('loading-bar-container');
+        const barFill = document.getElementById('loading-bar-fill');
+        if (!barContainer || !barFill) return;
+        
+        barContainer.classList.add('active');
+        barFill.style.transition = 'none'; // Мгновенный сброс
+        barFill.style.width = '0%';
+        
+        setTimeout(() => {
+            barFill.style.transition = 'width 1.2s cubic-bezier(0.25, 1, 0.5, 1)';
+            barFill.style.width = '75%'; // Заполняется до 75% (имитация)
+        }, 50);
+    };
+
+    window.hideLoadingBar = function(isSuccess) {
+        const barContainer = document.getElementById('loading-bar-container');
+        const barFill = document.getElementById('loading-bar-fill');
+        if (!barContainer || !barFill) return;
+        
+        barFill.style.transition = 'width 0.2s ease-out';
+        barFill.style.width = '100%';
+        
+        if (isSuccess === false) {
+            barFill.style.background = '#ff3366';
+            barFill.style.boxShadow = '0 0 10px #ff3366';
+        } else {
+            barFill.style.background = 'linear-gradient(90deg, var(--primary), var(--secondary))';
+            barFill.style.boxShadow = '0 0 10px var(--primary)';
+        }
+
+        setTimeout(() => {
+            barContainer.classList.remove('active');
+            setTimeout(() => { barFill.style.width = '0%'; }, 300);
+        }, 500);
+    };
+    // --- КОНЕЦ БЛОКА ПОЛОСЫ ЗАГРУЗКИ ---
     // --- ГЛОБАЛЬНЫЕ УВЕДОМЛЕНИЯ ---
     window.showError = function(msg) {
         var toast = document.getElementById('error-toast');
@@ -240,12 +278,18 @@
     if (xoteBtn) {
         xoteBtn.addEventListener('click', function(e) {
             const colors = ['#00ffcc', '#ff00cc', '#ffffff', '#ff3366', '#00ccff', '#ffff00'];
+            
+            const clickX = e.clientX;
+            const clickY = e.clientY;
+
             for (let i = 0; i < 15; i++) {
                 const letter = document.createElement('span');
                 letter.innerText = 'W';
                 letter.className = 'secret-letter';
-                letter.style.left = e.pageX + 'px';
-                letter.style.top = e.pageY + 'px';
+                
+                letter.style.left = clickX + 'px';
+                letter.style.top = clickY + 'px';
+                
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
                 letter.style.color = randomColor;
                 letter.style.textShadow = '0 0 10px ' + randomColor + ', 0 0 20px ' + randomColor;
@@ -296,7 +340,6 @@
             {v: '1.4', t: '140%'}, {v: '1.5', t: '150%'}
         ];
 
-        // Генерируем кнопки в оба контейнера
         scaleContainers.forEach(container => {
             let html = '';
             scales.forEach(s => {
@@ -434,10 +477,8 @@
 
         cursorStyleOptions.forEach(opt => {
             opt.addEventListener('click', () => {
-                // Убираем активный класс у ВСЕХ кнопок во всех вкладках
                 cursorStyleOptions.forEach(o => o.classList.remove('active'));
                 
-                // Добавляем активный класс ВСЕМ кнопкам с таким же data-style
                 const newStyle = opt.getAttribute('data-style');
                 document.querySelectorAll(`.cursor-style-option[data-style="${newStyle}"]`).forEach(o => o.classList.add('active'));
 

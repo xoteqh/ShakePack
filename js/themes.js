@@ -14,24 +14,36 @@
         purple:  { particles: { number: { value: 30 }, color: { value: "#aa55ff" }, size: { value: 3 }, move: { speed: 1.5 } } }
     };
 
-    // Инициализация частиц при загрузке
     document.addEventListener('DOMContentLoaded', () => {
+        // --- 1. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ---
         const savedTheme = localStorage.getItem('shakePackTheme') || 'default';
         
-        // Применяем сохраненную тему к body
         document.body.className = 'theme-' + savedTheme;
 
-        // Запускаем частицы с небольшой задержкой, чтобы CSS успел примениться
         setTimeout(() => {
             if (typeof particlesJS !== 'undefined') {
                 const initialConfig = particleConfigs[savedTheme] || particleConfigs.default;
                 particlesJS("particles-js", initialConfig);
             }
         }, 50);
-    });
 
-    // Логика переключения тем
-    document.addEventListener('DOMContentLoaded', () => {
+        // --- 2. ОТКРЫТИЕ ССЫЛКИ НА GITHUB ---
+        const githubLink = document.getElementById('github-link');
+        if (githubLink) {
+            githubLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                if (typeof CSInterface !== 'undefined') {
+                    const csInterface = new CSInterface();
+                    
+                    window.cep.util.openURLInDefaultBrowser("https://github.com/xoteqh/ShakePack");
+                } else {
+                    window.open("https://github.com/xoteqh/ShakePack", "_blank");
+                }
+            });
+        }
+
+        // --- 3. ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ТЕМ ---
         const themeToggle = document.getElementById('theme-toggle');
         const themePanel = document.getElementById('theme-panel');
         const closeTheme = document.getElementById('close-theme');

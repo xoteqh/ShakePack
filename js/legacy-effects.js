@@ -6,6 +6,7 @@
 (function() {
     window.applyPreset = function(presetInput) {
         if (typeof CSInterface === 'undefined') return;
+        if (window.showLoadingBar) window.showLoadingBar();
         var csInterface = new CSInterface();
         
         var isApplyAll = Array.isArray(presetInput);
@@ -24,15 +25,8 @@
             var usePlayhead = ${usePlayhead};
             
             // Собираем только подходящие слои
-            var targetLayers = [];
-            for (var i = 0; i < comp.selectedLayers.length; i++) {
-                var l = comp.selectedLayers[i];
-                if (!l.nullLayer && !l.adjustmentLayer) {
-                    targetLayers.push(l);
-                }
-            }
-            
-            if (targetLayers.length === 0) return "ERROR_BAD_LAYER";
+            var targetLayers = comp.selectedLayers;
+            if (targetLayers.length === 0) return "ERROR_NO_LAYER";
             
             app.beginUndoGroup("Apply Shake Preset");
             
@@ -148,8 +142,8 @@
 
                 var adjLayer = comp.layers.addSolid([1, 1, 1], layerName, comp.width, comp.height, comp.pixelAspect);
                 adjLayer.adjustmentLayer = true;
-                adjLayer.moveToBeginning(); 
-                adjLayer.label = 10; 
+                adjLayer.moveBefore(targetLayer); // <--- СТАВИМ ПРЯМО НАД ВЫДЕЛЕННЫМ СЛОЕМ
+                adjLayer.label = 10;  
                 
                 var duration = frames * comp.frameDuration; 
                 var startTime = usePlayhead ? comp.time : targetLayer.inPoint;
@@ -842,14 +836,13 @@
         })();`;
 
         csInterface.evalScript(script, function(result) {
+            if (window.hideLoadingBar) window.hideLoadingBar(result === "SUCCESS");
             if (result === "SUCCESS") {
                 if (window.showSuccess) window.showSuccess("Shake applied successfully!");
             } else if (result === "ERROR_NO_COMP") {
                 if (window.showError) window.showError("Open a composition first!");
             } else if (result === "ERROR_NO_LAYER") {
                 if (window.showError) window.showError("Please select a layer first!");
-            } else if (result === "ERROR_BAD_LAYER") {
-                if (window.showError) window.showError("Cannot shake a Null or Adjustment Layer!");
             } else if (result === "ERROR_FX_MISSING") {
                 if (window.showError) window.showError("Sapphire plugin not found!");
             } else if (result === "EvalScript error.") {

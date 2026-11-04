@@ -163,13 +163,14 @@ body.system-cursor input[type="range"] {
 
 /* --- ПАСХАЛКА (БУКВЫ) --- */
 .secret-letter {
-    position: absolute;
+    position: fixed; /* Привязываем к экрану */
     font-size: 24px;
     font-weight: 900;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 9999999;
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    /* Убираем лишние трансформации, которые могут сбивать позицию */
+    transform: translate(-50%, -50%); 
     animation: flyAway 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
@@ -216,8 +217,39 @@ body:not(.system-cursor) input[type="range"]::-webkit-slider-runnable-track {
     cursor: none !important;
 }
 
+/* Фикс для ссылки GitHub, чтобы не вылезал системный курсор */
+body:not(.system-cursor) #github-link,
+body:not(.system-cursor) #github-link * {
+    cursor: none !important;
+}
+
 body.system-cursor input[type="range"],
 body.system-cursor input[type="range"]:active,
 body.system-cursor input[type="range"]:hover {
     cursor: pointer !important;
+}
+/* --- ПОЛОСА ЗАГРУЗКИ (LOADING BAR) --- */
+#loading-bar-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 9999999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+#loading-bar-container.active {
+    opacity: 1;
+}
+
+#loading-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    box-shadow: 0 0 10px var(--primary);
+    transition: width 0.2s ease-out;
 }

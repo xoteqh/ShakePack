@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="7.0" ExtensionBundleId="com.shakepack.panel" ExtensionBundleVersion="1.0.0" ExtensionBundleName="ShakePack Bundle">
+<ExtensionManifest Version="7.0" ExtensionBundleId="com.shakepack.panel" ExtensionBundleVersion="0.0.2" ExtensionBundleName="ShakePack Bundle">
     <ExtensionList>
-        <Extension Id="com.shakepack.panel" Version="1.0.0" />
+        <Extension Id="com.shakepack.panel" Version="0.0.2" />
     </ExtensionList>
     <ExecutionEnvironment>
         <HostList>
@@ -19,6 +19,10 @@
             <DispatchInfo >
                 <Resources>
                     <MainPath>./index.html</MainPath>
+                    <CEFCommandLine>
+                        <Parameter>--enable-nodejs</Parameter>
+                        <Parameter>--mixed-context</Parameter>
+                    </CEFCommandLine>
                 </Resources>
                 <Lifecycle>
                     <AutoVisible>true</AutoVisible>

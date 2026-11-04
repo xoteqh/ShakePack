@@ -13,11 +13,16 @@ body {
     margin: 0;
     padding: 20px;
     user-select: none;
-    overflow-x: hidden;
+    
+    /* Оставляем только это, без height: 100vh и !important */
+    overflow-x: hidden; 
     overflow-y: auto;
+    
     position: relative;
     min-height: 100vh;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     
     background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--primary) 10%, transparent) 0%, transparent 60%);
     -webkit-font-smoothing: antialiased;
@@ -41,6 +46,9 @@ html, body { scroll-behavior: smooth; }
     z-index: 10;
     text-align: center;
     padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Это заставит контейнер растянуться на всю доступную высоту */
     animation: slideUpFade 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
@@ -158,4 +166,63 @@ body.theme-purple { --primary: #aa55ff; --secondary: #ff00ff; }
 @keyframes slideUpFade {
     0% { opacity: 0; transform: translateY(30px); }
     100% { opacity: 1; transform: translateY(0); }
+}
+/* --- ФУТЕР ПЛАГИНА --- */
+.plugin-footer {
+    margin-top: auto; 
+    padding-top: 30px; 
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #5a5a66;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: slideUpFade 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 0.6s;
+}
+
+/* Ссылка на GitHub */
+.plugin-footer #github-link {
+    color: #5a5a66;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.plugin-footer #github-link:hover {
+    color: var(--primary);
+    text-shadow: 0 0 8px var(--primary);
+}
+
+/* Разделители (|) */
+.footer-separator {
+    color: #333;
+}
+
+/* Ник Xote (ОБЫЧНЫЙ ТЕКСТ, БЕЗ ПСЕВДОЭЛЕМЕНТОВ) */
+.footer-author {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #5a5a66;
+}
+
+.footer-author:hover {
+    color: var(--secondary);
+    text-shadow: 0 0 8px var(--secondary);
+}
+
+/* Версия плагина */
+.footer-version {
+    color: #5a5a66; 
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.footer-version:hover {
+    color: var(--primary); 
+    text-shadow: 0 0 8px var(--primary); 
 }
