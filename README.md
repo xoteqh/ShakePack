@@ -44,13 +44,28 @@ ShakePack comes with **6 built-in color themes** to match your workflow. You can
 ## 📦 Installation
 
 1. Download the latest release (or clone the repository).
-2. Place the `ShakePack` folder into your CEP extensions directory:
+2. Unzip and place the `ShakePack` folder into your CEP extensions directory:
    - **Windows:** `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\`
    - **macOS:** `/Library/Application Support/Adobe/CEP/extensions/`
-3. **IMPORTANT:** If you are using an unsigned version (like this one), you need to enable debug mode (PlayerDebugMode):
-   - **Windows:** Create a `PlayerDebugMode` file (no extension) in `HKEY_CURRENT_USER\Software\Adobe\CSXS.11` and set its value to `1` (for the CSXS version corresponding to your AE).
-   - **macOS:** Run `defaults write com.adobe.CSXS.11 PlayerDebugMode 1` in the terminal.
-4. Restart After Effects. The panel will appear in `Window -> Extensions -> ShakePack`.
+3. Restart After Effects.
+4. Open the panel: `Window -> Extensions -> ShakePack`.
+
+Done! In most cases that's all you need — the panel appears in the Extensions menu right away.
+
+> 💡 **If the panel is not in the `Window -> Extensions` menu** — debug mode for unsigned extensions is not enabled. Enable it once:
+>
+> **Windows:**
+> 1. Open `regedit` (Win + R → `regedit`).
+> 2. Go to `HKEY_CURRENT_USER\Software\Adobe\CSXS.11` (create the `CSXS.11` key if it doesn't exist; the number must match your AE version, e.g. `CSXS.12` for AE 2021).
+> 3. Create a string value `PlayerDebugMode` and set it to `1`.
+>
+> **macOS:**
+> Run in Terminal (use the CSXS version matching your AE):
+> ```bash
+> defaults write com.adobe.CSXS.11 PlayerDebugMode 1
+> ```
+>
+> Restart After Effects — the panel will appear in the menu.
 
 ## ⚙️ Requirements
 
@@ -87,13 +102,28 @@ ShakePack comes with **6 built-in color themes** to match your workflow. You can
 ## 📦 Установка
 
 1. Скачайте последний релиз (или клонируйте репозиторий).
-2. Поместите папку `ShakePack` в директорию расширений CEP:
+2. Распакуйте и поместите папку `ShakePack` в директорию расширений CEP:
    - **Windows:** `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\`
    - **macOS:** `/Library/Application Support/Adobe/CEP/extensions/`
-3. **ВАЖНО:** Если вы используете неподписанную версию (как эта), вам нужно включить режим отладки (PlayerDebugMode):
-   - **Windows:** Создайте файл `PlayerDebugMode` (без расширения) в `HKEY_CURRENT_USER\Software\Adobe\CSXS.11` и установите значение `1` (для версии CSXS, соответствующей вашему AE).
-   - **macOS:** В терминале выполните `defaults write com.adobe.CSXS.11 PlayerDebugMode 1`.
-4. Перезапустите After Effects. Панель появится в меню `Window -> Extensions -> ShakePack`.
+3. Перезапустите After Effects.
+4. Откройте панель: `Window -> Extensions -> ShakePack`.
+
+Готово! В большинстве случаев этого достаточно — панель появится в меню расширений сразу.
+
+> 💡 **Если панели нет в меню `Window -> Extensions`** — не включён режим отладки для неподписанных расширений. Включите его один раз:
+>
+> **Windows:**
+> 1. Откройте `regedit` (Win + R → `regedit`).
+> 2. Перейдите в `HKEY_CURRENT_USER\Software\Adobe\CSXS.11` (если папки `CSXS.11` нет — создайте; номер версии должен соответствовать вашему AE, например `CSXS.12` для AE 2021).
+> 3. Создайте строковый параметр `PlayerDebugMode` и установите значение `1`.
+>
+> **macOS:**
+> Выполните в терминале (номер CSXS — под вашу версию AE):
+> ```bash
+> defaults write com.adobe.CSXS.11 PlayerDebugMode 1
+> ```
+>
+> Перезапустите After Effects — панель появится в меню.
 
 ## ⚙️ Требования
 
