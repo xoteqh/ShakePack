@@ -1,8 +1,8 @@
-# 🎬 ShakePack (Alpha 0.0.1)
+# 🎬 ShakePack (Alpha Version)
 
 **ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects.
 
-> ⚠️ **IMPORTANT: THIS IS AN ALPHA VERSION (Alpha 0.0.1)**
+> ⚠️ **IMPORTANT: THIS IS AN ALPHA VERSION**
 >
 > **The plugin may contain bugs, crashes, or unexpected behavior.** Please bear with me. I am actively working on improvements and bug fixes.
 >
@@ -39,7 +39,9 @@ ShakePack comes with **6 built-in color themes** to match your workflow. You can
 - **Apply to All** (Select multiple layers, e.g., 4, and a random shake will be applied to each of them).
 - **Favorites** with Drag & Drop support.
 - **Visual preview** of the shake right inside the panel.
+- **Smart Positioning**: Shakes (Adjustment Layers) appear exactly above the selected clip in the timeline.
 - **UI Customization**: 6 color themes, interface scale adjustment, custom cursor styles (Circle, Diamond, Square) and size.
+- **Stylish Footer**: Quick access to the GitHub repository and current version.
 
 ## 📦 Installation
 
@@ -84,7 +86,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 **ShakePack** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire.
 
-> ⚠️ **ВАЖНО: ЭТО АЛЬФА-ВЕРСИЯ (Alpha 0.0.1)**
+> ⚠️ **ВАЖНО: ЭТО АЛЬФА-ВЕРСИЯ**
 >
 > **В плагине могут быть баги, вылеты и странное поведение.** Пожалуйста, отнеситесь с пониманием. Я активно работаю над улучшением и исправлением ошибок.
 >
@@ -97,7 +99,9 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 - **Apply to All** (Выделил 4 слоя например и на эти 4 слоя накидывается рандомный шейк из папок).
 - **Избранное** с возможностью перетаскивания (Drag & Drop).
 - **Визуальное превью** шейка прямо в панели.
+- **Умное позиционирование**: Шейки (Adjustment Layers) появляются ровно над выделенным клипом в таймлайне.
 - **Кастомизация интерфейса**: 6 цветовых тем, настройка масштаба, выбор стиля курсора (Круг, Алмаз, Квадрат) и его размера.
+- **Стильный футер**: Быстрый доступ к репозиторию GitHub и текущей версии плагина.
 
 ## 📦 Установка
 
