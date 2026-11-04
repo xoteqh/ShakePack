@@ -6,7 +6,7 @@
 >
 > **The plugin may contain bugs, crashes, or unexpected behavior.** Please bear with me. I am actively working on improvements and bug fixes.
 >
-> **If you found a bug or have a suggestion — please contact me on Discord: `xote._.`** I will try to fix everything as soon as possible!
+> **If you found a bug or have a suggestion — please contact me on Discord: `xote._.`**. I will try to fix everything as soon as possible! *(If I don't reply, I'm sleeping 😴)*
 
 ## 🎨 UI Themes
 
@@ -90,7 +90,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 >
 > **В плагине могут быть баги, вылеты и странное поведение.** Пожалуйста, отнеситесь с пониманием. Я активно работаю над улучшением и исправлением ошибок.
 >
-> **Если вы нашли баг, или у вас есть предложение — пишите мне в Discord: `xote._.`**. Я постараюсь всё исправить как можно быстрее!
+> **Если вы нашли баг, или у вас есть предложение — пишите мне в Discord: `xote._.`**. Я постараюсь всё исправить как можно быстрее! *(если не отвечаю, сплю 😴)*
 
 ## ✨ Что умеет плагин (на данный момент)
 
