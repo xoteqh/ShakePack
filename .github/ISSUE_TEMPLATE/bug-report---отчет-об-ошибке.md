@@ -1,20 +1,10 @@
 ---
 name: Bug report / Отчет об ошибке
-about: Create a report to help us improve / Создайте отчет, чтобы помочь нам стать
-  лучше
-title: "[BUG]"
-labels: bug
-assignees: ''
-type: Bug
-
----
-
----
-name: Bug report / Отчет об ошибке
 about: Create a report to help us improve / Создайте отчет, чтобы помочь нам стать лучше
 title: "[BUG] "
 labels: bug
 assignees: ''
+type: Bug
 ---
 
 <!-- 
@@ -70,3 +60,5 @@ Please fill out the information below to help us fix the issue.
 ### Additional context / Дополнительный контекст
 *Add any other context about the problem here.*
 *Добавьте любой другой контекст о проблеме здесь.*
+
+
