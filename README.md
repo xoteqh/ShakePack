@@ -10,7 +10,7 @@
 
 ## 🎨 UI Themes
 
-ShakePack comes with **6 built-in color themes** to match your workflow. You can easily switch between them in the settings menu.
+ShakePack comes with **8 built-in color themes** to match your workflow. You can easily switch between them in the settings menu.
 
 <div align="center">
   <img src="screenshots/mainblue-screenshot.png" width="100%" /><br>
@@ -28,19 +28,26 @@ ShakePack comes with **6 built-in color themes** to match your workflow. You can
   <img src="screenshots/mainred-screenshot.png" width="100%" /><br>
   🔴 <b>Red</b><br><br>
   
+  <img src="screenshots/mainpink-screenshot.png" width="100%" /><br>
+  🌸 <b>Pink Glow</b><br><br>
+
+  <img src="screenshots/maindark-screenshot.png" width="100%" /><br>
+  🌑 <b>Grim Dark</b><br><br>
+  
   <img src="screenshots/main-screenshot.png" width="100%" /><br>
   🌸 <b>Original / Default UI</b>
 </div>
 
 ## ✨ Features
 
-- **40+ ready-to-use** shake presets (Soft, Hard, Dirty, Fast).
+- **60+ ready-to-use** shake presets (15 in each category: Soft, Hard, Dirty, Fast).
 - **Random Shake** (Picks a random shake from the folders for the selected layer).
 - **Apply to All** (Select multiple layers, e.g., 4, and a random shake will be applied to each of them).
 - **Favorites** with Drag & Drop support.
 - **Visual preview** of the shake right inside the panel.
 - **Smart Positioning**: Shakes (Adjustment Layers) appear exactly above the selected clip in the timeline.
-- **UI Customization**: 6 color themes, interface scale adjustment, custom cursor styles (Circle, Diamond, Square) and size.
+- **UI Customization**: 8 color themes, interface scale adjustment, custom cursor styles (Circle, Diamond, Square) and size.
+- **Full Localization**: English and Russian interface. You can switch the language in the Settings menu.
 - **Stylish Footer**: Quick access to the GitHub repository and current version.
 
 ## 📦 Installation
@@ -94,13 +101,14 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 ## ✨ Что умеет плагин (на данный момент)
 
-- **40+ готовых пресетов** шейков (Soft, Hard, Dirty, Fast).
+- **60+ готовых пресетов** шейков (по 15 в каждой папке: Soft, Hard, Dirty, Fast).
 - **Случайный шейк** (Выбирается из папок шейков один рандомный шейк на слой).
 - **Apply to All** (Выделил 4 слоя например и на эти 4 слоя накидывается рандомный шейк из папок).
 - **Избранное** с возможностью перетаскивания (Drag & Drop).
 - **Визуальное превью** шейка прямо в панели.
 - **Умное позиционирование**: Шейки (Adjustment Layers) появляются ровно над выделенным клипом в таймлайне.
-- **Кастомизация интерфейса**: 6 цветовых тем, настройка масштаба, выбор стиля курсора (Круг, Алмаз, Квадрат) и его размера.
+- **Кастомизация интерфейса**: 8 цветовых тем, настройка масштаба, выбор стиля курсора (Круг, Алмаз, Квадрат) и его размера.
+- **Полная локализация**: Английский и русский интерфейс. Переключение языка в Настройках.
 - **Стильный футер**: Быстрый доступ к репозиторию GitHub и текущей версии плагина.
 
 ## 📦 Установка
