@@ -1,6 +1,5 @@
 /**
  * legacy-effects.js
- * Старый проверенный движок для применения шейков (с красными часиками).
  */
 
 (function() {
@@ -13,7 +12,6 @@
         var presetArrayStr = isApplyAll ? JSON.stringify(presetInput) : JSON.stringify([presetInput]);
         var usePlayhead = !isApplyAll;
 
-        // Создаем скрипт, который будет выполнен внутри After Effects
         var script = `(function() {
             var comp = app.project.activeItem;
             if (!comp || !(comp instanceof CompItem)) return "ERROR_NO_COMP";
@@ -24,7 +22,6 @@
             var isApplyAll = ${isApplyAll};
             var usePlayhead = ${usePlayhead};
             
-            // Собираем только подходящие слои
             var targetLayers = comp.selectedLayers;
             if (targetLayers.length === 0) return "ERROR_NO_LAYER";
             
@@ -98,7 +95,6 @@
                 var layerName = "SHAKE";
                 var frames = 19; 
                 
-                // --- ТВОЙ СТАРЫЙ КОД С if/else ---
                 if (presetId === 'soft-shake-1') { layerName = "SHAKE - Soft 1"; }
                 else if (presetId === 'soft-shake-2') { layerName = "SHAKE - Soft 2"; }
                 else if (presetId === 'soft-shake-3') { layerName = "SHAKE - Soft 3"; }
@@ -109,6 +105,11 @@
                 else if (presetId === 'soft-shake-8') { layerName = "SHAKE - Soft 8"; frames = 22; }
                 else if (presetId === 'soft-shake-9') { layerName = "SHAKE - Soft 9"; frames = 22; }
                 else if (presetId === 'soft-shake-10') { layerName = "SHAKE - Soft 10"; frames = 22; }
+                else if (presetId === 'soft-shake-11') { layerName = "SHAKE - Soft 11"; frames = 22; }
+                else if (presetId === 'soft-shake-12') { layerName = "SHAKE - Soft 12"; frames = 22; }
+                else if (presetId === 'soft-shake-13') { layerName = "SHAKE - Soft 13"; frames = 22; }
+                else if (presetId === 'soft-shake-14') { layerName = "SHAKE - Soft 14"; frames = 22; }
+                else if (presetId === 'soft-shake-15') { layerName = "SHAKE - Soft 15"; frames = 22; }
                 else if (presetId === 'hard-shake-1') { layerName = "SHAKE - Hard 1"; }
                 else if (presetId === 'hard-shake-2') { layerName = "SHAKE - Hard 2"; }
                 else if (presetId === 'hard-shake-3') { layerName = "SHAKE - Hard 3"; }
@@ -119,6 +120,11 @@
                 else if (presetId === 'hard-shake-8') { layerName = "SHAKE - Hard 8"; frames = 19; }
                 else if (presetId === 'hard-shake-9') { layerName = "SHAKE - Hard 9"; frames = 19; }
                 else if (presetId === 'hard-shake-10') { layerName = "SHAKE - Hard 10"; frames = 19; }
+                else if (presetId === 'hard-shake-11') { layerName = "SHAKE - Hard 11"; frames = 19; }
+                else if (presetId === 'hard-shake-12') { layerName = "SHAKE - Hard 12"; frames = 19; }
+                else if (presetId === 'hard-shake-13') { layerName = "SHAKE - Hard 13"; frames = 19; }
+                else if (presetId === 'hard-shake-14') { layerName = "SHAKE - Hard 14"; frames = 19; }
+                else if (presetId === 'hard-shake-15') { layerName = "SHAKE - Hard 15"; frames = 19; }
                 else if (presetId === 'dirty-shake-1') { layerName = "SHAKE - Dirty 1"; }
                 else if (presetId === 'dirty-shake-2') { layerName = "SHAKE - Dirty 2"; }
                 else if (presetId === 'dirty-shake-3') { layerName = "SHAKE - Dirty 3"; }
@@ -129,6 +135,11 @@
                 else if (presetId === 'dirty-shake-8') { layerName = "SHAKE - Dirty 8"; frames = 19; }
                 else if (presetId === 'dirty-shake-9') { layerName = "SHAKE - Dirty 9"; frames = 19; }
                 else if (presetId === 'dirty-shake-10') { layerName = "SHAKE - Dirty 10"; frames = 19; }
+                else if (presetId === 'dirty-shake-11') { layerName = "SHAKE - Dirty 11"; frames = 19; }
+                else if (presetId === 'dirty-shake-12') { layerName = "SHAKE - Dirty 12"; frames = 19; }
+                else if (presetId === 'dirty-shake-13') { layerName = "SHAKE - Dirty 13"; frames = 19; }
+                else if (presetId === 'dirty-shake-14') { layerName = "SHAKE - Dirty 14"; frames = 19; }
+                else if (presetId === 'dirty-shake-15') { layerName = "SHAKE - Dirty 15"; frames = 19; }
                 else if (presetId === 'fast-shake-1') { layerName = "SHAKE - Fast 1"; frames = 8; }
                 else if (presetId === 'fast-shake-2') { layerName = "SHAKE - Fast 2"; frames = 8; }
                 else if (presetId === 'fast-shake-3') { layerName = "SHAKE - Fast 3"; frames = 8; }
@@ -139,10 +150,15 @@
                 else if (presetId === 'fast-shake-8') { layerName = "SHAKE - Fast 8"; frames = 8; }
                 else if (presetId === 'fast-shake-9') { layerName = "SHAKE - Fast 9"; frames = 8; }
                 else if (presetId === 'fast-shake-10') { layerName = "SHAKE - Fast 10"; frames = 8; }
+                else if (presetId === 'fast-shake-11') { layerName = "SHAKE - Fast 11"; frames = 8; }
+                else if (presetId === 'fast-shake-12') { layerName = "SHAKE - Fast 12"; frames = 8; }
+                else if (presetId === 'fast-shake-13') { layerName = "SHAKE - Fast 13"; frames = 8; }
+                else if (presetId === 'fast-shake-14') { layerName = "SHAKE - Fast 14"; frames = 8; }
+                else if (presetId === 'fast-shake-15') { layerName = "SHAKE - Fast 15"; frames = 8; }
 
                 var adjLayer = comp.layers.addSolid([1, 1, 1], layerName, comp.width, comp.height, comp.pixelAspect);
                 adjLayer.adjustmentLayer = true;
-                adjLayer.moveBefore(targetLayer); // <--- СТАВИМ ПРЯМО НАД ВЫДЕЛЕННЫМ СЛОЕМ
+                adjLayer.moveBefore(targetLayer);
                 adjLayer.label = 10;  
                 
                 var duration = frames * comp.frameDuration; 
@@ -151,7 +167,6 @@
                 adjLayer.inPoint = startTime;
                 adjLayer.outPoint = startTime + duration;
                 
-                // --- ТВОЙ СТАРЫЙ БЛОК if/else ДЛЯ ЭФФЕКТОВ ---
                 if (presetId === 'soft-shake-1') {
                     var fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
@@ -309,6 +324,92 @@
                         setProp(fx, "Y Wave Amp", 25.00);
                         setProp(fx, "Y Wave Freq", 1.140);
                         setExpSmooth(fx.property("Dissolve Percent"), 13.00, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'soft-shake-11') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.100);
+                        setProp(fx, "Amplitude", 3.200);
+                        setProp(fx, "Frequency", 6.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.800);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 87.00);
+                        setProp(fx, "X Wave Freq", 0.670);
+                        setProp(fx, "Y Wave Amp", 51.00);
+                        setProp(fx, "Y Wave Freq", 0.720);
+                        setExpSmooth(fx.property("Dissolve Percent"), 12.00, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'soft-shake-12') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.200);
+                        setProp(fx, "Amplitude", 3.300);
+                        setProp(fx, "Frequency", 6.50);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.900);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 60.00);
+                        setProp(fx, "X Wave Freq", 0.820);
+                        setProp(fx, "Y Wave Amp", 85.00);
+                        setProp(fx, "Y Wave Freq", 0.640);
+                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'soft-shake-13') {
+                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    if (fx) {
+                        setProp(fx, "Frequency", 4.00);
+                        setProp(fx, "Phase", 0.000);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 1.200);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 55.00);
+                        setProp(fx, "X Wave Freq", 0.660);
+                        setProp(fx, "Y Wave Amp", 34.00);
+                        setProp(fx, "Y Wave Freq", 0.530);
+                        setExpSmooth(fx.property("Amplitude"), 1.800, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'soft-shake-14') {
+                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    if (fx) {
+                        setProp(fx, "Frequency", 5.00);
+                        setProp(fx, "Phase", 0.000);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 1.200);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 51.00);
+                        setProp(fx, "X Wave Freq", 0.810);
+                        setProp(fx, "Y Wave Amp", 24.00);
+                        setProp(fx, "Y Wave Freq", 0.790);
+                        setExpSmooth(fx.property("Amplitude"), 1.000, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'soft-shake-15') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.300);
+                        setProp(fx, "Amplitude", 2.800);
+                        setProp(fx, "Frequency", 4.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.900);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 60.00);
+                        setProp(fx, "X Wave Freq", 0.590);
+                        setProp(fx, "Y Wave Amp", 41.00);
+                        setProp(fx, "Y Wave Freq", 1.090);
+                        setExpSmooth(fx.property("Dissolve Percent"), 16.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-1') {
@@ -488,6 +589,96 @@
                         setExpExpo(fx.property("Dissolve Percent"), 30.00, 1.2, duration);
                     }
                 }
+                else if (presetId === 'hard-shake-11') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.400);
+                        setProp(fx, "Amplitude", 2.800);
+                        setProp(fx, "Frequency", 8.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.900);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 82.00);
+                        setProp(fx, "X Wave Freq", 0.840);
+                        setProp(fx, "Y Wave Amp", 78.00);
+                        setProp(fx, "Y Wave Freq", 0.850);
+                        setExpSmooth(fx.property("Dissolve Percent"), 12.00, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'hard-shake-12') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.200);
+                        setProp(fx, "Amplitude", 2.700);
+                        setProp(fx, "Frequency", 10.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.800);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 114.00);
+                        setProp(fx, "X Wave Freq", 0.600);
+                        setProp(fx, "Y Wave Amp", 46.00);
+                        setProp(fx, "Y Wave Freq", 0.560);
+                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'hard-shake-13') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.300);
+                        setProp(fx, "Amplitude", 3.100);
+                        setProp(fx, "Frequency", 12.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.900);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 81.00);
+                        setProp(fx, "X Wave Freq", 0.560);
+                        setProp(fx, "Y Wave Amp", 59.00);
+                        setProp(fx, "Y Wave Freq", 0.670);
+                        setExpSmooth(fx.property("Dissolve Percent"), 13.00, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'hard-shake-14') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.400);
+                        setProp(fx, "Amplitude", 3.100);
+                        setProp(fx, "Frequency", 9.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.800);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 92.00);
+                        setProp(fx, "X Wave Freq", 0.600);
+                        setProp(fx, "Y Wave Amp", 78.00);
+                        setProp(fx, "Y Wave Freq", 0.580);
+                        setExpSmooth(fx.property("Dissolve Percent"), 13.50, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'hard-shake-15') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.500);
+                        setProp(fx, "Amplitude", 3.200);
+                        setProp(fx, "Frequency", 10.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.800);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 112.00);
+                        setProp(fx, "X Wave Freq", 0.800);
+                        setProp(fx, "Y Wave Amp", 43.00);
+                        setProp(fx, "Y Wave Freq", 0.500);
+                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                    }
+                }
                 else if (presetId === 'dirty-shake-1') {
                     var fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
@@ -649,6 +840,96 @@
                         setProp(fx, "Y Wave Amp", 38.00);
                         setProp(fx, "Y Wave Freq", 0.840);
                         setExpExpo(fx.property("Dissolve Percent"), 28.00, 1.5, duration);
+                    }
+                }
+                else if (presetId === 'dirty-shake-11') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.600);
+                        setProp(fx, "Amplitude", 3.200);
+                        setProp(fx, "Frequency", 12.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.800);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 95.00);
+                        setProp(fx, "X Wave Freq", 0.670);
+                        setProp(fx, "Y Wave Amp", 47.00);
+                        setProp(fx, "Y Wave Freq", 0.640);
+                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'dirty-shake-12') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.300);
+                        setProp(fx, "Amplitude", 2.900);
+                        setProp(fx, "Frequency", 11.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.900);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 102.00);
+                        setProp(fx, "X Wave Freq", 0.620);
+                        setProp(fx, "Y Wave Amp", 63.00);
+                        setProp(fx, "Y Wave Freq", 0.720);
+                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'dirty-shake-13') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.600);
+                        setProp(fx, "Amplitude", 3.200);
+                        setProp(fx, "Frequency", 13.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.800);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 87.00);
+                        setProp(fx, "X Wave Freq", 0.730);
+                        setProp(fx, "Y Wave Amp", 42.00);
+                        setProp(fx, "Y Wave Freq", 0.740);
+                        setExpSmooth(fx.property("Dissolve Percent"), 13.50, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'dirty-shake-14') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.700);
+                        setProp(fx, "Amplitude", 3.400);
+                        setProp(fx, "Frequency", 11.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.900);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 71.00);
+                        setProp(fx, "X Wave Freq", 0.630);
+                        setProp(fx, "Y Wave Amp", 53.00);
+                        setProp(fx, "Y Wave Freq", 0.620);
+                        setExpSmooth(fx.property("Dissolve Percent"), 13.50, 0.00, duration);
+                    }
+                }
+                else if (presetId === 'dirty-shake-15') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.800);
+                        setProp(fx, "Amplitude", 3.500);
+                        setProp(fx, "Frequency", 10.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 1.000);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 85.00);
+                        setProp(fx, "X Wave Freq", 0.530);
+                        setProp(fx, "Y Wave Amp", 58.00);
+                        setProp(fx, "Y Wave Freq", 0.800);
+                        setExpSmooth(fx.property("Dissolve Percent"), 13.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-1') {
@@ -827,6 +1108,94 @@
                         setProp(fx, "Y Wave Amp", 40.00);
                         setProp(fx, "Y Wave Freq", 1.230);
                         setExpExpo(fx.property("Dissolve Percent"), 18.00, 0.4, duration); 
+                    }
+                }
+                else if (presetId === 'fast-shake-11') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.600);
+                        setProp(fx, "Amplitude", 3.100);
+                        setProp(fx, "Frequency", 13.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.900);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 106.00);
+                        setProp(fx, "X Wave Freq", 0.520);
+                        setProp(fx, "Y Wave Amp", 65.00);
+                        setProp(fx, "Y Wave Freq", 0.610);
+                        setExp(fx.property("Dissolve Percent"), 21.00, 1.0, duration); // Линейно
+                    }
+                }
+                else if (presetId === 'fast-shake-12') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.100);
+                        setProp(fx, "Amplitude", 3.100);
+                        setProp(fx, "Frequency", 12.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 0.900);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 63.00);
+                        setProp(fx, "X Wave Freq", 0.670);
+                        setProp(fx, "Y Wave Amp", 54.00);
+                        setProp(fx, "Y Wave Freq", 0.820);
+                        setExp(fx.property("Dissolve Percent"), 20.00, 1.0, duration); // Линейно
+                    }
+                }
+                else if (presetId === 'fast-shake-13') {
+                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    if (fx) {
+                        setProp(fx, "Frequency", 7.00);
+                        setProp(fx, "Phase", 0.000);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 1.200);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 94.00);
+                        setProp(fx, "X Wave Freq", 0.750);
+                        setProp(fx, "Y Wave Amp", 44.00);
+                        setProp(fx, "Y Wave Freq", 0.770);
+                        setExp(fx.property("Amplitude"), 2.000, 1.0, duration); // Линейно
+                    }
+                }
+                else if (presetId === 'fast-shake-14') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.200);
+                        setProp(fx, "Amplitude", 2.900);
+                        setProp(fx, "Frequency", 9.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 1.000);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 110.00);
+                        setProp(fx, "X Wave Freq", 0.620);
+                        setProp(fx, "Y Wave Amp", 72.00);
+                        setProp(fx, "Y Wave Freq", 0.870);
+                        setExp(fx.property("Dissolve Percent"), 18.00, 1.0, duration); // Линейно
+                    }
+                }
+                else if (presetId === 'fast-shake-15') {
+                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    if (fx) {
+                        setProp(fx, "Transition Dir", 1);
+                        setProp(fx, "Dissolve Speed", 2.800);
+                        setProp(fx, "Amplitude", 3.100);
+                        setProp(fx, "Frequency", 11.00);
+                        setProp(fx, "Motion Blur", true);
+                        setProp(fx, "Mo Blur Length", 1.000);
+                        setProp(fx, "Wrap X", 3);
+                        setProp(fx, "Wrap Y", 3);
+                        setProp(fx, "X Wave Amp", 119.00);
+                        setProp(fx, "X Wave Freq", 0.610);
+                        setProp(fx, "Y Wave Amp", 75.00);
+                        setProp(fx, "Y Wave Freq", 0.740);
+                        setExp(fx.property("Dissolve Percent"), 20.00, 1.0, duration); // Линейно
                     }
                 }
             }

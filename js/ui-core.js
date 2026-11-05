@@ -1,22 +1,249 @@
 /**
  * ui-core.js
- * Áàçîâûå âèçóàëüíûå ıôôåêòû èíòåğôåéñà: êóğñîğ, òóëòèïû, ñâå÷åíèå, ÷àñòèöû.
+ * Ğ‘Ğ°Ğ·Ğ¾Ğ²Ñ‹Ğµ Ğ²Ğ¸Ğ·ÑƒĞ°Ğ»ÑŒĞ½Ñ‹Ğµ ÑÑ„Ñ„ĞµĞºÑ‚Ñ‹ Ğ¸Ğ½Ñ‚ĞµÑ€Ñ„ĞµĞ¹ÑĞ°: ĞºÑƒÑ€ÑĞ¾Ñ€, Ñ‚ÑƒĞ»Ñ‚Ğ¸Ğ¿Ñ‹, ÑĞ²ĞµÑ‡ĞµĞ½Ğ¸Ğµ, Ñ‡Ğ°ÑÑ‚Ğ¸Ñ†Ñ‹.
  */
 
 (function() {
-    // --- ÓÏĞÀÂËÅÍÈÅ ÏÎËÎÑÎÉ ÇÀÃĞÓÇÊÈ ---
+    // --- Ğ¡Ğ›ĞĞ’ĞĞ Ğ¬ ĞŸĞ•Ğ Ğ•Ğ’ĞĞ”ĞĞ’ ---
+    const translations = {
+        en: {
+            selectTheme: "Select Theme",
+            settings: "Settings",
+            tabGeneral: "General",
+            tabInterface: "Interface",
+            tabCursor: "Cursor",
+            tabLanguage: "Language",
+            random: "RANDOM SHAKE",
+            applyAll: "APPLY TO ALL SELECTED",
+            catSoft: "Soft & Smooth",
+            catHard: "Hard & Punchy",
+            catDirty: "Dirty & Rough",
+            catFast: "Fast Shakes",
+            github: "github",
+            xote: "xote",
+            version: "v0.0.3 Alpha",
+            close: "Done",
+            // ĞĞ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸
+            interfaceScale: "Interface Scale",
+            cursorSize: "Cursor Size",
+            cursorEffects: "Cursor Effects",
+            customCursor: "Custom Cursor",
+            cursorGlow: "Cursor Glow",
+            cursorStyle: "Cursor Style",
+            enableCursor: "Enable the neon cursor",
+            showGlow: "Show glow behind cursor",
+            adjustCursor: "Adjust the size of the custom neon cursor.",
+            cursorCircle: "Circle",
+            cursorDiamond: "Diamond",
+            cursorSquare: "Square",
+            // Ğ¢ÑƒĞ»Ñ‚Ğ¸Ğ¿Ñ‹
+            tipPreview: "Click to see preview",
+            tipAddFav: "Add to favorites",
+            tipRemFav: "Remove from favorites",
+            tipApply: "Click to apply to timeline (select a layer first)",
+            tipCategory: "Click to view shakes",
+            tipTheme: "Change UI Theme",
+            tipFavorites: "Open Favorites",
+            tipHelp: "How to use",
+            tipSettings: "Settings",
+            tipRandom: "Surprise me! Apply a random shake",
+            tipApplyAll: "Apply random shake to ALL selected layers",
+            // ĞŸĞ°Ğ½ĞµĞ»Ğ¸
+            howToUse: "How to use",
+            favoritesTitle: "Favorite Shakes",
+            emptyFavorites: "No favorites yet. Click â­ on any shake!",
+            // Ğ¢ĞµĞ¼Ñ‹
+            themeClassic: "Neon Classic",
+            themeGold: "Golden Glow",
+            themeBlue: "Deep Blue",
+            themeRed: "Crimson Fire",
+            themeGreen: "Neon Green",
+            themePurple: "Neon Purple",
+            themePink: "Pink Glow",
+            themeGrim: "Grim Dark"
+        },
+        ru: {
+            selectTheme: "Ğ’Ñ‹Ğ±Ñ€Ğ°Ñ‚ÑŒ Ğ¢ĞµĞ¼Ñƒ",
+            settings: "ĞĞ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸",
+            tabGeneral: "ĞÑĞ½Ğ¾Ğ²Ğ½Ğ¾Ğµ",
+            tabInterface: "Ğ˜Ğ½Ñ‚ĞµÑ€Ñ„ĞµĞ¹Ñ",
+            tabCursor: "ĞšÑƒÑ€ÑĞ¾Ñ€",
+            tabLanguage: "Ğ¯Ğ·Ñ‹Ğº",
+            random: "Ğ¡Ğ›Ğ£Ğ§ĞĞ™ĞĞ«Ğ™ Ğ¨Ğ•Ğ™Ğš",
+            applyAll: "ĞŸĞ Ğ˜ĞœĞ•ĞĞ˜Ğ¢Ğ¬ ĞšĞ Ğ’Ğ¡Ğ•Ğœ",
+            catSoft: "ĞœÑĞ³ĞºĞ¸Ğµ Ğ¸ Ğ¿Ğ»Ğ°Ğ²Ğ½Ñ‹Ğµ",
+            catHard: "Ğ–ĞµÑÑ‚ĞºĞ¸Ğµ Ğ¸ Ğ¼Ğ¾Ñ‰Ğ½Ñ‹Ğµ",
+            catDirty: "Ğ“Ñ€ÑĞ·Ğ½Ñ‹Ğµ Ğ¸ Ğ³Ñ€ÑƒĞ±Ñ‹Ğµ",
+            catFast: "Ğ‘Ñ‹ÑÑ‚Ñ€Ñ‹Ğµ ÑˆĞµĞ¹ĞºĞ¸",
+            github: "github",
+            xote: "xote",
+            version: "v0.0.3 Alpha",
+            close: "Ğ“Ğ¾Ñ‚Ğ¾Ğ²Ğ¾",
+            // ĞĞ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸
+            interfaceScale: "ĞœĞ°ÑÑˆÑ‚Ğ°Ğ± Ğ¸Ğ½Ñ‚ĞµÑ€Ñ„ĞµĞ¹ÑĞ°",
+            cursorSize: "Ğ Ğ°Ğ·Ğ¼ĞµÑ€ ĞºÑƒÑ€ÑĞ¾Ñ€Ğ°",
+            cursorEffects: "Ğ­Ñ„Ñ„ĞµĞºÑ‚Ñ‹ ĞºÑƒÑ€ÑĞ¾Ñ€Ğ°",
+            customCursor: "Ğ¡Ğ²Ğ¾Ğ¹ ĞºÑƒÑ€ÑĞ¾Ñ€",
+            cursorGlow: "Ğ¡Ğ²ĞµÑ‡ĞµĞ½Ğ¸Ğµ ĞºÑƒÑ€ÑĞ¾Ñ€Ğ°",
+            cursorStyle: "Ğ¡Ñ‚Ğ¸Ğ»ÑŒ ĞºÑƒÑ€ÑĞ¾Ñ€Ğ°",
+            enableCursor: "Ğ’ĞºĞ»ÑÑ‡Ğ¸Ñ‚ÑŒ Ğ½ĞµĞ¾Ğ½Ğ¾Ğ²Ñ‹Ğ¹ ĞºÑƒÑ€ÑĞ¾Ñ€",
+            showGlow: "ĞŸĞ¾ĞºĞ°Ğ·Ñ‹Ğ²Ğ°Ñ‚ÑŒ ÑĞ²ĞµÑ‡ĞµĞ½Ğ¸Ğµ Ğ·Ğ° ĞºÑƒÑ€ÑĞ¾Ñ€Ğ¾Ğ¼",
+            adjustCursor: "ĞĞ°ÑÑ‚Ñ€Ğ¾Ğ¹Ñ‚Ğµ Ñ€Ğ°Ğ·Ğ¼ĞµÑ€ ĞºĞ°ÑÑ‚Ğ¾Ğ¼Ğ½Ğ¾Ğ³Ğ¾ Ğ½ĞµĞ¾Ğ½Ğ¾Ğ²Ğ¾Ğ³Ğ¾ ĞºÑƒÑ€ÑĞ¾Ñ€Ğ°.",
+            cursorCircle: "ĞšÑ€ÑƒĞ³",
+            cursorDiamond: "ĞĞ»Ğ¼Ğ°Ğ·",
+            cursorSquare: "ĞšĞ²Ğ°Ğ´Ñ€Ğ°Ñ‚",
+            // Ğ¢ÑƒĞ»Ñ‚Ğ¸Ğ¿Ñ‹
+            tipPreview: "ĞĞ°Ğ¶Ğ¼Ğ¸, Ñ‡Ñ‚Ğ¾Ğ±Ñ‹ Ğ¿Ğ¾ÑĞ¼Ğ¾Ñ‚Ñ€ĞµÑ‚ÑŒ Ğ¿Ñ€ĞµĞ²ÑŒÑ",
+            tipAddFav: "Ğ”Ğ¾Ğ±Ğ°Ğ²Ğ¸Ñ‚ÑŒ Ğ² Ğ¸Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ğ¾Ğµ",
+            tipRemFav: "Ğ£Ğ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ Ğ¸Ğ· Ğ¸Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ğ¾Ğ³Ğ¾",
+            tipApply: "ĞĞ°Ğ¶Ğ¼Ğ¸, Ñ‡Ñ‚Ğ¾Ğ±Ñ‹ Ğ¿Ñ€Ğ¸Ğ¼ĞµĞ½Ğ¸Ñ‚ÑŒ (ÑĞ½Ğ°Ñ‡Ğ°Ğ»Ğ° Ğ²Ñ‹Ğ´ĞµĞ»Ğ¸ ÑĞ»Ğ¾Ğ¹)",
+            tipCategory: "ĞĞ°Ğ¶Ğ¼Ğ¸, Ñ‡Ñ‚Ğ¾Ğ±Ñ‹ Ğ¾Ñ‚ĞºÑ€Ñ‹Ñ‚ÑŒ Ğ¿Ğ°Ğ¿ĞºÑƒ",
+            tipTheme: "Ğ¡Ğ¼ĞµĞ½Ğ¸Ñ‚ÑŒ Ñ‚ĞµĞ¼Ñƒ",
+            tipFavorites: "ĞÑ‚ĞºÑ€Ñ‹Ñ‚ÑŒ Ğ¸Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ğ¾Ğµ",
+            tipHelp: "ĞšĞ°Ğº Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ÑŒÑÑ",
+            tipSettings: "ĞĞ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸",
+            tipRandom: "Ğ£Ğ´Ğ¸Ğ²Ğ¸ Ğ¼ĞµĞ½Ñ! ĞŸÑ€Ğ¸Ğ¼ĞµĞ½Ğ¸Ñ‚ÑŒ ÑĞ»ÑƒÑ‡Ğ°Ğ¹Ğ½Ñ‹Ğ¹ ÑˆĞµĞ¹Ğº",
+            tipApplyAll: "ĞŸÑ€Ğ¸Ğ¼ĞµĞ½Ğ¸Ñ‚ÑŒ ÑˆĞµĞ¹ĞºĞ¸ ĞºĞ¾ Ğ²ÑĞµĞ¼ Ğ²Ñ‹Ğ´ĞµĞ»ĞµĞ½Ğ½Ñ‹Ğ¼ ÑĞ»Ğ¾ÑĞ¼",
+            // ĞŸĞ°Ğ½ĞµĞ»Ğ¸
+            howToUse: "ĞšĞ°Ğº Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ÑŒÑÑ",
+            favoritesTitle: "Ğ˜Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ñ‹Ğµ ÑˆĞµĞ¹ĞºĞ¸",
+            emptyFavorites: "ĞŸĞ¾ĞºĞ° Ğ½ĞµÑ‚ Ğ¸Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ñ‹Ñ… ÑˆĞµĞ¹ĞºĞ¾Ğ². ĞĞ°Ğ¶Ğ¼Ğ¸ â­ Ğ½Ğ° Ğ»ÑĞ±Ğ¾Ğ¼ ÑˆĞµĞ¹ĞºĞµ!",
+            // Ğ¢ĞµĞ¼Ñ‹
+            themeClassic: "ĞĞµĞ¾Ğ½Ğ¾Ğ²Ñ‹Ğ¹ ĞºĞ»Ğ°ÑÑĞ¸Ñ‡ĞµÑĞºĞ¸Ğ¹",
+            themeGold: "Ğ—Ğ¾Ğ»Ğ¾Ñ‚Ğ¾Ğµ ÑĞ²ĞµÑ‡ĞµĞ½Ğ¸Ğµ",
+            themeBlue: "Ğ“Ğ»ÑƒĞ±Ğ¾ĞºĞ¸Ğ¹ ÑĞ¸Ğ½Ğ¸Ğ¹",
+            themeRed: "Ğ‘Ğ°Ğ³Ñ€Ğ¾Ğ²Ñ‹Ğ¹ Ğ¾Ğ³Ğ¾Ğ½ÑŒ",
+            themeGreen: "ĞĞµĞ¾Ğ½Ğ¾Ğ²Ñ‹Ğ¹ Ğ·ĞµĞ»ĞµĞ½Ñ‹Ğ¹",
+            themePurple: "ĞĞµĞ¾Ğ½Ğ¾Ğ²Ñ‹Ğ¹ Ñ„Ğ¸Ğ¾Ğ»ĞµÑ‚Ğ¾Ğ²Ñ‹Ğ¹",
+            themePink: "Ğ Ğ¾Ğ·Ğ¾Ğ²Ğ¾Ğµ ÑĞ²ĞµÑ‡ĞµĞ½Ğ¸Ğµ",
+            themeGrim: "ĞœÑ€Ğ°Ñ‡Ğ½Ğ°Ñ"
+        }
+    };
+
+    window.applyLanguage = function(lang) {
+        const t = translations[lang] || translations.en;
+        
+        const safeSet = (id, text) => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = text;
+        };
+
+        safeSet('text-select-theme', t.selectTheme);
+        safeSet('text-settings', t.settings);
+        safeSet('text-tab-general', t.tabGeneral);
+        safeSet('text-tab-interface', t.tabInterface);
+        safeSet('text-tab-cursor', t.tabCursor);
+        safeSet('text-tab-language', t.tabLanguage);
+        safeSet('text-random', t.random);
+        safeSet('text-apply-all', t.applyAll);
+        safeSet('text-cat-soft', t.catSoft);
+        safeSet('text-cat-hard', t.catHard);
+        safeSet('text-cat-dirty', t.catDirty);
+        safeSet('text-cat-fast', t.catFast);
+        safeSet('text-github', t.github);
+        safeSet('text-xote', t.xote);
+        safeSet('text-version', t.version);
+
+        // Ğ—Ğ°Ğ³Ğ¾Ğ»Ğ¾Ğ²ĞºĞ¸ Ğ½Ğ°ÑÑ‚Ñ€Ğ¾ĞµĞº
+        const settingTitles = document.querySelectorAll('.settings-title');
+        if (settingTitles.length >= 8) {
+            settingTitles[0].innerText = t.interfaceScale; 
+            settingTitles[1].innerText = t.cursorSize;
+            settingTitles[2].innerText = t.cursorEffects;
+            settingTitles[3].innerText = t.cursorStyle;
+            settingTitles[4].innerText = t.interfaceScale; 
+            settingTitles[5].innerText = t.cursorSize; 
+            settingTitles[6].innerText = t.cursorEffects;
+            settingTitles[7].innerText = t.cursorStyle;
+        }
+
+        // ĞĞ¿Ğ¸ÑĞ°Ğ½Ğ¸Ñ Ğ¿Ğ¾Ğ´ Ğ¿ĞµÑ€ĞµĞºĞ»ÑÑ‡Ğ°Ñ‚ĞµĞ»ÑĞ¼Ğ¸
+        safeSet('text-custom-cursor', t.customCursor);
+        safeSet('text-custom-cursor-2', t.customCursor);
+        safeSet('text-enable-cursor', t.enableCursor);
+        safeSet('text-enable-cursor-2', t.enableCursor);
+        safeSet('text-cursor-glow', t.cursorGlow);
+        safeSet('text-cursor-glow-2', t.cursorGlow);
+        safeSet('text-show-glow', t.showGlow);
+        safeSet('text-show-glow-2', t.showGlow);
+        safeSet('text-adjust-cursor', t.adjustCursor);
+
+        // ĞŸĞµÑ€ĞµĞ²Ğ¾Ğ´ ÑÑ‚Ğ¸Ğ»ĞµĞ¹ ĞºÑƒÑ€ÑĞ¾Ñ€Ğ°
+        const cursorLabels = document.querySelectorAll('.cursor-style-option span');
+        if (cursorLabels.length >= 6) {
+            cursorLabels[0].innerText = t.cursorCircle;
+            cursorLabels[1].innerText = t.cursorDiamond;
+            cursorLabels[2].innerText = t.cursorSquare;
+            cursorLabels[3].innerText = t.cursorCircle; 
+            cursorLabels[4].innerText = t.cursorDiamond;
+            cursorLabels[5].innerText = t.cursorSquare;
+        }
+
+        // ĞšĞ½Ğ¾Ğ¿ĞºĞ¸ Ğ·Ğ°ĞºÑ€Ñ‹Ñ‚Ğ¸Ñ
+        const closeHelpBtn = document.getElementById('close-help');
+        if (closeHelpBtn) closeHelpBtn.innerText = t.close;
+
+        const closeSettingsBtn = document.getElementById('close-settings');
+        if (closeSettingsBtn) closeSettingsBtn.innerText = t.close;
+
+        const closeThemeBtn = document.getElementById('close-theme');
+        if (closeThemeBtn) closeThemeBtn.innerText = t.close;
+
+        const closeFavoritesBtn = document.getElementById('close-favorites');
+        if (closeFavoritesBtn) closeFavoritesBtn.innerText = t.close;
+
+        const closePreviewBtn = document.getElementById('close-preview');
+        if (closePreviewBtn) closePreviewBtn.innerText = t.close;
+
+        // ĞŸĞ°Ğ½ĞµĞ»Ğ¸
+        safeSet('text-how-to-use', t.howToUse);
+        safeSet('text-favorites', t.favoritesTitle);
+        
+        // ĞĞ°Ğ·Ğ²Ğ°Ğ½Ğ¸Ñ Ñ‚ĞµĞ¼
+        const themeNames = document.querySelectorAll('.theme-name');
+        if (themeNames.length >= 8) {
+            themeNames[0].innerText = t.themeClassic;
+            themeNames[1].innerText = t.themeGold;
+            themeNames[2].innerText = t.themeBlue;
+            themeNames[3].innerText = t.themeRed;
+            themeNames[4].innerText = t.themeGreen;
+            themeNames[5].innerText = t.themePurple;
+            themeNames[6].innerText = t.themePink;
+            themeNames[7].innerText = t.themeGrim;
+        }
+
+        // Ğ¢ĞµĞºÑÑ‚ Ğ² Ğ¿ÑƒÑÑ‚Ğ¾Ğ¼ Ğ¸Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ğ¾Ğ¼
+        const favList = document.getElementById('favorites-list');
+        if (favList && favList.innerHTML.includes('No favorites yet')) {
+            favList.innerHTML = `<div style="text-align: center; color: #8e8e9c; font-size: 12px; margin-top: 20px;">${t.emptyFavorites}</div>`;
+        }
+
+        const helpRu = document.getElementById('help-text-ru');
+        const helpEn = document.getElementById('help-text-en');
+        if (helpRu && helpEn) {
+            if (lang === 'ru') {
+                helpRu.style.display = 'block';
+                helpEn.style.display = 'none';
+            } else {
+                helpEn.style.display = 'block';
+                helpRu.style.display = 'none';
+            }
+        }
+    };
+
+    // --- Ğ£ĞŸĞ ĞĞ’Ğ›Ğ•ĞĞ˜Ğ• ĞŸĞĞ›ĞĞ¡ĞĞ™ Ğ—ĞĞ“Ğ Ğ£Ğ—ĞšĞ˜ ---
     window.showLoadingBar = function() {
         const barContainer = document.getElementById('loading-bar-container');
         const barFill = document.getElementById('loading-bar-fill');
         if (!barContainer || !barFill) return;
         
         barContainer.classList.add('active');
-        barFill.style.transition = 'none'; // Ìãíîâåííûé ñáğîñ
+        barFill.style.transition = 'none'; 
         barFill.style.width = '0%';
         
         setTimeout(() => {
             barFill.style.transition = 'width 1.2s cubic-bezier(0.25, 1, 0.5, 1)';
-            barFill.style.width = '75%'; // Çàïîëíÿåòñÿ äî 75% (èìèòàöèÿ)
+            barFill.style.width = '75%'; 
         }, 50);
     };
 
@@ -41,8 +268,8 @@
             setTimeout(() => { barFill.style.width = '0%'; }, 300);
         }, 500);
     };
-    // --- ÊÎÍÅÖ ÁËÎÊÀ ÏÎËÎÑÛ ÇÀÃĞÓÇÊÈ ---
-    // --- ÃËÎÁÀËÜÍÛÅ ÓÂÅÄÎÌËÅÍÈß ---
+
+    // --- Ğ“Ğ›ĞĞ‘ĞĞ›Ğ¬ĞĞ«Ğ• Ğ£Ğ’Ğ•Ğ”ĞĞœĞ›Ğ•ĞĞ˜Ğ¯ ---
     window.showError = function(msg) {
         var toast = document.getElementById('error-toast');
         if (toast) {
@@ -61,16 +288,14 @@
         }
     };
 
-    // --- 0. ÃËÎÁÀËÜÍÛÉ ÔÈÊÑ ĞÀÇÌÅĞÀ ÊÓĞÑÎĞÀ È ÑÈÑÒÅÌÍÎÃÎ ÊÓĞÑÎĞÀ ---
+    // --- 0. Ğ“Ğ›ĞĞ‘ĞĞ›Ğ¬ĞĞ«Ğ™ Ğ¤Ğ˜ĞšĞ¡ Ğ ĞĞ—ĞœĞ•Ğ Ğ ĞšĞ£Ğ Ğ¡ĞĞ Ğ Ğ˜ Ğ¡Ğ˜Ğ¡Ğ¢Ğ•ĞœĞĞĞ“Ğ ĞšĞ£Ğ Ğ¡ĞĞ Ğ ---
     const globalCursor = document.getElementById('custom-cursor');
     const globalGlow = document.getElementById('mouse-glow');
     const globalSavedSize = localStorage.getItem('shakePackCursorSize') || '100';
     const isCustomCursorEnabled = localStorage.getItem('shakePackCustomCursor') !== 'false';
 
-    // Ïğèìåíÿåì ñîõğàíåííûé ñòèëü êóğñîğà ïğè çàãğóçêå
     let savedCursorStyle = localStorage.getItem('shakePackCursorStyle') || 'circle';
     
-    // ÔÈÊÑ: Åñëè îñòàëñÿ ñòàğûé ñòèëü (ñòğåëêà èëè òğåóãîëüíèê), ñáğàñûâàåì íà êğóã
     if (savedCursorStyle === 'arrow' || savedCursorStyle === 'triangle') {
         savedCursorStyle = 'circle';
         localStorage.setItem('shakePackCursorStyle', 'circle');
@@ -83,12 +308,11 @@
         }
     }
     
-    // Åñëè êàñòîìíûé êóğñîğ âûêëş÷åí, ñğàçó ñòàâèì ñèñòåìíûé êëàññ
     if (!isCustomCursorEnabled) {
         document.body.classList.add('system-cursor');
         if (globalCursor) globalCursor.style.display = 'none';
     }
-    // Ïğèíóäèòåëüíî ïğÿ÷åì êóğñîğ ó ïîëçóíêîâ è èíïóòîâ, åñëè âêëş÷åí êàñòîìíûé
+    
     document.querySelectorAll('input[type="range"]').forEach(el => {
         el.style.cursor = isCustomCursorEnabled ? 'none' : 'pointer';
     });
@@ -102,7 +326,7 @@
         }
     }
 
-    // --- 1. ÊÀÑÒÎÌÍÛÉ ÍÅÎÍÎÂÛÉ ÊÓĞÑÎĞ ---
+    // --- 1. ĞšĞĞ¡Ğ¢ĞĞœĞĞ«Ğ™ ĞĞ•ĞĞĞĞ’Ğ«Ğ™ ĞšĞ£Ğ Ğ¡ĞĞ  ---
     const customCursor = document.getElementById('custom-cursor');
     
     if (customCursor) {
@@ -113,22 +337,18 @@
             customCursor.style.top = e.clientY + 'px';
         });
 
-        // Óìíîå îòñëåæèâàíèå íàâåäåíèÿ íà ËŞÁÛÅ êëèêàáåëüíûå ıëåìåíòû
         document.addEventListener('mouseover', (e) => {
-            // Åñëè íàâåëè íà êíîïêó, èíïóò, ïåğåêëş÷àòåëü èëè ıëåìåíò ñ data-style
             if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb')) {
                 customCursor.classList.add('hover-active');
             }
         });
 
         document.addEventListener('mouseout', (e) => {
-            // Åñëè óâåëè ñ êëèêàáåëüíîãî ıëåìåíòà
             if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb')) {
                 customCursor.classList.remove('hover-active');
             }
         });
         
-        // İôôåêò íàæàòèÿ: óìåíüøàåì ÷åğåç îòäåëüíóş CSS-ïåğåìåííóş
         document.addEventListener('mousedown', () => {
             customCursor.style.setProperty('--click-scale', '0.8');
         });
@@ -140,7 +360,7 @@
         document.body.addEventListener('mouseenter', () => customCursor.classList.remove('hidden'));
     }
 
-    // --- 2. ÑÂÅ×ÅÍÈÅ ÇÀ ÊÓĞÑÎĞÎÌ ---
+    // --- 2. Ğ¡Ğ’Ğ•Ğ§Ğ•ĞĞ˜Ğ• Ğ—Ğ ĞšĞ£Ğ Ğ¡ĞĞ ĞĞœ ---
     const mouseGlow = document.getElementById('mouse-glow');
     if (mouseGlow) {
         document.addEventListener('mousemove', (e) => {
@@ -161,7 +381,7 @@
         });
     }
 
-    // --- 3. ÊÀÑÒÎÌÍÛÅ ÏÎÄÑÊÀÇÊÈ (ÒÓËÒÈÏÛ) ---
+    // --- 3. ĞšĞĞ¡Ğ¢ĞĞœĞĞ«Ğ• ĞŸĞĞ”Ğ¡ĞšĞĞ—ĞšĞ˜ (Ğ¢Ğ£Ğ›Ğ¢Ğ˜ĞŸĞ«) ---
     const tooltip = document.getElementById('custom-tooltip');
     if (tooltip) {
         document.addEventListener('mousemove', (e) => {
@@ -171,32 +391,35 @@
 
         document.addEventListener('mouseover', (e) => {
             const target = e.target;
+            const savedLang = localStorage.getItem('shakePackLang') || 'en';
+            const t = translations[savedLang] || translations.en;
             let text = '';
 
-            if (target.closest('.preview-btn')) text = 'Click to see preview';
+            if (target.closest('.preview-btn')) text = t.tipPreview;
             else if (target.closest('.fav-star')) {
-                text = target.closest('.fav-star').classList.contains('active') ? 'Remove from favorites' : 'Add to favorites';
+                text = target.closest('.fav-star').classList.contains('active') ? t.tipRemFav : t.tipAddFav;
             }
-            else if (target.closest('.shake-btn')) text = 'Click to apply to timeline (select a layer first)';
-            else if (target.closest('.category-btn')) text = 'Click to view shakes';
-            else if (target.closest('#theme-toggle')) text = 'Change UI Theme';
-            else if (target.closest('#favorites-toggle')) text = 'Open Favorites';
-            else if (target.closest('#help-toggle')) text = 'How to use';
-            else if (target.closest('#settings-toggle')) text = 'Settings';
-            else if (target.closest('#random-shake-btn')) text = 'Surprise me! Apply a random shake';
-            else if (target.closest('#apply-all-btn')) text = 'Apply random shake to ALL selected layers';
+            else if (target.closest('.shake-btn')) text = t.tipApply;
+            else if (target.closest('.category-btn')) text = t.tipCategory;
+            else if (target.closest('#theme-toggle')) text = t.tipTheme;
+            else if (target.closest('#favorites-toggle')) text = t.tipFavorites;
+            else if (target.closest('#help-toggle')) text = t.tipHelp;
+            else if (target.closest('#settings-toggle')) text = t.tipSettings;
+            else if (target.closest('#random-shake-btn')) text = t.tipRandom;
+            else if (target.closest('#apply-all-btn')) text = t.tipApplyAll;
             else return;
 
             tooltip.innerText = text;
             tooltip.classList.add('show');
         });
-        // Îáíîâëÿåì òåêñò òóëòèïà ïğè êëèêå íà çâåçäó (íå óâîäÿ êóğñîğ)
+        
         document.addEventListener('click', (e) => {
             if (e.target.closest('.fav-star')) {
                 const star = e.target.closest('.fav-star');
-                // Ïğîâåğÿåì ñîñòîÿíèå ÏÎÑËÅ êëèêà (ñ íåáîëüøîé çàäåğæêîé, ÷òîáû êëàññ óñïåë îáíîâèòüñÿ)
                 setTimeout(() => {
-                    tooltip.innerText = star.classList.contains('active') ? 'Remove from favorites' : 'Add to favorites';
+                    const savedLang = localStorage.getItem('shakePackLang') || 'en';
+                    const t = translations[savedLang] || translations.en;
+                    tooltip.innerText = star.classList.contains('active') ? t.tipRemFav : t.tipAddFav;
                 }, 10);
             }
         });
@@ -208,13 +431,11 @@
         });
     }
 
-    // --- 4. ×ÀÑÒÈÖÛ ÏĞÈ ÊËÈÊÅ ---
+    // --- 4. Ğ§ĞĞ¡Ğ¢Ğ˜Ğ¦Ğ« ĞŸĞ Ğ˜ ĞšĞ›Ğ˜ĞšĞ• ---
     function createParticles(e) {
-        // Ïğîâåğÿåì, âêëş÷åí ëè Glow, èíà÷å ÷àñòèöû íå ñîçäàåì
         if (localStorage.getItem('shakePackCursorGlow') === 'false') return;
 
         const primaryColor = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#00ffcc';
-        // ... äàëüøå èäåò òâîé ñòàğûé êîä
         const particleCount = 12;
 
         for (let i = 0; i < particleCount; i++) {
@@ -273,7 +494,7 @@
         });
     });
 
-    // --- 5. ÏÀÑÕÀËÊÀ ---
+    // --- 5. ĞŸĞĞ¡Ğ¥ĞĞ›ĞšĞ ---
     const xoteBtn = document.getElementById('secret-xote');
     if (xoteBtn) {
         xoteBtn.addEventListener('click', function(e) {
@@ -302,7 +523,7 @@
         });
     }
 
-    // --- 6. ÍÀÑÒĞÎÉÊÈ (ÒÀÁÛ, ÌÀÑØÒÀÁ, ÊÓĞÑÎĞ) ---
+    // --- 6. ĞĞĞ¡Ğ¢Ğ ĞĞ™ĞšĞ˜ (Ğ¢ĞĞ‘Ğ«, ĞœĞĞ¡Ğ¨Ğ¢ĞĞ‘, ĞšĞ£Ğ Ğ¡ĞĞ , Ğ¯Ğ—Ğ«Ğš) ---
     const settingsToggle = document.getElementById('settings-toggle');
     const settingsPanel = document.getElementById('settings-panel');
     const closeSettings = document.getElementById('close-settings');
@@ -314,7 +535,7 @@
         settingsToggle.addEventListener('click', () => settingsPanel.classList.add('active'));
         if (closeSettings) closeSettings.addEventListener('click', () => settingsPanel.classList.remove('active'));
 
-        // Ïåğåêëş÷åíèå âêëàäîê
+        // ĞŸĞµÑ€ĞµĞºĞ»ÑÑ‡ĞµĞ½Ğ¸Ğµ Ğ²ĞºĞ»Ğ°Ğ´Ğ¾Ğº
         settingsTabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 settingsTabs.forEach(t => t.classList.remove('active'));
@@ -327,7 +548,7 @@
         });
 
         // ==========================================
-        // ÃÅÍÅĞÀÖÈß È ÑÈÍÕĞÎÍÈÇÀÖÈß ÌÀÑØÒÀÁÀ
+        // Ğ“Ğ•ĞĞ•Ğ ĞĞ¦Ğ˜Ğ¯ Ğ˜ Ğ¡Ğ˜ĞĞ¥Ğ ĞĞĞ˜Ğ—ĞĞ¦Ğ˜Ğ¯ ĞœĞĞ¡Ğ¨Ğ¢ĞĞ‘Ğ
         // ==========================================
         const scaleContainers = document.querySelectorAll('.scale-list-container');
         const mainContainer = document.querySelector('.container');
@@ -335,7 +556,7 @@
         
         const scales = [
             {v: '0.5', t: '50%'}, {v: '0.6', t: '60%'}, {v: '0.7', t: '70%'}, 
-            {v: '0.8', t: '80%'}, {v: '0.9', t: '90%'}, {v: '1', t: '100% (Default)'}, 
+            {v: '0.8', t: '80%'}, {v: '0.9', t: '90%'}, {v: '1', t: '100%'}, 
             {v: '1.1', t: '110%'}, {v: '1.2', t: '120%'}, {v: '1.3', t: '130%'}, 
             {v: '1.4', t: '140%'}, {v: '1.5', t: '150%'}
         ];
@@ -368,7 +589,7 @@
         });
 
         // ==========================================
-        // ÃÅÍÅĞÀÖÈß È ÑÈÍÕĞÎÍÈÇÀÖÈß ÊÓĞÑÎĞÀ (ĞÀÇÌÅĞ)
+        // Ğ“Ğ•ĞĞ•Ğ ĞĞ¦Ğ˜Ğ¯ Ğ˜ Ğ¡Ğ˜ĞĞ¥Ğ ĞĞĞ˜Ğ—ĞĞ¦Ğ˜Ğ¯ ĞšĞ£Ğ Ğ¡ĞĞ Ğ (Ğ ĞĞ—ĞœĞ•Ğ )
         // ==========================================
         const cursorSliders = document.querySelectorAll('.cursor-slider');
         const cursorTexts = document.querySelectorAll('.cursor-size-text');
@@ -401,10 +622,51 @@
                 localStorage.setItem('shakePackCursorSize', val);
             });
         });
+
+        // ==========================================
+        // Ğ›ĞĞ“Ğ˜ĞšĞ ĞŸĞ•Ğ Ğ•ĞšĞ›Ğ®Ğ§Ğ•ĞĞ˜Ğ¯ Ğ¯Ğ—Ğ«ĞšĞ
+        // ==========================================
+        const savedLang = localStorage.getItem('shakePackLang') || 'en';
+        window.applyLanguage(savedLang);
+
+        const optLangEn = document.getElementById('lang-option-en');
+        const optLangRu = document.getElementById('lang-option-ru');
+
+        function updateLangUI(lang) {
+            if (!optLangEn || !optLangRu) return;
+            if (lang === 'ru') {
+                optLangRu.classList.add('active');
+                optLangEn.classList.remove('active');
+            } else {
+                optLangEn.classList.add('active');
+                optLangRu.classList.remove('active');
+            }
+        }
+
+        // ĞŸÑ€Ğ¸Ğ¼ĞµĞ½ÑĞµĞ¼ Ğ²Ğ¸Ğ·ÑƒĞ°Ğ»ÑŒĞ½Ğ¾Ğµ Ğ²Ñ‹Ğ´ĞµĞ»ĞµĞ½Ğ¸Ğµ Ğ¿Ñ€Ğ¸ Ğ·Ğ°Ğ³Ñ€ÑƒĞ·ĞºĞµ
+        updateLangUI(savedLang);
+
+        // ĞĞ±Ñ€Ğ°Ğ±Ğ¾Ñ‚Ñ‡Ğ¸Ğº ĞºĞ»Ğ¸ĞºĞ° Ğ´Ğ»Ñ ĞĞ½Ğ³Ğ»Ğ¸Ğ¹ÑĞºĞ¾Ğ³Ğ¾
+        if (optLangEn) {
+            optLangEn.addEventListener('click', () => {
+                window.applyLanguage('en');
+                localStorage.setItem('shakePackLang', 'en');
+                updateLangUI('en');
+            });
+        }
+
+        // ĞĞ±Ñ€Ğ°Ğ±Ğ¾Ñ‚Ñ‡Ğ¸Ğº ĞºĞ»Ğ¸ĞºĞ° Ğ´Ğ»Ñ Ğ ÑƒÑÑĞºĞ¾Ğ³Ğ¾
+        if (optLangRu) {
+            optLangRu.addEventListener('click', () => {
+                window.applyLanguage('ru');
+                localStorage.setItem('shakePackLang', 'ru');
+                updateLangUI('ru');
+            });
+        }
     }
 
     // ==========================================
-    // 7. ÍÀÑÒĞÎÉÊÈ ÊÓĞÑÎĞÀ (ÂÊË/ÂÛÊË È ÑÒÈËÈ)
+    // 7. ĞĞĞ¡Ğ¢Ğ ĞĞ™ĞšĞ˜ ĞšĞ£Ğ Ğ¡ĞĞ Ğ (Ğ’ĞšĞ›/Ğ’Ğ«ĞšĞ› Ğ˜ Ğ¡Ğ¢Ğ˜Ğ›Ğ˜)
     // ==========================================
     document.addEventListener('DOMContentLoaded', () => {
         const togglesCustom = document.querySelectorAll('#toggle-custom-cursor, #toggle-custom-cursor-general');
@@ -412,7 +674,6 @@
         const cursorEl = document.getElementById('custom-cursor');
         const glowEl = document.getElementById('mouse-glow');
 
-        // --- 1. Ëîãèêà êàñòîìíîãî êóğñîğà ---
         function applyCursorToggle(isEnabled) {
             if (!cursorEl) return;
             if (isEnabled) {
@@ -422,7 +683,6 @@
                 cursorEl.style.display = 'none';
                 document.body.classList.add('system-cursor');
             }
-            // Ñèíõğîíèçèğóåì ÂÑÅ êíîïêè (è â General, è â Cursor)
             togglesCustom.forEach(t => {
                 if (isEnabled) t.classList.add('active');
                 else t.classList.remove('active');
@@ -442,7 +702,6 @@
             });
         }
 
-        // --- 2. Ëîãèêà ñâå÷åíèÿ çà êóğñîğîì ---
         function applyGlowToggle(isEnabled) {
             if (!glowEl) return;
             if (isEnabled) glowEl.style.display = 'block';
@@ -467,7 +726,6 @@
             });
         }
 
-        // --- 3. Ëîãèêà ñòèëåé êóğñîğà ---
         const cursorStyleOptions = document.querySelectorAll('.cursor-style-option');
         
         cursorStyleOptions.forEach(opt => {

@@ -31,31 +31,39 @@
     <!-- Панель с темами -->
     <div id="theme-panel" class="theme-panel">
         <div class="help-box">
-            <h2 style="text-align: center; margin-top: 0; margin-bottom: 25px;">Select Theme</h2>
+            <h2 id="text-select-theme" style="text-align: center; margin-top: 0; margin-bottom: 25px;">Select Theme</h2>
             <div class="theme-grid">
                 <div class="theme-option active" data-theme="default">
                     <div class="color-preview" style="background: linear-gradient(45deg, #00ffcc, #ff00cc);"></div>
-                    <span>Neon Classic</span>
+                    <span class="theme-name">Neon Classic</span>
                 </div>
                 <div class="theme-option" data-theme="gold">
                     <div class="color-preview" style="background: linear-gradient(45deg, #ffcc00, #ff6600);"></div>
-                    <span>Golden Glow</span>
+                    <span class="theme-name">Golden Glow</span>
                 </div>
                 <div class="theme-option" data-theme="blue">
                     <div class="color-preview" style="background: linear-gradient(45deg, #00ccff, #0033ff);"></div>
-                    <span>Deep Blue</span>
+                    <span class="theme-name">Deep Blue</span>
                 </div>
                 <div class="theme-option" data-theme="red">
                     <div class="color-preview" style="background: linear-gradient(45deg, #ff0033, #990000);"></div>
-                    <span>Crimson Fire</span>
+                    <span class="theme-name">Crimson Fire</span>
                 </div>
                 <div class="theme-option" data-theme="green">
                     <div class="color-preview" style="background: linear-gradient(45deg, #00ff88, #00cc44);"></div>
-                    <span>Neon Green</span>
+                    <span class="theme-name">Neon Green</span>
                 </div>
                 <div class="theme-option" data-theme="purple">
                     <div class="color-preview" style="background: linear-gradient(45deg, #aa55ff, #ff00ff);"></div>
-                    <span>Neon Purple</span>
+                    <span class="theme-name">Neon Purple</span>
+                </div>
+                <div class="theme-option" data-theme="pink">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #ff66b2, #ff0066);"></div>
+                    <span class="theme-name">Pink Glow</span>
+                </div>
+                <div class="theme-option" data-theme="grim">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #aaaaaa, #333333);"></div>
+                    <span class="theme-name">Grim Dark</span>
                 </div>
             </div>
             <button id="close-theme" class="close-btn" type="button" style="margin-top: 10px;">Done</button>
@@ -65,13 +73,14 @@
     <!-- Панель настроек -->
     <div id="settings-panel" class="theme-panel">
         <div class="help-box settings-box">
-            <h2 style="text-align: center; margin-top: 0; margin-bottom: 20px;">Settings</h2>
+            <h2 id="text-settings" style="text-align: center; margin-top: 0; margin-bottom: 20px;">Settings</h2>
             
             <!-- Навигация по настройкам (Табы) -->
             <div class="settings-tabs">
-                <button class="settings-tab active" data-tab="general">General</button>
-                <button class="settings-tab" data-tab="interface">Interface</button>
-                <button class="settings-tab" data-tab="cursor">Cursor</button>
+                <button class="settings-tab active" data-tab="general" id="text-tab-general">General</button>
+                <button class="settings-tab" data-tab="interface" id="text-tab-interface">Interface</button>
+                <button class="settings-tab" data-tab="cursor" id="text-tab-cursor">Cursor</button>
+                <button class="settings-tab" data-tab="language" id="text-tab-language">Language</button>
             </div>
 
             <!-- Контент настроек -->
@@ -80,22 +89,22 @@
                 <!-- 1. Общие настройки (General) -->
                 <div class="settings-tab-content active" id="tab-general">
                     
-                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Interface Scale</h3>
+                    <h3 class="settings-title" style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Interface Scale</h3>
                     <div class="scale-list-container" style="margin-bottom: 25px;">
                         <!-- Сюда JS вставит кнопки масштаба -->
                     </div>
 
-                    <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Size</h3>
+                    <h3 class="settings-title" style="color: var(--primary); margin-bottom: 10px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Size</h3>
                     <div class="slider-container" style="margin-bottom: 25px;">
                         <input type="range" class="cursor-slider" min="50" max="150" value="100" step="5">
                         <div class="slider-value"><span class="cursor-size-text">100</span>%</div>
                     </div>
 
-                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Effects</h3>
+                    <h3 class="settings-title" style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Effects</h3>
                     <div class="toggle-row">
                         <div class="toggle-info">
-                            <span class="toggle-title">Custom Cursor</span>
-                            <span class="toggle-desc">Enable the neon cursor</span>
+                            <span class="toggle-title" id="text-custom-cursor">Custom Cursor</span>
+                            <span class="toggle-desc" id="text-enable-cursor">Enable the neon cursor</span>
                         </div>
                         <div class="toggle-switch active" id="toggle-custom-cursor-general">
                             <div class="toggle-knob"></div>
@@ -103,15 +112,15 @@
                     </div>
                     <div class="toggle-row" style="margin-bottom: 25px;">
                         <div class="toggle-info">
-                            <span class="toggle-title">Cursor Glow</span>
-                            <span class="toggle-desc">Show glow behind cursor</span>
+                            <span class="toggle-title" id="text-cursor-glow">Cursor Glow</span>
+                            <span class="toggle-desc" id="text-show-glow">Show glow behind cursor</span>
                         </div>
                         <div class="toggle-switch active" id="toggle-cursor-glow-general">
                             <div class="toggle-knob"></div>
                         </div>
                     </div>
 
-                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Style</h3>
+                    <h3 class="settings-title" style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Style</h3>
                     <div class="cursor-styles-grid">
                         <div class="cursor-style-option active" data-style="circle">
                             <div class="preview-icon icon-circle"></div>
@@ -130,7 +139,7 @@
 
                 <!-- 2. Только масштаб интерфейса (Interface) -->
                 <div class="settings-tab-content" id="tab-interface">
-                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Interface Scale</h3>
+                    <h3 class="settings-title" style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Interface Scale</h3>
                     <div class="scale-list-container">
                         <!-- Сюда JS вставит кнопки масштаба -->
                     </div>
@@ -138,40 +147,37 @@
 
                 <!-- 3. Только курсор (Cursor) -->
                 <div class="settings-tab-content" id="tab-cursor">
-                    <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Size</h3>
-                    <p style="color: #8e8e9c; font-size: 12px; text-align: left; margin-bottom: 20px;">Adjust the size of the custom neon cursor.</p>
+                    <h3 class="settings-title" style="color: var(--primary); margin-bottom: 10px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Size</h3>
+                    <p id="text-adjust-cursor" style="color: #8e8e9c; font-size: 12px; text-align: left; margin-bottom: 20px;">Adjust the size of the custom neon cursor.</p>
                     
                     <div class="slider-container" style="margin-bottom: 25px;">
                         <input type="range" class="cursor-slider" min="50" max="150" value="100" step="5">
                         <div class="slider-value"><span class="cursor-size-text">100</span>%</div>
                     </div>
 
-                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Effects</h3>
+                    <h3 class="settings-title" style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Effects</h3>
                     
-                    <!-- Переключатель кастомного курсора -->
                     <div class="toggle-row">
                         <div class="toggle-info">
-                            <span class="toggle-title">Custom Cursor</span>
-                            <span class="toggle-desc">Enable the neon cursor</span>
+                            <span class="toggle-title" id="text-custom-cursor-2">Custom Cursor</span>
+                            <span class="toggle-desc" id="text-enable-cursor-2">Enable the neon cursor</span>
                         </div>
                         <div class="toggle-switch active" id="toggle-custom-cursor">
                             <div class="toggle-knob"></div>
                         </div>
                     </div>
 
-                    <!-- Переключатель свечения за курсором -->
                     <div class="toggle-row" style="margin-bottom: 25px;">
                         <div class="toggle-info">
-                            <span class="toggle-title">Cursor Glow</span>
-                            <span class="toggle-desc">Show glow behind cursor</span>
+                            <span class="toggle-title" id="text-cursor-glow-2">Cursor Glow</span>
+                            <span class="toggle-desc" id="text-show-glow-2">Show glow behind cursor</span>
                         </div>
                         <div class="toggle-switch active" id="toggle-cursor-glow">
                             <div class="toggle-knob"></div>
                         </div>
                     </div>
 
-                    <!-- Стили курсора -->
-                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Style</h3>
+                    <h3 class="settings-title" style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Style</h3>
                     
                     <div class="cursor-styles-grid">
                         <div class="cursor-style-option active" data-style="circle">
@@ -189,6 +195,24 @@
                     </div>
                 </div>
 
+                <!-- 4. Язык (Language) -->
+                <div class="settings-tab-content" id="tab-language">
+                    <h3 class="settings-title" style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Language / Язык</h3>
+                    
+                    <div class="toggle-row active" style="margin-bottom: 10px; cursor: pointer;" id="lang-option-en" data-lang="en">
+                        <div class="toggle-info">
+                            <span class="toggle-title">English</span>
+                            <span class="toggle-desc">Switch interface to English</span>
+                        </div>
+                    </div>
+                    <div class="toggle-row" style="cursor: pointer;" id="lang-option-ru" data-lang="ru">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Русский</span>
+                            <span class="toggle-desc">Переключить интерфейс на русский</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             
             <button id="close-settings" class="close-btn" type="button" style="margin-top: 20px; width: 100%; max-width: 200px; flex-shrink: 0;">Done</button>
@@ -198,7 +222,7 @@
     <!-- Панель избранного -->
     <div id="favorites-panel" class="theme-panel">
         <div class="help-box">
-            <h2 style="text-align: center; margin-top: 0; margin-bottom: 20px;">Favorite Shakes</h2>
+            <h2 id="text-favorites" style="text-align: center; margin-top: 0; margin-bottom: 20px;">Favorite Shakes</h2>
             <div id="favorites-list" style="width: 100%; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; padding-right: 5px; box-sizing: border-box; flex: 1;">
                 <!-- Сюда будут добавляться избранные шейки -->
             </div>
@@ -208,7 +232,7 @@
 
     <!-- Панель превью -->
     <div id="preview-panel" class="theme-panel">
-        <h2>Shake Preview</h2>
+        <h2 id="text-preview-title">Shake Preview</h2>
         <div class="preview-stage">
             <div class="preview-layer" id="preview-layer">
                 <div class="preview-content">SHAKE</div>
@@ -223,13 +247,9 @@
     <div id="help-panel" class="theme-panel">
         <div class="help-box">
             <div class="help-header">
-                <h2>How to use</h2>
-                <div class="lang-toggle">
-                    <button id="btn-lang-ru" class="lang-btn active">RU</button>
-                    <button id="btn-lang-en" class="lang-btn">EN</button>
-                </div>
+                <h2 id="text-how-to-use">How to use</h2>
             </div>
-            <div class="help-content" id="help-text-ru">
+            <div class="help-content" id="help-text-ru" style="display: none;">
                 <h3>📖 Основы работы</h3>
                 <p>Этот плагин — твой быстрый помощник для создания крутых шейков в After Effects.</p>
                 <ul>
@@ -242,7 +262,7 @@
                 <h3>⚙️ Требования</h3>
                 <p>Для работы плагина обязательно должен быть установлен <strong>Sapphire Plugin</strong> (эффекты S_Shake и S_DissolveShake).</p>
             </div>
-            <div class="help-content" id="help-text-en" style="display: none;">
+            <div class="help-content" id="help-text-en">
                 <h3>📖 Basics</h3>
                 <p>This plugin is your quick assistant for creating awesome shakes in After Effects.</p>
                 <ul>
@@ -255,7 +275,7 @@
                 <h3>⚙️ Requirements</h3>
                 <p>The <strong>Sapphire Plugin</strong> (S_Shake and S_DissolveShake effects) is required.</p>
             </div>
-            <button id="close-help" class="close-btn" type="button" style="margin-top: 20px;">Close / Закрыть</button>
+            <button id="close-help" class="close-btn" type="button" style="margin-top: 20px;"></button>
         </div>
     </div>
 
@@ -273,11 +293,11 @@
         </div>
         
         <button class="random-btn" id="random-shake-btn" type="button">
-            <span class="random-text">RANDOM SHAKE</span>
+            <span class="random-text" id="text-random">RANDOM SHAKE</span>
         </button>
 
         <button class="random-btn" id="apply-all-btn" type="button">
-            <span class="random-text">APPLY TO ALL SELECTED</span>
+            <span class="random-text" id="text-apply-all">APPLY TO ALL SELECTED</span>
         </button>
         
         <!-- ПАПКА 1: SOFT -->
@@ -285,7 +305,7 @@
             <button class="category-btn" type="button" onclick="toggleCategory('cat-soft', this)">
                 <div class="category-title">
                     <span class="count"></span>
-                    <span>Soft &amp; Smooth</span>
+                    <span id="text-cat-soft">Soft &amp; Smooth</span>
                 </div>
                 <span class="arrow">▼</span>
             </button>
@@ -301,6 +321,11 @@
                     <button class="shake-btn" id="soft-shake-8" type="button"><span class="btn-title">Soft Shake 8</span><span class="btn-desc">S_Shake deep glide</span></button>
                     <button class="shake-btn" id="soft-shake-9" type="button"><span class="btn-title">Soft Shake 9</span><span class="btn-desc">S_DissolveShake shadow fade</span></button>
                     <button class="shake-btn" id="soft-shake-10" type="button"><span class="btn-title">Soft Shake 10</span><span class="btn-desc">S_DissolveShake neon drift</span></button>
+                    <button class="shake-btn" id="soft-shake-11" type="button"><span class="btn-title">Soft Shake 11</span><span class="btn-desc">S_DissolveShake curve</span></button>
+                    <button class="shake-btn" id="soft-shake-12" type="button"><span class="btn-title">Soft Shake 12</span><span class="btn-desc">S_DissolveShake smooth</span></button>
+                    <button class="shake-btn" id="soft-shake-13" type="button"><span class="btn-title">Soft Shake 13</span><span class="btn-desc">S_Shake smooth</span></button>
+                    <button class="shake-btn" id="soft-shake-14" type="button"><span class="btn-title">Soft Shake 14</span><span class="btn-desc">S_Shake glide</span></button>
+                    <button class="shake-btn" id="soft-shake-15" type="button"><span class="btn-title">Soft Shake 15</span><span class="btn-desc">S_DissolveShake fade</span></button>
                 </div>
             </div>
         </div>
@@ -310,7 +335,7 @@
             <button class="category-btn" type="button" onclick="toggleCategory('cat-hard', this)">
                 <div class="category-title">
                     <span class="count"></span>
-                    <span>Hard &amp; Punchy</span>
+                    <span id="text-cat-hard">Hard &amp; Punchy</span>
                 </div>
                 <span class="arrow">▼</span>
             </button>
@@ -326,6 +351,11 @@
                     <button class="shake-btn" id="hard-shake-8" type="button"><span class="btn-title">Hard Shake 8</span><span class="btn-desc">S_DissolveShake punch</span></button>
                     <button class="shake-btn" id="hard-shake-9" type="button"><span class="btn-title">Hard Shake 9</span><span class="btn-desc">S_DissolveShake hit</span></button>
                     <button class="shake-btn" id="hard-shake-10" type="button"><span class="btn-title">Hard Shake 10</span><span class="btn-desc">S_DissolveShake smooth heavy</span></button>
+                    <button class="shake-btn" id="hard-shake-11" type="button"><span class="btn-title">Hard Shake 11</span><span class="btn-desc">S_DissolveShake smooth</span></button>
+                    <button class="shake-btn" id="hard-shake-12" type="button"><span class="btn-title">Hard Shake 12</span><span class="btn-desc">S_DissolveShake wide</span></button>
+                    <button class="shake-btn" id="hard-shake-13" type="button"><span class="btn-title">Hard Shake 13</span><span class="btn-desc">S_DissolveShake sharp</span></button>
+                    <button class="shake-btn" id="hard-shake-14" type="button"><span class="btn-title">Hard Shake 14</span><span class="btn-desc">S_DissolveShake heavy</span></button>
+                    <button class="shake-btn" id="hard-shake-15" type="button"><span class="btn-title">Hard Shake 15</span><span class="btn-desc">S_DissolveShake fast</span></button>
                 </div>
             </div>
         </div>
@@ -335,7 +365,7 @@
             <button class="category-btn" type="button" onclick="toggleCategory('cat-dirty', this)">
                 <div class="category-title">
                     <span class="count"></span>
-                    <span>Dirty &amp; Rough</span>
+                    <span id="text-cat-dirty">Dirty &amp; Rough</span>
                 </div>
                 <span class="arrow">▼</span>
             </button>
@@ -351,6 +381,11 @@
                     <button class="shake-btn" id="dirty-shake-8" type="button"><span class="btn-title">Dirty Shake 8</span><span class="btn-desc">Distortion</span></button>
                     <button class="shake-btn" id="dirty-shake-9" type="button"><span class="btn-title">Dirty Shake 9</span><span class="btn-desc">Fracture</span></button>
                     <button class="shake-btn" id="dirty-shake-10" type="button"><span class="btn-title">Dirty Shake 10</span><span class="btn-desc">Chaos</span></button>
+                    <button class="shake-btn" id="dirty-shake-11" type="button"><span class="btn-title">Dirty Shake 11</span><span class="btn-desc">S_DissolveShake smooth</span></button>
+                    <button class="shake-btn" id="dirty-shake-12" type="button"><span class="btn-title">Dirty Shake 12</span><span class="btn-desc">S_DissolveShake wide</span></button>
+                    <button class="shake-btn" id="dirty-shake-13" type="button"><span class="btn-title">Dirty Shake 13</span><span class="btn-desc">S_DissolveShake sharp</span></button>
+                    <button class="shake-btn" id="dirty-shake-14" type="button"><span class="btn-title">Dirty Shake 14</span><span class="btn-desc">S_DissolveShake heavy</span></button>
+                    <button class="shake-btn" id="dirty-shake-15" type="button"><span class="btn-title">Dirty Shake 15</span><span class="btn-desc">S_DissolveShake fast</span></button>
                 </div>
             </div>
         </div>
@@ -360,7 +395,7 @@
             <button class="category-btn" type="button" onclick="toggleCategory('cat-fast', this)">
                 <div class="category-title">
                     <span class="count"></span>
-                    <span>Fast Shakes</span>
+                    <span id="text-cat-fast">Fast Shakes</span>
                 </div>
                 <span class="arrow">▼</span>
             </button>
@@ -376,6 +411,11 @@
                     <button class="shake-btn" id="fast-shake-8" type="button"><span class="btn-title">Fast Shake 8</span><span class="btn-desc">S_DissolveShake quick</span></button>
                     <button class="shake-btn" id="fast-shake-9" type="button"><span class="btn-title">Fast Shake 9</span><span class="btn-desc">S_DissolveShake smooth</span></button>
                     <button class="shake-btn" id="fast-shake-10" type="button"><span class="btn-title">Fast Shake 10</span><span class="btn-desc">S_DissolveShake sharp</span></button>
+                    <button class="shake-btn" id="fast-shake-11" type="button"><span class="btn-title">Fast Shake 11</span><span class="btn-desc">S_DissolveShake quick</span></button>
+                    <button class="shake-btn" id="fast-shake-12" type="button"><span class="btn-title">Fast Shake 12</span><span class="btn-desc">S_DissolveShake fast</span></button>
+                    <button class="shake-btn" id="fast-shake-13" type="button"><span class="btn-title">Fast Shake 13</span><span class="btn-desc">S_Shake snap</span></button>
+                    <button class="shake-btn" id="fast-shake-14" type="button"><span class="btn-title">Fast Shake 14</span><span class="btn-desc">S_DissolveShake sharp</span></button>
+                    <button class="shake-btn" id="fast-shake-15" type="button"><span class="btn-title">Fast Shake 15</span><span class="btn-desc">S_DissolveShake hit</span></button>
                 </div>
             </div>
         </div>
@@ -385,13 +425,13 @@
             <span class="footer-separator">|</span>
             <span class="footer-author" id="secret-xote" data-text="xote">xote</span>
             <span class="footer-separator">|</span>
-            <span class="footer-version">v0.0.2 Alpha</span>
+            <span class="footer-version" id="text-version">v0.0.3 Alpha</span>
         </div>
 
     </div>
 
 
-    <!-- МИНИ-ИГРА (ПАСХАЛКА) -->
+    <!-- МИНИ-ИГРА -->
     <div id="mini-game-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 15, 0.85); z-index: 99999999; justify-content: center; align-items: center;">
         <div id="mini-game-area">
             <div class="game-grid"></div>
@@ -413,7 +453,7 @@
     <script src="CSInterface.js"></script>
     <script src="particles.min.js"></script>
     
-    <!-- ПОДКЛЮЧЕНИЕ НАШИХ МОДУЛЕЙ (СТРОГО В ТАКОМ ПОРЯДКЕ) -->
+    <!-- ПОДКЛЮЧЕНИЕ НАШИХ МОДУЛЕЙ -->
     <script src="js/presets.js"></script>
     <script src="js/legacy-effects.js"></script>
     <script src="js/ui-core.js"></script>

@@ -18,7 +18,7 @@
         
         allShakeBtns.forEach(btn => {
             const id = btn.id;
-            // Проверяем, не добавили ли мы уже иконки (защита от дублей)
+            // Проверяем, не добавили ли мы уже иконки
             if (btn.querySelector('.preview-btn')) return; 
 
             const title = btn.querySelector('.btn-title')?.innerText || 'Shake';
@@ -32,7 +32,7 @@
                 <div class="preview-btn" data-id="${id}" data-title="${title}">👁️</div>
                 <div class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${id}">⭐</div>
             `;
-            btn.style.cursor = 'none'; // <--- ДОБАВЬ ВОТ ЭТУ СТРОКУ СЮДА
+            btn.style.cursor = 'none';
         });
     });
 
@@ -68,7 +68,9 @@
             favList.innerHTML = '';
             
             if (favorites.length === 0) {
-                favList.innerHTML = '<div style="text-align: center; color: #8e8e9c; font-size: 12px; margin-top: 20px;">No favorites yet. Click ⭐ on any shake!</div>';
+                const savedLang = localStorage.getItem('shakePackLang') || 'en';
+                const emptyText = savedLang === 'ru' ? 'Пока нет избранных шейков. Нажми ⭐ на любом шейке!' : 'No favorites yet. Click ⭐ on any shake!';
+                favList.innerHTML = `<div style="text-align: center; color: #8e8e9c; font-size: 12px; margin-top: 20px;">${emptyText}</div>`;
                 return;
             }
             

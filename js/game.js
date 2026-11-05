@@ -1,7 +1,6 @@
 ﻿/**
  * game.js
  * Логика мини-игры (пасхалки) с падающими звездами.
- * Запускается при 10 кликах на ник "Xote".
  */
 
 (function() {
@@ -55,7 +54,7 @@
             finalScoreDisplay.innerText = currentScore;
             
             gameOverScreen.style.display = 'flex';
-            void gameOverScreen.offsetWidth; // Трюк для перерисовки
+            void gameOverScreen.offsetWidth;
             gameOverScreen.classList.add('active');
             
             starsContainer.innerHTML = '';

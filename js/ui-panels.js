@@ -1,6 +1,5 @@
 /**
  * ui-panels.js
- * Логика работы с панелями: справка, превью, переключение языков и аккордеоны (папки).
  */
 
 (function() {
@@ -17,22 +16,6 @@
     if (helpToggle && helpPanel) {
         helpToggle.addEventListener('click', () => helpPanel.classList.add('active'));
         if (closeHelp) closeHelp.addEventListener('click', () => helpPanel.classList.remove('active'));
-
-        if (btnRu && btnEn && textRu && textEn) {
-            btnRu.addEventListener('click', () => {
-                btnRu.classList.add('active');
-                btnEn.classList.remove('active');
-                textRu.style.display = 'block';
-                textEn.style.display = 'none';
-            });
-
-            btnEn.addEventListener('click', () => {
-                btnEn.classList.add('active');
-                btnRu.classList.remove('active');
-                textEn.style.display = 'block';
-                textRu.style.display = 'none';
-            });
-        }
     }
 
     // --- 2. ПАНЕЛЬ ПРЕВЬЮ (ВИЗУАЛЬНЫЙ ТЕСТ ШЕЙКА) ---
@@ -48,7 +31,7 @@
         });
     }
 
-    // Глобальная функция для запуска превью (вызывается из favorites.js или из карточек)
+    // Глобальная функция для запуска превью
     window.showPreview = function(shakeId, shakeName) {
         if (!previewPanel || !previewTitle || !previewLayer) return;
 
@@ -116,7 +99,7 @@
         if (category.classList.contains('open')) {
             var currentHeight = content.getBoundingClientRect().height;
             content.style.maxHeight = currentHeight + "px";
-            content.offsetHeight; // Трюк для перерисовки
+            content.offsetHeight;
             category.classList.remove('open');
             content.style.maxHeight = "0px";
             setTimeout(function() { category.dataset.animating = "false"; }, 600);

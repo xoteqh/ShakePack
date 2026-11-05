@@ -11,7 +11,9 @@
         blue:    { particles: { number: { value: 30 }, color: { value: "#00ccff" }, size: { value: 3 }, move: { speed: 1.5 } } },
         red:     { particles: { number: { value: 30 }, color: { value: "#ff0033" }, size: { value: 3 }, move: { speed: 1.5 } } },
         green:   { particles: { number: { value: 30 }, color: { value: "#00ff88" }, size: { value: 3 }, move: { speed: 1.5 } } },
-        purple:  { particles: { number: { value: 30 }, color: { value: "#aa55ff" }, size: { value: 3 }, move: { speed: 1.5 } } }
+        purple:  { particles: { number: { value: 30 }, color: { value: "#aa55ff" }, size: { value: 3 }, move: { speed: 1.5 } } },
+        pink:    { particles: { number: { value: 30 }, color: { value: "#ff66b2" }, size: { value: 3 }, move: { speed: 1.5 } } },
+        grim:    { particles: { number: { value: 30 }, color: { value: "#aaaaaa" }, size: { value: 3 }, move: { speed: 1.5 } } }
     };
 
     document.addEventListener('DOMContentLoaded', () => {

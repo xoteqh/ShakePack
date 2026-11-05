@@ -37,7 +37,6 @@ body.system-cursor input[type="range"] {
     transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s, transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
     will-change: left, top, transform;
     opacity: 1;
-    /* Стили по умолчанию (Круг) */
     border: 2px solid var(--primary);
     border-radius: 50%;
     box-shadow: 0 0 10px var(--primary), inset 0 0 5px var(--primary);
@@ -69,24 +68,7 @@ body.system-cursor input[type="range"] {
     transform: translate(-50%, -50%) rotate(45deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
 }
 #custom-cursor.style-diamond.hover-active {
-    /* При наведении крутим дальше, чтобы было красиво */
     transform: translate(-50%, -50%) rotate(135deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
-}
-
-/* Стрелочка (повернута как в Windows) */
-#custom-cursor.style-arrow {
-    border: none;
-    background: var(--primary);
-    /* Рисуем форму стрелки */
-    clip-path: polygon(0% 0%, 100% 50%, 0% 100%, 25% 50%);
-    width: 18px; height: 18px;
-    box-shadow: none;
-    /* Поворачиваем её на -45 градусов (влево-вверх) и смещаем точку клика в острый кончик */
-    transform: translate(-30%, -30%) rotate(225deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
-}
-#custom-cursor.style-arrow.hover-active {
-    width: 26px; height: 26px;
-    background: #fff;
 }
 
 /* --- СВЕЧЕНИЕ ЗА КУРСОРОМ --- */
@@ -163,13 +145,12 @@ body.system-cursor input[type="range"] {
 
 /* --- ПАСХАЛКА (БУКВЫ) --- */
 .secret-letter {
-    position: fixed; /* Привязываем к экрану */
+    position: fixed;
     font-size: 24px;
     font-weight: 900;
     pointer-events: none;
     z-index: 9999999;
     opacity: 1;
-    /* Убираем лишние трансформации, которые могут сбивать позицию */
     transform: translate(-50%, -50%); 
     animation: flyAway 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
