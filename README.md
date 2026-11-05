@@ -65,13 +65,18 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 >
 > **Windows:**
 > 1. Open `regedit` (Win + R → `regedit`).
-> 2. Go to `HKEY_CURRENT_USER\Software\Adobe\CSXS.11` (create the `CSXS.11` key if it doesn't exist; the number must match your AE version, e.g. `CSXS.12` for AE 2021).
-> 3. Create a string value `PlayerDebugMode` and set it to `1`.
+> 2. Go to `HKEY_CURRENT_USER\Software\Adobe\`.
+> 3. Find or create a folder (key) named `CSXS.X` that matches your After Effects version:
+>    - **CSXS.10** — for AE 2020 / 2021
+>    - **CSXS.11** — for AE 2022 / 2023
+>    - **CSXS.12** — for AE 2024
+>    - **CSXS.13** — for AE 2025 / 2026
+> 4. Inside that folder, create a **String Value** named `PlayerDebugMode` and set its value to `1`.
 >
 > **macOS:**
-> Run in Terminal (use the CSXS version matching your AE):
+> Run this in Terminal (replace `XX` with your version, e.g., `CSXS.11` for AE 2022):
 > ```bash
-> defaults write com.adobe.CSXS.11 PlayerDebugMode 1
+> defaults write com.adobe.CSXS.XX PlayerDebugMode 1
 > ```
 >
 > Restart After Effects — the panel will appear in the menu.
@@ -126,13 +131,18 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 >
 > **Windows:**
 > 1. Откройте `regedit` (Win + R → `regedit`).
-> 2. Перейдите в `HKEY_CURRENT_USER\Software\Adobe\CSXS.11` (если папки `CSXS.11` нет — создайте; номер версии должен соответствовать вашему AE, например `CSXS.12` для AE 2021).
-> 3. Создайте строковый параметр `PlayerDebugMode` и установите значение `1`.
+> 2. Перейдите в `HKEY_CURRENT_USER\Software\Adobe\`.
+> 3. Найдите или создайте папку (раздел) с названием `CSXS.X`, которая соответствует вашей версии After Effects:
+>    - **CSXS.10** — для AE 2020 / 2021
+>    - **CSXS.11** — для AE 2022 / 2023
+>    - **CSXS.12** — для AE 2024
+>    - **CSXS.13** — для AE 2025 / 2026
+> 4. Внутри этой папки создайте **строковый параметр** с именем `PlayerDebugMode` и установите значение `1`.
 >
 > **macOS:**
-> Выполните в терминале (номер CSXS — под вашу версию AE):
+> Выполните в терминале (замените `XX` на вашу версию, например, `CSXS.11` для AE 2022):
 > ```bash
-> defaults write com.adobe.CSXS.11 PlayerDebugMode 1
+> defaults write com.adobe.CSXS.XX PlayerDebugMode 1
 > ```
 >
 > Перезапустите After Effects — панель появится в меню.
