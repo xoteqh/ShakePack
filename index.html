@@ -279,19 +279,95 @@
         </div>
     </div>
 
+    <!-- Панель Create Shake (конструктор) -->
+    <div id="custom-presets-panel" class="theme-panel">
+        <div class="help-box" style="max-width: 500px; width: 95%;">
+            <h2 id="text-custom-presets-title" style="text-align: center; margin-top: 0; margin-bottom: 20px;">Create Shake</h2>
+
+            <div class="settings-content" style="flex: 1;">
+
+                <h3 class="settings-title">Preset Name</h3>
+                <input type="text" id="cp-name" placeholder="My Custom Shake" style="width: 100%; padding: 10px; margin-bottom: 15px; background: rgba(25,25,32,0.7); border: 1px solid var(--primary); border-radius: 8px; color: #fff;">
+
+                <h3 class="settings-title">Amplitude (Strength)</h3>
+                <div class="slider-container" style="margin-bottom: 15px;">
+                    <input type="range" id="cp-amp" min="0.5" max="10" value="2.0" step="0.1">
+                    <div class="slider-value"><span id="cp-amp-text">2.0</span></div>
+                </div>
+
+                <h3 class="settings-title">Frequency (Speed)</h3>
+                <div class="slider-container" style="margin-bottom: 15px;">
+                    <input type="range" id="cp-freq" min="1" max="25" value="5.0" step="0.1">
+                    <div class="slider-value"><span id="cp-freq-text">5.0</span></div>
+                </div>
+
+                <h3 class="settings-title">Duration (Frames)</h3>
+                <div class="slider-container" style="margin-bottom: 15px;">
+                    <input type="range" id="cp-frames" min="1" max="30" value="19" step="1">
+                    <div class="slider-value"><span id="cp-frames-text">19</span></div>
+                </div>
+
+                <h3 class="settings-title">Tags</h3>
+                <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 15px;" id="cp-tags-container">
+                    <!-- Теги будут добавлены через JS -->
+                </div>
+
+                <h3 class="settings-title">Preview</h3>
+                <div class="preview-stage" style="width: 100%; height: 100px; margin-bottom: 15px;">
+                    <div class="preview-layer" id="cp-preview-layer">
+                        <div class="preview-content" style="font-size: 16px;">SHAKE</div>
+                    </div>
+                </div>
+
+                <button id="cp-save-btn" class="random-btn" style="margin-bottom: 0;">
+                    <span class="random-text">Save Preset</span>
+                </button>
+            </div>
+
+            <button id="close-custom-presets" class="close-btn" type="button" style="margin-top: 20px;">Done</button>
+        </div>
+    </div>
+
+    <!-- Панель My Presets (список) -->
+    <div id="my-presets-panel" class="theme-panel">
+        <div class="help-box" style="max-width: 500px; width: 95%;">
+            <h2 id="text-my-presets-title" style="text-align: center; margin-top: 0; margin-bottom: 20px;">My Presets</h2>
+
+            <div class="settings-content" style="flex: 1;">
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <button id="cp-export-btn" class="close-btn" style="flex: 1; padding: 8px; font-size: 12px;">Export</button>
+                    <button id="cp-import-btn" class="close-btn" style="flex: 1; padding: 8px; font-size: 12px;">Import File</button>
+                    <input type="file" id="cp-import-file" accept=".json" style="display: none;">
+                </div>
+                <button id="cp-confirm-export-btn" class="close-btn" style="display: none; width: 100%; margin-bottom: 15px; border-color: var(--primary);">Save Selected</button>
+                <div id="cp-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Карточки пресетов будут здесь -->
+                </div>
+            </div>
+
+            <button id="close-my-presets" class="close-btn" type="button" style="margin-top: 20px;">Done</button>
+        </div>
+    </div>
+
     <!-- Основной контент -->
     <div class="container">
         <div class="header">
+            <!-- Левая сторона: Настройки и Пресеты -->
             <div id="settings-toggle" class="theme-toggle" title="Settings" style="left: 0; right: auto;">
                 <span style="transform: translate(1px, -1px); display: block;">⚙️</span>
             </div>
+            <div id="custom-presets-toggle" class="theme-toggle" title="Custom Presets" style="left: 55px; right: auto;">🧩</div>
+
+            <div id="custom-presets-list-toggle" class="theme-toggle" title="My Presets" style="left: 110px; right: auto;">📁</div>
+            
+            <!-- Правая сторона: Тема, Избранное, Справка -->
             <div id="theme-toggle" class="theme-toggle" title="Change Theme">🎨</div>
             <div id="favorites-toggle" class="theme-toggle" title="Favorites" style="right: 55px;">⭐</div>
             <div id="help-toggle" class="theme-toggle" title="Help / Info" style="right: 110px;">📜</div>
             
             <h1>SHAKE PACK</h1>
         </div>
-        
+
         <button class="random-btn" id="random-shake-btn" type="button">
             <span class="random-text" id="text-random">RANDOM SHAKE</span>
         </button>
@@ -425,11 +501,10 @@
             <span class="footer-separator">|</span>
             <span class="footer-author" id="secret-xote" data-text="xote">xote</span>
             <span class="footer-separator">|</span>
-            <span class="footer-version" id="text-version">v0.0.3 Alpha</span>
+            <span class="footer-version" id="text-version">v0.1.0 Beta</span>
         </div>
 
     </div>
-
 
     <!-- МИНИ-ИГРА -->
     <div id="mini-game-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 15, 0.85); z-index: 99999999; justify-content: center; align-items: center;">
@@ -453,7 +528,7 @@
     <script src="CSInterface.js"></script>
     <script src="particles.min.js"></script>
     
-    <!-- ПОДКЛЮЧЕНИЕ НАШИХ МОДУЛЕЙ -->
+    <!-- ПОДКЛЮЧЕНИЕ МОДУЛЕЙ -->
     <script src="js/presets.js"></script>
     <script src="js/legacy-effects.js"></script>
     <script src="js/ui-core.js"></script>
@@ -462,5 +537,6 @@
     <script src="js/favorites.js"></script>
     <script src="js/game.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/custom-presets.js"></script>
 </body>
 </html>

@@ -189,7 +189,7 @@ body.system-cursor input[type="range"] {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
 }
-/* Жесткий фикс для ползунков, чтобы не вылезал дефолтный курсор */
+
 body:not(.system-cursor) input[type="range"],
 body:not(.system-cursor) input[type="range"]:active,
 body:not(.system-cursor) input[type="range"]:hover,
@@ -198,7 +198,6 @@ body:not(.system-cursor) input[type="range"]::-webkit-slider-runnable-track {
     cursor: none !important;
 }
 
-/* Фикс для ссылки GitHub, чтобы не вылезал системный курсор */
 body:not(.system-cursor) #github-link,
 body:not(.system-cursor) #github-link * {
     cursor: none !important;

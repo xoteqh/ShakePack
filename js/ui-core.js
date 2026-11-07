@@ -21,8 +21,10 @@
             catFast: "Fast Shakes",
             github: "github",
             xote: "xote",
-            version: "v0.0.3 Alpha",
+            version: "v0.1.0 Beta",
             close: "Done",
+            placeholderName: "My Custom Shake",
+            cancelBtn: "Cancel",
             // Настройки
             interfaceScale: "Interface Scale",
             cursorSize: "Cursor Size",
@@ -48,6 +50,8 @@
             tipSettings: "Settings",
             tipRandom: "Surprise me! Apply a random shake",
             tipApplyAll: "Apply random shake to ALL selected layers",
+            tipCustomPresets: "Create your own shake",
+            tipMyPresets: "Open your saved presets",
             // Панели
             howToUse: "How to use",
             favoritesTitle: "Favorite Shakes",
@@ -60,7 +64,24 @@
             themeGreen: "Neon Green",
             themePurple: "Neon Purple",
             themePink: "Pink Glow",
-            themeGrim: "Grim Dark"
+            themeGrim: "Grim Dark",
+            // Custom Presets
+            createShakeTitle: "Create Shake",
+            myPresetsTitle: "My Presets",
+            savePreset: "Save Preset",
+            presetName: "Preset Name",
+            amplitude: "Amplitude (Strength)",
+            frequency: "Frequency (Speed)",
+            duration: "Duration (Frames)",
+            tags: "Tags",
+            preview: "Preview",
+            exportAll: "Export",
+            importFile: "Import File",
+            noPresets: "No custom presets yet.",
+            presetSaved: "Preset saved!",
+            presetApplied: "Preset applied!",
+            framesShort: "frames",
+            saveSelected: "Save Selected",
         },
         ru: {
             selectTheme: "Выбрать Тему",
@@ -77,8 +98,10 @@
             catFast: "Быстрые шейки",
             github: "github",
             xote: "xote",
-            version: "v0.0.3 Alpha",
+            version: "v0.1.0 Beta",
             close: "Готово",
+            placeholderName: "Мой кастомный шейк",
+            cancelBtn: "Отмена",
             // Настройки
             interfaceScale: "Масштаб интерфейса",
             cursorSize: "Размер курсора",
@@ -104,6 +127,8 @@
             tipSettings: "Настройки",
             tipRandom: "Удиви меня! Применить случайный шейк",
             tipApplyAll: "Применить шейки ко всем выделенным слоям",
+            tipCustomPresets: "Создать свой шейк",
+            tipMyPresets: "Открыть сохраненные пресеты",
             // Панели
             howToUse: "Как пользоваться",
             favoritesTitle: "Избранные шейки",
@@ -116,9 +141,28 @@
             themeGreen: "Неоновый зеленый",
             themePurple: "Неоновый фиолетовый",
             themePink: "Розовое свечение",
-            themeGrim: "Мрачная"
+            themeGrim: "Мрачная",
+            // Custom Presets
+            createShakeTitle: "Создать Шейк",
+            myPresetsTitle: "Мои Пресеты",
+            savePreset: "Сохранить Пресет",
+            presetName: "Название пресета",
+            amplitude: "Амплитуда (Сила)",
+            frequency: "Частота (Скорость)",
+            duration: "Длительность (Кадры)",
+            tags: "Теги",
+            preview: "Превью",
+            exportAll: "Экспорт",
+            importFile: "Импорт",
+            noPresets: "Пока нет кастомных пресетов.",
+            presetSaved: "Пресет сохранен!",
+            presetApplied: "Пресет применен!",
+            framesShort: "кадров",
+            saveSelected: "Сохранить выбранные",
         }
     };
+
+    window.translations = translations;
 
     window.applyLanguage = function(lang) {
         const t = translations[lang] || translations.en;
@@ -210,6 +254,35 @@
             themeNames[5].innerText = t.themePurple;
             themeNames[6].innerText = t.themePink;
             themeNames[7].innerText = t.themeGrim;
+        }
+
+        // --- Переводы для Custom Presets ---
+        safeSet('text-custom-presets-title', t.createShakeTitle);
+        safeSet('text-my-presets-title', t.myPresetsTitle);
+        safeSet('cp-export-btn', t.exportAll);
+        safeSet('cp-import-btn', t.importFile);
+        safeSet('cp-confirm-export-btn', t.saveSelected);
+        safeSet('close-custom-presets', t.close);
+        safeSet('close-my-presets', t.close);
+
+        const cpNameInput = document.getElementById('cp-name');
+        if (cpNameInput) cpNameInput.placeholder = t.placeholderName;
+
+        const cpSaveBtn = document.getElementById('cp-save-btn');
+        if (cpSaveBtn) {
+            const span = cpSaveBtn.querySelector('.random-text');
+            if (span) span.innerText = t.savePreset;
+        }
+
+        // Названия полей в конструкторе
+        const cpTitles = document.querySelectorAll('#custom-presets-panel .settings-title');
+        if (cpTitles.length >= 6) {
+            cpTitles[0].innerText = t.presetName;
+            cpTitles[1].innerText = t.amplitude;
+            cpTitles[2].innerText = t.frequency;
+            cpTitles[3].innerText = t.duration;
+            cpTitles[4].innerText = t.tags;
+            cpTitles[5].innerText = t.preview;
         }
 
         // Текст в пустом избранном
@@ -405,6 +478,8 @@
             else if (target.closest('#favorites-toggle')) text = t.tipFavorites;
             else if (target.closest('#help-toggle')) text = t.tipHelp;
             else if (target.closest('#settings-toggle')) text = t.tipSettings;
+            else if (target.closest('#custom-presets-toggle')) text = t.tipCustomPresets;
+            else if (target.closest('#custom-presets-list-toggle')) text = t.tipMyPresets;
             else if (target.closest('#random-shake-btn')) text = t.tipRandom;
             else if (target.closest('#apply-all-btn')) text = t.tipApplyAll;
             else return;
@@ -425,7 +500,7 @@
         });
 
         document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('.shake-btn') || e.target.closest('.category-btn') || e.target.closest('.random-btn') || e.target.closest('.theme-toggle') || e.target.closest('#favorites-toggle') || e.target.closest('#help-toggle') || e.target.closest('#settings-toggle')) {
+            if (e.target.closest('.shake-btn') || e.target.closest('.category-btn') || e.target.closest('.random-btn') || e.target.closest('.theme-toggle') || e.target.closest('#favorites-toggle') || e.target.closest('#help-toggle') || e.target.closest('#settings-toggle') || e.target.closest('#custom-presets-toggle') || e.target.closest('#custom-presets-list-toggle')) {
                 tooltip.classList.remove('show');
             }
         });
@@ -643,7 +718,6 @@
             }
         }
 
-        // Применяем визуальное выделение при загрузке
         updateLangUI(savedLang);
 
         // Обработчик клика для Английского
@@ -663,6 +737,27 @@
                 updateLangUI('ru');
             });
         }
+    }
+    // --- УПРАВЛЕНИЕ ПАНЕЛЯМИ ПРЕСЕТОВ ---
+    const cpToggle = document.getElementById('custom-presets-toggle');
+    const cpListToggle = document.getElementById('custom-presets-list-toggle');
+    const cpPanel = document.getElementById('custom-presets-panel');
+    const cpClose = document.getElementById('close-custom-presets');
+    const myPresetsPanel = document.getElementById('my-presets-panel');
+    const myPresetsClose = document.getElementById('close-my-presets');
+
+    if (cpToggle && cpPanel) {
+        cpToggle.addEventListener('click', () => cpPanel.classList.add('active'));
+    }
+    if (cpClose) {
+        cpClose.addEventListener('click', () => cpPanel.classList.remove('active'));
+    }
+
+    if (cpListToggle && myPresetsPanel) {
+        cpListToggle.addEventListener('click', () => myPresetsPanel.classList.add('active'));
+    }
+    if (myPresetsClose) {
+        myPresetsClose.addEventListener('click', () => myPresetsPanel.classList.remove('active'));
     }
 
     // ==========================================
