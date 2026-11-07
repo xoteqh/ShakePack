@@ -1,10 +1,10 @@
-# 🎬 ShakePack (Alpha Version)
+# 🎬 ShakePack (Beta Version)
 
-**ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects.
+**ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects, or create your own custom shakes!
 
-> ⚠️ **IMPORTANT: THIS IS AN ALPHA VERSION**
+> ⚠️ **IMPORTANT: THIS IS A BETA VERSION**
 >
-> **The plugin may contain bugs, crashes, or unexpected behavior.** Please bear with me. I am actively working on improvements and bug fixes.
+> **The plugin is stable, but may still contain minor bugs or unexpected behavior.** Please bear with me. I am actively working on improvements and bug fixes.
 >
 > **If you found a bug or have a suggestion — please contact me on Discord: `xote._.`**. I will try to fix everything as soon as possible! *(If I don't reply, I'm sleeping 😴)*
 
@@ -41,6 +41,9 @@ ShakePack comes with **8 built-in color themes** to match your workflow. You can
 ## ✨ Features
 
 - **60+ ready-to-use** shake presets (15 in each category: Soft, Hard, Dirty, Fast).
+- **Create Custom Shakes**: Design your own presets with real-time visual preview! Adjust Amplitude, Frequency, and Duration.
+- **Smart Tags**: Add up to 3 tags to your custom shakes.
+- **Export & Import**: Share your custom shakes with others! Select up to 10 presets to export as a `.json` file, and easily import them back.
 - **Random Shake** (Picks a random shake from the folders for the selected layer).
 - **Apply to All** (Select multiple layers, e.g., 4, and a random shake will be applied to each of them).
 - **Favorites** with Drag & Drop support.
@@ -96,17 +99,20 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 # 🇷🇺
 
-**ShakePack** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire.
+**ShakePack** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
 
-> ⚠️ **ВАЖНО: ЭТО АЛЬФА-ВЕРСИЯ**
+> ⚠️ **ВАЖНО: ЭТО БЕТА-ВЕРСИЯ**
 >
-> **В плагине могут быть баги, вылеты и странное поведение.** Пожалуйста, отнеситесь с пониманием. Я активно работаю над улучшением и исправлением ошибок.
+> **Плагин стабилен, но может содержать мелкие баги или странное поведение.** Пожалуйста, отнеситесь с пониманием. Я активно работаю над улучшением и исправлением ошибок.
 >
 > **Если вы нашли баг, или у вас есть предложение — пишите мне в Discord: `xote._.`**. Я постараюсь всё исправить как можно быстрее! *(если не отвечаю, сплю 😴)*
 
 ## ✨ Что умеет плагин (на данный момент)
 
 - **60+ готовых пресетов** шейков (по 15 в каждой папке: Soft, Hard, Dirty, Fast).
+- **Создание своих пресетов**: Настраивай Амплитуду, Частоту и Длительность с живым визуальным превью!
+- **Умные теги**: Добавляй до 3 тегов (например, #Fast, #Smooth) к своим шейкам.
+- **Экспорт и Импорт**: Делись своими шейками с другими! Выбирай до 10 пресетов для экспорта в `.json` файл, и легко импортируй их обратно.
 - **Случайный шейк** (Выбирается из папок шейков один рандомный шейк на слой).
 - **Apply to All** (Выделил 4 слоя например и на эти 4 слоя накидывается рандомный шейк из папок).
 - **Избранное** с возможностью перетаскивания (Drag & Drop).
