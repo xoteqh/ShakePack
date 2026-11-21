@@ -14,7 +14,7 @@ ShakePack comes with **8 built-in color themes** to match your workflow. You can
 
 <div align="center">
   <img src="screenshots/mainblue-screenshot.png" width="100%" /><br>
-  🔵 <b>Blue (Default)</b><br><br>
+  🔵 <b>Blue</b><br><br>
   
   <img src="screenshots/maingold-screenshot.png" width="100%" /><br>
   🟡 <b>Gold</b><br><br>
