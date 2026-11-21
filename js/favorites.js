@@ -1,24 +1,17 @@
 ﻿/**
  * favorites.js
- * Логика работы с избранным: добавление, удаление, Drag & Drop и отрисовка.
- * Также здесь происходит инициализация карточек в основном меню.
  */
 
 (function() {
-    // Загружаем сохраненные избранные
     let favorites = JSON.parse(localStorage.getItem('shakeFavorites') || '[]');
 
-    // Глобальные переменные для Drag & Drop
     let draggedItem = null;
 
-    // --- 1. ИНИЦИАЛИЗАЦИЯ КАРТОЧЕК В ОСНОВНОМ МЕНЮ ---
-    // Находим все кнопки шейков и добавляем им иконки (глаз и звезду)
     document.addEventListener('DOMContentLoaded', () => {
         const allShakeBtns = document.querySelectorAll('.category .shake-btn');
         
         allShakeBtns.forEach(btn => {
             const id = btn.id;
-            // Проверяем, не добавили ли мы уже иконки
             if (btn.querySelector('.preview-btn')) return; 
 
             const title = btn.querySelector('.btn-title')?.innerText || 'Shake';
@@ -36,7 +29,6 @@
         });
     });
 
-    // --- 2. ЛОГИКА ПАНЕЛИ ИЗБРАННОГО ---
     document.addEventListener('DOMContentLoaded', () => {
         const favToggle = document.getElementById('favorites-toggle');
         const favPanel = document.getElementById('favorites-panel');
@@ -48,7 +40,6 @@
             if (closeFav) closeFav.addEventListener('click', () => favPanel.classList.remove('active'));
         }
 
-        // Функция генерации HTML для карточки в избранном
         function createShakeBtnHTML(id, title, desc) {
             return `
                 <div class="shake-btn" id="${id}" style="margin-bottom: 0; cursor: grab;" draggable="true">
@@ -62,7 +53,6 @@
             `;
         }
 
-        // Функция отрисовки списка
         function renderFavorites() {
             if (!favList) return;
             favList.innerHTML = '';
@@ -75,7 +65,6 @@
             }
             
             favorites.forEach(id => {
-                // Ищем карточку в основном меню, чтобы взять оттуда название и описание
                 const originalBtn = document.getElementById(id);
                 if (originalBtn) {
                     const title = originalBtn.querySelector('.btn-title')?.innerText || 'Shake';
@@ -88,12 +77,9 @@
             });
         }
 
-        // Первичная отрисовка
         renderFavorites();
 
-        // --- 3. ОБРАБОТЧИКИ КЛИКОВ (ГЛАЗ И ЗВЕЗДА) ---
         document.addEventListener('click', (e) => {
-            // Клик по звезде
             if (e.target.classList.contains('fav-star')) {
                 e.stopPropagation();
                 const id = e.target.getAttribute('data-id');
@@ -108,19 +94,16 @@
                 }
                 localStorage.setItem('shakeFavorites', JSON.stringify(favorites));
 
-                // Синхронизируем звезды по всему интерфейсу
                 document.querySelectorAll(`.fav-star[data-id="${id}"]`).forEach(star => {
                     if (favorites.includes(id)) star.classList.add('active');
                     else star.classList.remove('active');
                 });
 
-                // Анимация удаления (если удаляем из меню избранного)
                 if (isCurrentlyFav) {
                     const isInsideFavPanel = e.target.closest('#favorites-list');
                     const favCard = isInsideFavPanel ? document.querySelector(`#favorites-list .shake-btn#${id}`) : null;
                     
                     if (favCard) {
-                        // Создаем искры по периметру
                         const rect = favCard.getBoundingClientRect();
                         const borderPoints = 16;
                         for (let p = 0; p < borderPoints; p++) {
@@ -158,7 +141,6 @@
                 }
             }
 
-            // Клик по глазу (превью)
             const previewBtn = e.target.closest('.preview-btn');
             if (previewBtn) {
                 e.stopPropagation();
@@ -168,7 +150,6 @@
             }
         });
 
-        // Запуск шейка из меню избранного
         if (favList) {
             favList.addEventListener('click', (e) => {
                 const btn = e.target.closest('.shake-btn');
@@ -181,7 +162,6 @@
 
         // --- 4. DRAG & DROP В ИЗБРАННОМ ---
         if (favList) {
-            // Наблюдатель, чтобы новые карточки сразу становились перетаскиваемыми
             const observer = new MutationObserver(() => {
                 favList.querySelectorAll('.shake-btn').forEach(item => {
                     item.setAttribute('draggable', 'true');
@@ -202,7 +182,6 @@
                     draggedItem.classList.remove('dragging');
                     draggedItem = null;
                 }
-                // Сохраняем новый порядок
                 const newFavorites = [];
                 favList.querySelectorAll('.shake-btn').forEach(btn => newFavorites.push(btn.id));
                 favorites = newFavorites;

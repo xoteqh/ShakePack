@@ -1,6 +1,5 @@
 /**
  * custom-presets.js
- * Логика кастомных пресетов: создание, сохранение, отрисовка, экспорт/импорт и применение в AE.
  */
 
 (function() {
@@ -8,12 +7,10 @@
     const AVAILABLE_TAGS = ['#Fast', '#Smooth', '#Strong', '#Impact', '#Camera'];
     let selectedTags = [];
 
-    // Переменные для режима экспорта
     let isExportMode = false;
     let selectedForExport = [];
     const MAX_EXPORT = 10;
 
-    // Функция для получения переводов (берет из ui-core.js)
     function getT() {
         const lang = localStorage.getItem('shakePackLang') || 'en';
         if (window.translations && window.translations[lang]) {
@@ -22,7 +19,7 @@
         return { noPresets: "No custom presets yet.", framesShort: "frames", presetSaved: "Preset saved!" };
     }
 
-    // --- 1. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ---
+    // --- 1. РРќРР¦РРђР›РР—РђР¦РРЇ РџР Р Р—РђР“Р РЈР—РљР• ---
     document.addEventListener('DOMContentLoaded', () => {
         initSliders();
         initTags();
@@ -32,7 +29,7 @@
         initPreview();
     });
 
-    // --- 2. ПОЛЗУНКИ (ОБНОВЛЕНИЕ ЦИФР) ---
+    // --- 2. РџРћР›Р—РЈРќРљР (РћР‘РќРћР’Р›Р•РќРР• Р¦РР¤Р ) ---
     function initSliders() {
         const sliders = [
             { id: 'cp-amp', textId: 'cp-amp-text', fixed: 1 },
@@ -52,7 +49,7 @@
         });
     }
 
-    // --- 3. ТЕГИ ---
+    // --- 3. РўР•Р“Р ---
     function initTags() {
         const container = document.getElementById('cp-tags-container');
         if (!container) return;
@@ -76,30 +73,27 @@
         });
     }
 
-    // --- 4. ЖИВОЕ ПРЕВЬЮ В КОНСТРУКТОРЕ ---
+    // --- 4. Р–РР’РћР• РџР Р•Р’Р¬Р® Р’ РљРћРќРЎРўР РЈРљРўРћР Р• ---
     function updatePreview() {
         const layer = document.getElementById('cp-preview-layer');
-        const amp = parseFloat(document.getElementById('cp-amp').value) || 2;
-        const freq = parseFloat(document.getElementById('cp-freq').value) || 5;
-        
         if (!layer) return;
 
+        const amp = parseFloat(document.getElementById('cp-amp').value) || 2;
+        const freq = parseFloat(document.getElementById('cp-freq').value) || 5;
+        const frames = parseInt(document.getElementById('cp-frames').value, 10) || 19;
+
+        const info = {
+            freq: freq,
+            amp: amp,
+            frames: frames,
+            fx: 'S_DissolveShake',
+            curve: { type: 'expo', a: 1 },
+            duration: frames / 12
+        };
+
         const animName = 'cp_preview_shake';
-        const maxAmp = amp * 5;
-        const steps = 20;
-        let keyframes = '';
-
-        for (let i = 0; i <= steps; i++) {
-            const progress = (i / steps) * 0.5;
-            const percent = progress * 100;
-            const currentAmp = maxAmp * Math.exp(-3 * progress);
-            
-            const offsetX = (Math.random() - 0.5) * currentAmp;
-            const offsetY = (Math.random() - 0.5) * currentAmp;
-
-            keyframes += `${percent}% { transform: translate(${offsetX}px, ${offsetY}px); }`;
-        }
-        keyframes += `50% { transform: translate(0, 0); } 100% { transform: translate(0, 0); }`;
+        const css = '@keyframes ' + animName + ' { ' +
+            (window.buildPreviewKeyframes ? window.buildPreviewKeyframes(info) : '') + ' }';
 
         let styleSheet = document.getElementById('cp-dynamic-style');
         if (!styleSheet) {
@@ -107,13 +101,11 @@
             styleSheet.id = 'cp-dynamic-style';
             document.head.appendChild(styleSheet);
         }
-        styleSheet.innerText = `@keyframes ${animName} { ${keyframes} }`;
+        styleSheet.innerText = css;
 
         layer.style.animation = 'none';
         void layer.offsetWidth;
-        
-        const duration = Math.max(0.5, 20 / freq);
-        layer.style.animation = `${animName} ${duration}s linear infinite`;
+        layer.style.animation = animName + ' ' + info.duration.toFixed(2) + 's linear infinite';
     }
 
     function initPreview() {
@@ -125,7 +117,7 @@
         }
     }
 
-    // --- 5. СОХРАНЕНИЕ ПРЕСЕТА ---
+    // --- 5. РЎРћРҐР РђРќР•РќРР• РџР Р•РЎР•РўРђ ---
     function initSaveBtn() {
         const btn = document.getElementById('cp-save-btn');
         if (!btn) return;
@@ -163,7 +155,7 @@
         });
     }
 
-    // --- 6. ОТРИСОВКА СПИСКА MY PRESETS ---
+    // --- 6. РћРўР РРЎРћР’РљРђ РЎРџРРЎРљРђ MY PRESETS ---
     function renderPresetsList() {
         const list = document.getElementById('cp-list');
         if (!list) return;
@@ -176,7 +168,6 @@
             return;
         }
 
-        // Отрисовываем с конца
         [...customPresets].reverse().forEach(preset => {
             const card = document.createElement('div');
             card.className = 'cp-card';
@@ -184,7 +175,6 @@
             
             const tagsHTML = preset.tags ? preset.tags.map(t => `<span class="cp-tag active" style="font-size: 10px; margin: 0; padding: 3px 8px; pointer-events: none;">${t}</span>`).join('') : '';
             
-            // Если режим экспорта включен, добавляем кружочек
             const checkboxHTML = isExportMode 
                 ? `<div class="cp-checkbox ${selectedForExport.includes(preset.id) ? 'selected' : ''}" data-id="${preset.id}"></div>` 
                 : '';
@@ -207,7 +197,6 @@
             list.appendChild(card);
         });
 
-        // Вешаем события на кнопки Apply и Delete
         if (!isExportMode) {
             list.querySelectorAll('.cp-card-btn.apply').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -224,7 +213,6 @@
             });
         }
 
-        // Обработчик клика по карточке ИЛИ чекбоксу
         if (isExportMode) {
             list.querySelectorAll('.cp-card').forEach(card => {
                 card.addEventListener('click', (e) => {
@@ -302,7 +290,7 @@
         }
     }
 
-    // --- 7. ЭКСПОРТ / ИМПОРТ ---
+    // --- 7. Р­РљРЎРџРћР Рў / РРњРџРћР Рў ---
     function initExportImport() {
         const exportBtn = document.getElementById('cp-export-btn');
         const importBtn = document.getElementById('cp-import-btn');
@@ -317,7 +305,6 @@
                 }
 
                 if (!isExportMode) {
-                    // ВКЛЮЧАЕМ РЕЖИМ ЭКСПОРТА
                     isExportMode = true;
                     selectedForExport = [];
                     exportBtn.innerText = getT().cancelBtn || "Cancel";
@@ -325,7 +312,6 @@
                     confirmExportBtn.style.display = 'block';
                     renderPresetsList();
                 } else {
-                    // ОТМЕНА РЕЖИМА ЭКСПОРТА
                     isExportMode = false;
                     selectedForExport = [];
                     exportBtn.innerText = getT().exportAll;
@@ -336,7 +322,7 @@
             });
         }
 
-        // Кнопка сохранения выбранных пресетов
+        // РљРЅРѕРїРєР° СЃРѕС…СЂР°РЅРµРЅРёСЏ РІС‹Р±СЂР°РЅРЅС‹С… РїСЂРµСЃРµС‚РѕРІ
         if (confirmExportBtn) {
             confirmExportBtn.addEventListener('click', () => {
                 if (selectedForExport.length === 0) {
@@ -347,11 +333,9 @@
                 const presetsToExport = customPresets.filter(p => selectedForExport.includes(p.id));
                 const jsonString = JSON.stringify(presetsToExport, null, 2);
                 
-                // Проверяем, есть ли CSInterface
                 if (typeof CSInterface !== 'undefined') {
                     const csInterface = new CSInterface();
                     
-                    // Сначала спрашиваем путь через ExtendScript
                     const askPathScript = `(function() {
                         var file = File.saveDialog("Save Shake Pack Presets", "JSON files:*.json");
                         if (file) return file.fsName;
@@ -361,7 +345,6 @@
                     csInterface.evalScript(askPathScript, (result) => {
                         if (result === "CANCEL") return;
                         
-                        // Экранируем спецсимволы для передачи в скрипт
                         const escapedJson = jsonString.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
                         
                         const writeScript = `(function() {
@@ -379,7 +362,6 @@
                             if (writeResult === "SUCCESS") {
                                 if (window.showSuccess) window.showSuccess('Presets exported!');
                                 
-                                // Выходим из режима экспорта
                                 isExportMode = false;
                                 selectedForExport = [];
                                 exportBtn.innerText = getT().exportAll;
@@ -392,7 +374,6 @@
                         });
                     });
                 } else {
-                    // Запасной вариант для браузера (если тестируешь вне AE)
                     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonString);
                     const downloadAnchor = document.createElement('a');
                     downloadAnchor.setAttribute("href", dataStr);
@@ -412,7 +393,7 @@
             });
         }
 
-        // Импорт
+        // РРјРїРѕСЂС‚
         if (importBtn && fileInput) {
             importBtn.addEventListener('click', () => fileInput.click());
 
@@ -440,7 +421,6 @@
                                 return;
                             }
 
-                            // Ограничение до 10 штук и добавление новых ID
                             const toAdd = validPresets.slice(0, 10).map(p => ({
                                 ...p,
                                 id: 'custom-' + Date.now() + '-' + Math.floor(Math.random() * 1000)
@@ -463,7 +443,7 @@
         }
     }
 
-    // --- 8. ПРИМЕНЕНИЕ ПРЕСЕТА В AFTER EFFECTS ---
+    // --- 8. РџР РРњР•РќР•РќРР• РџР Р•РЎР•РўРђ Р’ AFTER EFFECTS ---
     function applyCustomPreset(id) {
         const preset = customPresets.find(p => p.id === id);
         if (!preset) return;

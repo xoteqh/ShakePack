@@ -1,17 +1,17 @@
 /* css/effects.css */
 
-/* --- КУРСОР --- */
-/* КОГДА КАСТОМНЫЙ КУРСОР ВКЛЮЧЕН (класса system-cursor нет) - скрываем ВСЁ */
+/* --- РљРЈР РЎРћР  --- */
+/* РљРћР“Р”Рђ РљРђРЎРўРћРњРќР«Р™ РљРЈР РЎРћР  Р’РљР›Р®Р§Р•Рќ (РєР»Р°СЃСЃР° system-cursor РЅРµС‚) - СЃРєСЂС‹РІР°РµРј Р’РЎРЃ */
 body:not(.system-cursor),
 body:not(.system-cursor) * {
     cursor: none !important;
 }
 
-/* КОГДА СИСТЕМНЫЙ КУРСОР (класс system-cursor есть) - возвращаем стандартные */
+/* РљРћР“Р”Рђ РЎРРЎРўР•РњРќР«Р™ РљРЈР РЎРћР  (РєР»Р°СЃСЃ system-cursor РµСЃС‚СЊ) - РІРѕР·РІСЂР°С‰Р°РµРј СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ */
 body.system-cursor { cursor: auto !important; }
 body.system-cursor * { cursor: auto !important; }
 
-/* Точечные исключения для системного режима */
+/* РўРѕС‡РµС‡РЅС‹Рµ РёСЃРєР»СЋС‡РµРЅРёСЏ РґР»СЏ СЃРёСЃС‚РµРјРЅРѕРіРѕ СЂРµР¶РёРјР° */
 body.system-cursor input, 
 body.system-cursor textarea { cursor: text !important; }
 
@@ -42,7 +42,7 @@ body.system-cursor input[type="range"] {
     box-shadow: 0 0 10px var(--primary), inset 0 0 5px var(--primary);
 }
 
-/* Плавное скрытие курсора, когда мышка уходит за пределы окна */
+/* РџР»Р°РІРЅРѕРµ СЃРєСЂС‹С‚РёРµ РєСѓСЂСЃРѕСЂР°, РєРѕРіРґР° РјС‹С€РєР° СѓС…РѕРґРёС‚ Р·Р° РїСЂРµРґРµР»С‹ РѕРєРЅР° */
 #custom-cursor.hidden {
     opacity: 0 !important;
     transform: translate(-50%, -50%) scale(0.5) scale(var(--cursor-scale, 1)) !important;
@@ -55,14 +55,14 @@ body.system-cursor input[type="range"] {
     box-shadow: 0 0 15px var(--primary), inset 0 0 8px var(--primary);
 }
 
-/* --- НОВЫЕ ФОРМЫ КУРСОРА --- */
+/* --- РќРћР’Р«Р• Р¤РћР РњР« РљРЈР РЎРћР Рђ --- */
 
-/* Квадрат */
+/* РљРІР°РґСЂР°С‚ */
 #custom-cursor.style-square {
     border-radius: 2px;
 }
 
-/* Алмаз (поворачиваем на 45 градусов) */
+/* РђР»РјР°Р· (РїРѕРІРѕСЂР°С‡РёРІР°РµРј РЅР° 45 РіСЂР°РґСѓСЃРѕРІ) */
 #custom-cursor.style-diamond {
     border-radius: 2px;
     transform: translate(-50%, -50%) rotate(45deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
@@ -71,7 +71,7 @@ body.system-cursor input[type="range"] {
     transform: translate(-50%, -50%) rotate(135deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
 }
 
-/* --- СВЕЧЕНИЕ ЗА КУРСОРОМ --- */
+/* --- РЎР’Р•Р§Р•РќРР• Р—Рђ РљРЈР РЎРћР РћРњ --- */
 #mouse-glow {
     position: fixed;
     top: 0; left: 0;
@@ -88,7 +88,7 @@ body.system-cursor input[type="range"] {
 
 #mouse-glow.active { opacity: 1; }
 
-/* --- ЧАСТИЦЫ ПРИ КЛИКЕ --- */
+/* --- Р§РђРЎРўРР¦Р« РџР Р РљР›РРљР• --- */
 .click-particle {
     position: fixed;
     width: 4px; height: 4px;
@@ -102,7 +102,7 @@ body.system-cursor input[type="range"] {
     100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
 }
 
-/* --- ТУЛТИПЫ --- */
+/* --- РўРЈР›РўРРџР« --- */
 #custom-tooltip {
     position: fixed;
     top: 0; left: 0;
@@ -143,7 +143,7 @@ body.system-cursor input[type="range"] {
     border-left: 1px solid var(--primary);
 }
 
-/* --- ПАСХАЛКА (БУКВЫ) --- */
+/* --- РџРђРЎРҐРђР›РљРђ (Р‘РЈРљР’Р«) --- */
 .secret-letter {
     position: fixed;
     font-size: 24px;
@@ -160,7 +160,7 @@ body.system-cursor input[type="range"] {
     100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.5) rotate(var(--r)); }
 }
 
-/* --- ПЛАШКИ ОШИБКИ И УСПЕХА --- */
+/* --- РџР›РђРЁРљР РћРЁРР‘РљР Р РЈРЎРџР•РҐРђ --- */
 #error-toast, #success-toast {
     position: fixed;
     bottom: 20px;
@@ -203,12 +203,19 @@ body:not(.system-cursor) #github-link * {
     cursor: none !important;
 }
 
+/* РћС‚РґРµР»СЊРЅРѕРµ РїСЂР°РІРёР»Рѕ РґР»СЏ РїР»Р°С€РєРё Sapphire вЂ” РїРѕ РѕР±СЂР°Р·С†Сѓ #github-link,
+   С‡С‚РѕР±С‹ СЃРёСЃС‚РµРјРЅС‹Р№ РєСѓСЂСЃРѕСЂ РЅРёРєРѕРіРґР° РЅРµ РїСЂРѕР±РёРІР°Р»СЃСЏ СЃРєРІРѕР·СЊ РєР°СЃС‚РѕРјРЅС‹Р№ */
+body:not(.system-cursor) #sapphire-status,
+body:not(.system-cursor) #sapphire-status * {
+    cursor: none !important;
+}
+
 body.system-cursor input[type="range"],
 body.system-cursor input[type="range"]:active,
 body.system-cursor input[type="range"]:hover {
     cursor: pointer !important;
 }
-/* --- ПОЛОСА ЗАГРУЗКИ (LOADING BAR) --- */
+/* --- РџРћР›РћРЎРђ Р—РђР“Р РЈР—РљР (LOADING BAR) --- */
 #loading-bar-container {
     position: fixed;
     bottom: 0;

@@ -1,6 +1,6 @@
 /* css/components.css */
 
-/* --- ÊÍÎÏÊÈ RANDOM / APPLY --- */
+/* --- ĞšĞĞĞŸĞšĞ˜ RANDOM / APPLY --- */
 .random-btn {
     width: 100%;
     background: linear-gradient(45deg, color-mix(in srgb, var(--primary) 10%, transparent), color-mix(in srgb, var(--secondary) 10%, transparent));
@@ -29,13 +29,7 @@
     transition: transform 0.1s ease; 
 }
 
-/* Âîçâğàùàåì ÿğêèé ïóëüñ ïğè êëèêå íà áîëüøèå êíîïêè */
-.random-btn.clicked {
-    box-shadow: 0 0 25px 5px var(--primary);
-    transform: scale(0.98);
-    transition: box-shadow 0.15s ease, transform 0.1s ease;
-}
-
+/* Ğ’Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‰Ğ°ĞµĞ¼ ÑÑ€ĞºĞ¸Ğ¹ Ğ¿ÑƒĞ»ÑŒÑ Ğ¿Ñ€Ğ¸ ĞºĞ»Ğ¸ĞºĞµ Ğ½Ğ° Ğ±Ğ¾Ğ»ÑŒÑˆĞ¸Ğµ ĞºĞ½Ğ¾Ğ¿ĞºĞ¸ */
 .random-btn.clicked {
     box-shadow: 0 0 25px 5px var(--primary);
     transform: scale(0.98);
@@ -57,7 +51,7 @@
     animation: colorFlow 8s linear infinite;
 }
 
-/* Òåìû äëÿ êíîïêè Random */
+/* Ğ¢ĞµĞ¼Ñ‹ Ğ´Ğ»Ñ ĞºĞ½Ğ¾Ğ¿ĞºĞ¸ Random */
 body.theme-gold .random-btn { background: linear-gradient(45deg, rgba(255, 204, 0, 0.1), rgba(255, 102, 0, 0.1)); }
 body.theme-gold .random-btn:hover { background: linear-gradient(45deg, rgba(255, 204, 0, 0.25), rgba(255, 102, 0, 0.25)); }
 body.theme-blue .random-btn { background: linear-gradient(45deg, rgba(0, 204, 255, 0.1), rgba(0, 51, 255, 0.1)); }
@@ -73,7 +67,7 @@ body.theme-pink .random-btn:hover { background: linear-gradient(45deg, rgba(255,
 body.theme-grim .random-btn { background: linear-gradient(45deg, rgba(170, 170, 170, 0.1), rgba(51, 51, 51, 0.1)); border-color: var(--primary); }
 body.theme-grim .random-btn:hover { background: linear-gradient(45deg, rgba(170, 170, 170, 0.25), rgba(51, 51, 51, 0.25)); }
 
-/* --- ÏÀÏÊÈ (ÀÊÊÎĞÄÅÎÍÛ) --- */
+/* --- ĞŸĞĞŸĞšĞ˜ (ĞĞšĞšĞĞ Ğ”Ğ•ĞĞĞ«) --- */
 .category {
     margin-bottom: 15px;
     border-radius: 12px;
@@ -183,7 +177,7 @@ body.theme-grim .random-btn:hover { background: linear-gradient(45deg, rgba(170,
     padding: 10px 12px 12px 12px;
 }
 
-/* Öâåòà ïàïîê ïî òåìàì (ÈÍÂÅĞÒÈĞÎÂÀÍÍÛÅ) */
+/* Ğ¦Ğ²ĞµÑ‚Ğ° Ğ¿Ğ°Ğ¿Ğ¾Ğº Ğ¿Ğ¾ Ñ‚ĞµĞ¼Ğ°Ğ¼ (Ğ˜ĞĞ’Ğ•Ğ Ğ¢Ğ˜Ğ ĞĞ’ĞĞĞĞ«Ğ•) */
 
 body.theme-default .cat-soft { --cat-color: #00ffcc; background: linear-gradient(135deg, rgba(0, 255, 204, 0.15) 0%, rgba(0, 150, 255, 0.05) 100%); }
 body.theme-default .cat-hard { --cat-color: #3388ff; background: linear-gradient(135deg, rgba(51, 136, 255, 0.15) 0%, rgba(100, 0, 255, 0.05) 100%); }
@@ -229,7 +223,7 @@ body.theme-purple .category::before { box-shadow: 0 0 15px var(--cat-color); }
 body.theme-purple .shake-btn:hover { box-shadow: 0 0 20px color-mix(in srgb, var(--primary) 30%, transparent); }
 body.theme-purple .subtitle span::before { filter: drop-shadow(0 0 5px rgba(255, 0, 255, 0.6)); }
 
-/* --- ÊÀĞÒÎ×ÊÈ ØÅÉÊÎÂ --- */
+/* --- ĞšĞĞ Ğ¢ĞĞ§ĞšĞ˜ Ğ¨Ğ•Ğ™ĞšĞĞ’ --- */
 .shake-btn {
     position: relative;
     background: rgba(15, 15, 18, 0.5);
@@ -303,6 +297,13 @@ body.theme-purple .subtitle span::before { filter: drop-shadow(0 0 5px rgba(255,
     text-shadow: 0 0 5px var(--cat-color);
 }
 
+/* --- Ğ‘Ğ°Ğ·Ğ¾Ğ²Ñ‹Ğ¹ ÑÑ‚Ğ¸Ğ»ÑŒ SVG-Ğ³Ñ€Ğ°Ñ„Ğ¸ĞºĞ° (Ğ¸ÑĞ¿Ğ¾Ğ»ÑŒĞ·ÑƒĞµÑ‚ÑÑ Ñ‚Ğ¾Ğ»ÑŒĞºĞ¾ Ğ² Ğ¿Ñ€ĞµĞ²ÑŒÑ) --- */
+.shake-spark {
+    display: block;
+    width: 100%;
+    pointer-events: none;
+}
+
 .shake-btn:active { transform: scale(0.99) !important; transition: transform 0.05s ease; }
 .shake-btn.clicked { animation: borderPulse 0.4s ease-out; }
 
@@ -312,7 +313,7 @@ body.theme-purple .subtitle span::before { filter: drop-shadow(0 0 5px rgba(255,
     100% { border-color: var(--cat-color); box-shadow: 0 0 0 0 transparent; }
 }
 
-/* --- ÈÊÎÍÊÈ (ÃËÀÇ È ÇÂÅÇÄÀ) --- */
+/* --- Ğ˜ĞšĞĞĞšĞ˜ (Ğ“Ğ›ĞĞ— Ğ˜ Ğ—Ğ’Ğ•Ğ—Ğ”Ğ) --- */
 .preview-btn, .fav-star {
     font-size: 14px;
     width: 32px; height: 32px;
@@ -351,44 +352,44 @@ body.theme-purple .subtitle span::before { filter: drop-shadow(0 0 5px rgba(255,
 
 .preview-btn:active, .fav-star:active { transform: scale(0.9) !important; }
 
-/* --- ÁÛÑÒĞÀß Î×ÅĞÅÄÜ ÏÎßÂËÅÍÈß (ØÀÃ 0.07ñ) --- */
+/* --- Ğ‘Ğ«Ğ¡Ğ¢Ğ ĞĞ¯ ĞĞ§Ğ•Ğ Ğ•Ğ”Ğ¬ ĞŸĞĞ¯Ğ’Ğ›Ğ•ĞĞ˜Ğ¯ (Ğ¨ĞĞ“ 0.07Ñ) --- */
 
-/* 1. Ïåğâàÿ êíîïêà (Random) */
+/* 1. ĞŸĞµÑ€Ğ²Ğ°Ñ ĞºĞ½Ğ¾Ğ¿ĞºĞ° (Random) */
 #random-shake-btn {
     opacity: 0;
     animation: fadeInScale 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
     animation-delay: 0.07s !important; 
 }
 
-/* 2. Âòîğàÿ êíîïêà (Apply All) */
+/* 2. Ğ’Ñ‚Ğ¾Ñ€Ğ°Ñ ĞºĞ½Ğ¾Ğ¿ĞºĞ° (Apply All) */
 #apply-all-btn {
     opacity: 0;
     animation: fadeInScale 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
     animation-delay: 0.14s !important; 
 }
 
-/* 3. Ïåğâàÿ ïàïêà (Soft) */
+/* 3. ĞŸĞµÑ€Ğ²Ğ°Ñ Ğ¿Ğ°Ğ¿ĞºĞ° (Soft) */
 .category.cat-soft {
     opacity: 0;
     animation: slideUpFade 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
     animation-delay: 0.21s !important; 
 }
 
-/* 4. Âòîğàÿ ïàïêà (Hard) */
+/* 4. Ğ’Ñ‚Ğ¾Ñ€Ğ°Ñ Ğ¿Ğ°Ğ¿ĞºĞ° (Hard) */
 .category.cat-hard {
     opacity: 0;
     animation: slideUpFade 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
     animation-delay: 0.28s !important; 
 }
 
-/* 5. Òğåòüÿ ïàïêà (Dirty) */
+/* 5. Ğ¢Ñ€ĞµÑ‚ÑŒÑ Ğ¿Ğ°Ğ¿ĞºĞ° (Dirty) */
 .category.cat-dirty {
     opacity: 0;
     animation: slideUpFade 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
     animation-delay: 0.35s !important; 
 }
 
-/* 6. ×åòâåğòàÿ ïàïêà (Fast) */
+/* 6. Ğ§ĞµÑ‚Ğ²ĞµÑ€Ñ‚Ğ°Ñ Ğ¿Ğ°Ğ¿ĞºĞ° (Fast) */
 .category.cat-fast {
     opacity: 0;
     animation: slideUpFade 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;

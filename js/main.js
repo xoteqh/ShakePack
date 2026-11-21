@@ -1,41 +1,18 @@
 ﻿/**
- * main.js (внутри папки js)
- * Главный файл, который инициализирует все модули и связывает их.
+ * main.js
  */
 
 document.addEventListener('DOMContentLoaded', function() {
     
-    // 1. Проверяем, загрузились ли базовые данные (presets.js)
     if (!window.allShakes || !window.shakeParams) {
         console.error("Presets not loaded! Check js/presets.js");
         return;
     }
 
-    // 2. Инициализация кастомного курсора, тултипов, частиц и настроек (ui-core.js)
-    // (Они инициализируются сами внутри своего файла при DOMContentLoaded, 
-    // поэтому здесь нам не нужно ничего дополнительно вызывать)
-
-    // 3. Инициализация панелей, справки и аккордеонов (ui-panels.js)
-    // (Тоже инициализируются сами внутри себя)
-
-    // 4. Инициализация тем и частиц (themes.js)
-    // (Инициализируется сама)
-
-    // 5. Инициализация избранного (favorites.js)
-    // (Инициализируется само)
-
-    // 6. Инициализация игры (game.js)
-    // (Инициализируется само)
-
-    // ==========================================
-    // 7. ОБРАБОТКА КЛИКОВ НА КАРТОЧКИ ШЕЙКОВ
-    // ==========================================
     document.addEventListener('click', function(e) {
         var btn = e.target.closest('.shake-btn');
         if (btn) {
-            // Не применяем шейк, если кликнули по звезде или глазику
             if (e.target.closest('.fav-star') || e.target.closest('.preview-btn')) return;
-            // Не применяем шейк, если мы внутри панели избранного (там своя логика)
             if (e.target.closest('#favorites-list')) return;
 
             var id = btn.id;
@@ -45,9 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ==========================================
-    // 8. КНОПКИ RANDOM SHAKE И APPLY ALL
-    // ==========================================
     var actionButtons = document.querySelectorAll('#random-shake-btn, #apply-all-btn');
     
     actionButtons.forEach(function(btn) {
@@ -64,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (typeof window.applyPreset === 'function') window.applyPreset(window.allShakes[randomIndex]);
             }
 
-            // Анимация нажатия
             this.classList.remove('clicked');
             void this.offsetWidth;
             this.classList.add('clicked');
@@ -77,9 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // ==========================================
-    // 9. АНИМАЦИЯ НАЖАТИЯ НА МАЛЕНЬКИЕ КАРТОЧКИ
-    // ==========================================
     const shakeBtns = document.querySelectorAll('.shake-btn');
     shakeBtns.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -95,9 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // ==========================================
-    // 10. СЧЁТЧИК ШЕЙКОВ В ПАПКАХ
-    // ==========================================
     document.querySelectorAll('.category').forEach(function(category) {
         var count = category.querySelectorAll('.shake-btn').length;
         var countSpan = category.querySelector('.category-btn .count');
@@ -105,6 +72,72 @@ document.addEventListener('DOMContentLoaded', function() {
             countSpan.textContent = count;
         }
     });
+
+    function isInsideAE() {
+        return typeof __adobe_cep__ !== 'undefined' ||
+               navigator.userAgent.indexOf("AdobeScript") >= 0;
+    }
+
+    window.updateSapphireLabel = function() {
+        var el = document.getElementById('sapphire-status');
+        var label = document.getElementById('sapphire-status-label');
+        if (!el || !label) return;
+        var lang = window.currentLang || localStorage.getItem('shakePackLang') || 'en';
+        var t = (window.translations && window.translations[lang]) || {};
+        var state = window.sapphireStatus || 'checking';
+        var texts = {
+            checking: t.sapphireChecking,
+            ok: t.sapphireActive,
+            missing: t.sapphireMissing,
+            noae: t.sapphireNoAE
+        };
+        label.innerText = texts[state] || state;
+
+        if (!document.body.classList.contains('system-cursor')) {
+            el.style.cursor = 'none';
+            var kids = el.querySelectorAll('*');
+            for (var i = 0; i < kids.length; i++) kids[i].style.cursor = 'none';
+        }
+    };
+
+    window.setSapphireStatus = function(state) {
+        window.sapphireStatus = state;
+        var el = document.getElementById('sapphire-status');
+        if (!el) return;
+        el.classList.remove('checking', 'ok', 'missing', 'noae');
+        el.classList.add(state);
+        window.updateSapphireLabel();
+    };
+
+    function checkSapphire() {
+        if (!isInsideAE() || typeof CSInterface === 'undefined') {
+            window.setSapphireStatus('noae');
+            return;
+        }
+        window.setSapphireStatus('checking');
+
+        var script = `(function() {
+            try {
+                var effects = app.effects;
+                var hasShake = false, hasDissolve = false;
+                for (var i = 0; i < effects.length; i++) {
+                    var name = (effects[i].matchName || '') + '|' + (effects[i].displayName || '');
+                    if (name.indexOf('S_Shake') >= 0) hasShake = true;
+                    if (name.indexOf('S_DissolveShake') >= 0) hasDissolve = true;
+                }
+                return (hasShake && hasDissolve) ? 'SAPPHIRE_OK' : 'SAPPHIRE_MISSING';
+            } catch (e) {
+                return 'SAPPHIRE_MISSING';
+            }
+        })();`;
+
+        var csInterface = new CSInterface();
+        csInterface.evalScript(script, function(result) {
+            window.setSapphireStatus(result === 'SAPPHIRE_OK' ? 'ok' : 'missing');
+        });
+    }
+
+    checkSapphire();
 
     console.log("Shake Pack initialized successfully! 🚀");
 });

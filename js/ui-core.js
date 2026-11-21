@@ -21,7 +21,7 @@
             catFast: "Fast Shakes",
             github: "github",
             xote: "xote",
-            version: "v0.1.0 Beta",
+            version: "v0.1.1 Beta",
             close: "Done",
             placeholderName: "My Custom Shake",
             cancelBtn: "Cancel",
@@ -50,6 +50,7 @@
             tipSettings: "Settings",
             tipRandom: "Surprise me! Apply a random shake",
             tipApplyAll: "Apply random shake to ALL selected layers",
+            tipSapphire: "Shows whether Sapphire is installed",
             tipCustomPresets: "Create your own shake",
             tipMyPresets: "Open your saved presets",
             // Панели
@@ -82,6 +83,11 @@
             presetApplied: "Preset applied!",
             framesShort: "frames",
             saveSelected: "Save Selected",
+            // Индикатор Sapphire
+            sapphireChecking: "Sapphire: checking...",
+            sapphireActive: "Sapphire: active",
+            sapphireMissing: "Sapphire: not found",
+            sapphireNoAE: "Sapphire: AE only",
         },
         ru: {
             selectTheme: "Выбрать Тему",
@@ -98,7 +104,7 @@
             catFast: "Быстрые шейки",
             github: "github",
             xote: "xote",
-            version: "v0.1.0 Beta",
+            version: "v0.1.1 Beta",
             close: "Готово",
             placeholderName: "Мой кастомный шейк",
             cancelBtn: "Отмена",
@@ -127,6 +133,7 @@
             tipSettings: "Настройки",
             tipRandom: "Удиви меня! Применить случайный шейк",
             tipApplyAll: "Применить шейки ко всем выделенным слоям",
+            tipSapphire: "Показывает, установлен ли Sapphire",
             tipCustomPresets: "Создать свой шейк",
             tipMyPresets: "Открыть сохраненные пресеты",
             // Панели
@@ -159,6 +166,11 @@
             presetApplied: "Пресет применен!",
             framesShort: "кадров",
             saveSelected: "Сохранить выбранные",
+            // Индикатор Sapphire
+            sapphireChecking: "Sapphire: проверка...",
+            sapphireActive: "Sapphire: активен",
+            sapphireMissing: "Sapphire: не найден",
+            sapphireNoAE: "Sapphire: только в AE",
         }
     };
 
@@ -166,6 +178,7 @@
 
     window.applyLanguage = function(lang) {
         const t = translations[lang] || translations.en;
+        window.currentLang = lang;
         
         const safeSet = (id, text) => {
             const el = document.getElementById(id);
@@ -184,8 +197,10 @@
         safeSet('text-cat-hard', t.catHard);
         safeSet('text-cat-dirty', t.catDirty);
         safeSet('text-cat-fast', t.catFast);
-        safeSet('text-github', t.github);
-        safeSet('text-xote', t.xote);
+        safeSet('github-link', t.github);
+        safeSet('secret-xote', t.xote);
+        const xoteEl = document.getElementById('secret-xote');
+        if (xoteEl) xoteEl.setAttribute('data-text', t.xote);
         safeSet('text-version', t.version);
 
         // Заголовки настроек
@@ -242,6 +257,8 @@
         // Панели
         safeSet('text-how-to-use', t.howToUse);
         safeSet('text-favorites', t.favoritesTitle);
+
+        if (window.updateSapphireLabel) window.updateSapphireLabel();
         
         // Названия тем
         const themeNames = document.querySelectorAll('.theme-name');
@@ -411,13 +428,13 @@
         });
 
         document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb')) {
+            if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb, #sapphire-status')) {
                 customCursor.classList.add('hover-active');
             }
         });
 
         document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb')) {
+            if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb, #sapphire-status')) {
                 customCursor.classList.remove('hover-active');
             }
         });
@@ -442,13 +459,13 @@
         });
 
         document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('.shake-btn, .category-btn, .random-btn, #secret-xote, .theme-toggle, .theme-option, .close-btn, .fav-star, .preview-btn, .lang-btn')) {
+            if (e.target.closest('.shake-btn, .category-btn, .random-btn, #secret-xote, .theme-toggle, .theme-option, .close-btn, .fav-star, .preview-btn, .lang-btn, #sapphire-status')) {
                 mouseGlow.classList.add('active');
             }
         });
 
         document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('.shake-btn, .category-btn, .random-btn, #secret-xote, .theme-toggle, .theme-option, .close-btn, .fav-star, .preview-btn, .lang-btn')) {
+            if (e.target.closest('.shake-btn, .category-btn, .random-btn, #secret-xote, .theme-toggle, .theme-option, .close-btn, .fav-star, .preview-btn, .lang-btn, #sapphire-status')) {
                 mouseGlow.classList.remove('active');
             }
         });
@@ -482,6 +499,7 @@
             else if (target.closest('#custom-presets-list-toggle')) text = t.tipMyPresets;
             else if (target.closest('#random-shake-btn')) text = t.tipRandom;
             else if (target.closest('#apply-all-btn')) text = t.tipApplyAll;
+            else if (target.closest('#sapphire-status')) text = t.tipSapphire;
             else return;
 
             tooltip.innerText = text;
@@ -500,7 +518,7 @@
         });
 
         document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('.shake-btn') || e.target.closest('.category-btn') || e.target.closest('.random-btn') || e.target.closest('.theme-toggle') || e.target.closest('#favorites-toggle') || e.target.closest('#help-toggle') || e.target.closest('#settings-toggle') || e.target.closest('#custom-presets-toggle') || e.target.closest('#custom-presets-list-toggle')) {
+            if (e.target.closest('.shake-btn') || e.target.closest('.category-btn') || e.target.closest('.random-btn') || e.target.closest('.theme-toggle') || e.target.closest('#favorites-toggle') || e.target.closest('#help-toggle') || e.target.closest('#settings-toggle') || e.target.closest('#custom-presets-toggle') || e.target.closest('#custom-presets-list-toggle') || e.target.closest('#sapphire-status')) {
                 tooltip.classList.remove('show');
             }
         });
@@ -610,7 +628,6 @@
         settingsToggle.addEventListener('click', () => settingsPanel.classList.add('active'));
         if (closeSettings) closeSettings.addEventListener('click', () => settingsPanel.classList.remove('active'));
 
-        // Переключение вкладок
         settingsTabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 settingsTabs.forEach(t => t.classList.remove('active'));
@@ -622,9 +639,6 @@
             });
         });
 
-        // ==========================================
-        // ГЕНЕРАЦИЯ И СИНХРОНИЗАЦИЯ МАСШТАБА
-        // ==========================================
         const scaleContainers = document.querySelectorAll('.scale-list-container');
         const mainContainer = document.querySelector('.container');
         const savedScale = localStorage.getItem('shakePackScale') || '1';
@@ -663,9 +677,6 @@
             });
         });
 
-        // ==========================================
-        // ГЕНЕРАЦИЯ И СИНХРОНИЗАЦИЯ КУРСОРА (РАЗМЕР)
-        // ==========================================
         const cursorSliders = document.querySelectorAll('.cursor-slider');
         const cursorTexts = document.querySelectorAll('.cursor-size-text');
         const customCursor = document.getElementById('custom-cursor');
@@ -698,9 +709,6 @@
             });
         });
 
-        // ==========================================
-        // ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА
-        // ==========================================
         const savedLang = localStorage.getItem('shakePackLang') || 'en';
         window.applyLanguage(savedLang);
 
@@ -720,7 +728,6 @@
 
         updateLangUI(savedLang);
 
-        // Обработчик клика для Английского
         if (optLangEn) {
             optLangEn.addEventListener('click', () => {
                 window.applyLanguage('en');
@@ -729,7 +736,6 @@
             });
         }
 
-        // Обработчик клика для Русского
         if (optLangRu) {
             optLangRu.addEventListener('click', () => {
                 window.applyLanguage('ru');
@@ -760,9 +766,6 @@
         myPresetsClose.addEventListener('click', () => myPresetsPanel.classList.remove('active'));
     }
 
-    // ==========================================
-    // 7. НАСТРОЙКИ КУРСОРА (ВКЛ/ВЫКЛ И СТИЛИ)
-    // ==========================================
     document.addEventListener('DOMContentLoaded', () => {
         const togglesCustom = document.querySelectorAll('#toggle-custom-cursor, #toggle-custom-cursor-general');
         const togglesGlow = document.querySelectorAll('#toggle-cursor-glow, #toggle-cursor-glow-general');
@@ -777,6 +780,11 @@
             } else {
                 cursorEl.style.display = 'none';
                 document.body.classList.add('system-cursor');
+                var sapphire = document.getElementById('sapphire-status');
+                if (sapphire) {
+                    sapphire.style.cursor = '';
+                    sapphire.querySelectorAll('*').forEach(function(n) { n.style.cursor = ''; });
+                }
             }
             togglesCustom.forEach(t => {
                 if (isEnabled) t.classList.add('active');

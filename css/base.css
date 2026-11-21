@@ -14,7 +14,7 @@ body {
     padding: 20px;
     user-select: none;
     
-    /* ŒÒÚ‡‚ÎˇÂÏ ÚÓÎ¸ÍÓ ˝ÚÓ, ·ÂÁ height: 100vh Ë !important */
+    /* –û—Å—Ç–∞–≤–ª—è–µ–º —Ç–æ–ª—å–∫–æ —ç—Ç–æ, –±–µ–∑ height: 100vh –∏ !important */
     overflow-x: hidden; 
     overflow-y: auto;
     
@@ -52,7 +52,7 @@ html, body { scroll-behavior: smooth; }
     animation: slideUpFade 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-/* --- ÿ¿œ ¿ --- */
+/* --- –®–ê–ü–ö–ê --- */
 .header {
     margin-top: 15px;
     margin-bottom: 30px;
@@ -143,7 +143,7 @@ h1::after {
     100% { opacity: 1; }
 }
 
-/* --- œ≈–≈Ã≈ÕÕ€≈ “≈Ã --- */
+/* --- –ü–ï–†–ï–ú–ï–ù–ù–´–ï –¢–ï–ú --- */
 body.theme-default { --primary: #00ffcc; --secondary: #ff00cc; }
 body.theme-gold { --primary: #ffcc00; --secondary: #ff6600; }
 body.theme-blue { --primary: #00ccff; --secondary: #0033ff; }
@@ -153,23 +153,15 @@ body.theme-purple { --primary: #aa55ff; --secondary: #ff00ff; }
 body.theme-pink { --primary: #ff66b2; --secondary: #ff0066; }
 body.theme-grim { --primary: #aaaaaa; --secondary: #333333; }
 
-/* --- — –ŒÀÀ¡¿– --- */
+/* --- –°–ö–†–û–õ–õ–ë–ê–† --- */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: rgba(15, 15, 18, 0.5); }
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
     border-radius: 10px;
 }
-@keyframes fadeInScale {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
 
-@keyframes slideUpFade {
-    0% { opacity: 0; transform: translateY(30px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-/* --- ‘”“≈– œÀ¿√»Õ¿ --- */
+/* --- –§–£–¢–ï–† –ü–õ–ê–ì–ò–ù–ê --- */
 .plugin-footer {
     margin-top: auto; 
     padding-top: 30px; 
@@ -188,7 +180,7 @@ body.theme-grim { --primary: #aaaaaa; --secondary: #333333; }
     animation-delay: 0.6s;
 }
 
-/* —Ò˚ÎÍ‡ Ì‡ GitHub */
+/* –°—Å—ã–ª–∫–∞ –Ω–∞ GitHub */
 .plugin-footer #github-link {
     color: #5a5a66;
     text-decoration: none;
@@ -200,12 +192,12 @@ body.theme-grim { --primary: #aaaaaa; --secondary: #333333; }
     text-shadow: 0 0 8px var(--primary);
 }
 
-/* –‡Á‰ÂÎËÚÂÎË (|) */
+/* –†–∞–∑–¥–µ–ª–∏—Ç–µ–ª–∏ (|) */
 .footer-separator {
     color: #333;
 }
 
-/* ÕËÍ Xote */
+/* –ù–∏–∫ Xote */
 .footer-author {
     cursor: pointer;
     transition: all 0.3s ease;
@@ -217,7 +209,7 @@ body.theme-grim { --primary: #aaaaaa; --secondary: #333333; }
     text-shadow: 0 0 8px var(--secondary);
 }
 
-/* ¬ÂÒËˇ ÔÎ‡„ËÌ‡ */
+/* –í–µ—Ä—Å–∏—è –ø–ª–∞–≥–∏–Ω–∞ */
 .footer-version {
     color: #5a5a66; 
     transition: all 0.3s ease;
@@ -227,4 +219,48 @@ body.theme-grim { --primary: #aaaaaa; --secondary: #333333; }
 .footer-version:hover {
     color: var(--primary); 
     text-shadow: 0 0 8px var(--primary); 
+}
+
+/* --- –ò–ù–î–ò–ö–ê–¢–û–† SAPPHIRE --- */
+.sapphire-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px 3px 7px;
+    border: 1px solid currentColor;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: default;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+.sapphire-status .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+    animation: statusPulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+.sapphire-status.checking { color: #8e8e9c; background: rgba(142, 142, 156, 0.08); }
+.sapphire-status.noae { color: #8e8e9c; background: rgba(142, 142, 156, 0.08); }
+.sapphire-status.ok {
+    color: #00ff88;
+    background: rgba(0, 255, 136, 0.09);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.28), inset 0 0 8px rgba(0, 255, 136, 0.08);
+}
+.sapphire-status.missing {
+    color: #ff3366;
+    background: rgba(255, 51, 102, 0.09);
+    box-shadow: 0 0 12px rgba(255, 51, 102, 0.28), inset 0 0 8px rgba(255, 51, 102, 0.08);
+}
+.sapphire-status.missing .status-dot { animation-duration: 1s; }
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.75); }
 }

@@ -1,10 +1,10 @@
 /**
  * themes.js
- * Логика переключения цветовых тем и обновления фоновых частиц.
+ * Р›РѕРіРёРєР° РїРµСЂРµРєР»СЋС‡РµРЅРёСЏ С†РІРµС‚РѕРІС‹С… С‚РµРј Рё РѕР±РЅРѕРІР»РµРЅРёСЏ С„РѕРЅРѕРІС‹С… С‡Р°СЃС‚РёС†.
  */
 
 (function() {
-    // Конфигурации частиц для всех тем (цвета подхватываются из CSS, но мы задаем базовые)
+    // РљРѕРЅС„РёРіСѓСЂР°С†РёРё С‡Р°СЃС‚РёС† РґР»СЏ РІСЃРµС… С‚РµРј
     const particleConfigs = {
         default: { particles: { number: { value: 30 }, color: { value: "#00ffcc" }, size: { value: 3 }, move: { speed: 1.5 } } },
         gold:    { particles: { number: { value: 30 }, color: { value: "#ffcc00" }, size: { value: 3 }, move: { speed: 1.5 } } },
@@ -17,7 +17,7 @@
     };
 
     document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ---
+        // --- 1. РРќРР¦РРђР›РР—РђР¦РРЇ РџР Р Р—РђР“Р РЈР—РљР• ---
         const savedTheme = localStorage.getItem('shakePackTheme') || 'default';
         
         document.body.className = 'theme-' + savedTheme;
@@ -29,23 +29,28 @@
             }
         }, 50);
 
-        // --- 2. ОТКРЫТИЕ ССЫЛКИ НА GITHUB ---
+        // --- 2. РћРўРљР Р«РўРР• РЎРЎР«Р›РљР РќРђ GITHUB ---
         const githubLink = document.getElementById('github-link');
         if (githubLink) {
             githubLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 
-                if (typeof CSInterface !== 'undefined') {
-                    const csInterface = new CSInterface();
-                    
-                    window.cep.util.openURLInDefaultBrowser("https://github.com/xoteqh/ShakePack");
+                const url = "https://github.com/xoteqh/ShakePack";
+                const isCEP = typeof __adobe_cep__ !== 'undefined' ||
+                              navigator.userAgent.indexOf("AdobeScript") >= 0;
+                const canOpenNative = isCEP && window.cep &&
+                    window.cep.util &&
+                    typeof window.cep.util.openURLInDefaultBrowser === 'function';
+
+                if (canOpenNative) {
+                    window.cep.util.openURLInDefaultBrowser(url);
                 } else {
-                    window.open("https://github.com/xoteqh/ShakePack", "_blank");
+                    window.open(url, "_blank");
                 }
             });
         }
 
-        // --- 3. ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ТЕМ ---
+        // --- 3. Р›РћР“РРљРђ РџР•Р Р•РљР›Р®Р§Р•РќРРЇ РўР•Рњ ---
         const themeToggle = document.getElementById('theme-toggle');
         const themePanel = document.getElementById('theme-panel');
         const closeTheme = document.getElementById('close-theme');
@@ -58,25 +63,20 @@
 
         themeOptions.forEach(option => {
             option.addEventListener('click', () => {
-                // Визуальное выделение
                 themeOptions.forEach(opt => opt.classList.remove('active'));
                 option.classList.add('active');
 
                 const theme = option.getAttribute('data-theme');
 
-                // Меняем класс у body
                 document.body.className = document.body.className.replace(/theme-\w+/g, '');
                 document.body.classList.add(`theme-${theme}`);
 
-                // Обновляем частицы
                 if (typeof particlesJS !== 'undefined') {
                     particlesJS("particles-js", particleConfigs[theme] || particleConfigs.default);
                 }
 
-                // Сохраняем в память
                 localStorage.setItem('shakePackTheme', theme);
                 
-                // Автоматически закрываем панель
                 if (themePanel) themePanel.classList.remove('active');
             });
         });

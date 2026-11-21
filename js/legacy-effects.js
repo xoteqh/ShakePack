@@ -1125,7 +1125,7 @@
                         setProp(fx, "X Wave Freq", 0.520);
                         setProp(fx, "Y Wave Amp", 65.00);
                         setProp(fx, "Y Wave Freq", 0.610);
-                        setExp(fx.property("Dissolve Percent"), 21.00, 1.0, duration); // Линейно
+                        setExp(fx.property("Dissolve Percent"), 21.00, 1.0, duration); // Р›РёРЅРµР№РЅРѕ
                     }
                 }
                 else if (presetId === 'fast-shake-12') {
@@ -1143,7 +1143,7 @@
                         setProp(fx, "X Wave Freq", 0.670);
                         setProp(fx, "Y Wave Amp", 54.00);
                         setProp(fx, "Y Wave Freq", 0.820);
-                        setExp(fx.property("Dissolve Percent"), 20.00, 1.0, duration); // Линейно
+                        setExp(fx.property("Dissolve Percent"), 20.00, 1.0, duration); // Р›РёРЅРµР№РЅРѕ
                     }
                 }
                 else if (presetId === 'fast-shake-13') {
@@ -1159,7 +1159,7 @@
                         setProp(fx, "X Wave Freq", 0.750);
                         setProp(fx, "Y Wave Amp", 44.00);
                         setProp(fx, "Y Wave Freq", 0.770);
-                        setExp(fx.property("Amplitude"), 2.000, 1.0, duration); // Линейно
+                        setExp(fx.property("Amplitude"), 2.000, 1.0, duration); // Р›РёРЅРµР№РЅРѕ
                     }
                 }
                 else if (presetId === 'fast-shake-14') {
@@ -1177,7 +1177,7 @@
                         setProp(fx, "X Wave Freq", 0.620);
                         setProp(fx, "Y Wave Amp", 72.00);
                         setProp(fx, "Y Wave Freq", 0.870);
-                        setExp(fx.property("Dissolve Percent"), 18.00, 1.0, duration); // Линейно
+                        setExp(fx.property("Dissolve Percent"), 18.00, 1.0, duration); // Р›РёРЅРµР№РЅРѕ
                     }
                 }
                 else if (presetId === 'fast-shake-15') {
@@ -1195,7 +1195,7 @@
                         setProp(fx, "X Wave Freq", 0.610);
                         setProp(fx, "Y Wave Amp", 75.00);
                         setProp(fx, "Y Wave Freq", 0.740);
-                        setExp(fx.property("Dissolve Percent"), 20.00, 1.0, duration); // Линейно
+                        setExp(fx.property("Dissolve Percent"), 20.00, 1.0, duration); // Р›РёРЅРµР№РЅРѕ
                     }
                 }
             }
@@ -1217,7 +1217,6 @@
             } else if (result === "EvalScript error.") {
                 if (window.showError) window.showError("Script Error.");
             } else {
-                // Если что-то пошло не так, покажем ошибку
                 if (window.showError) window.showError("Error: " + result);
             }
         });

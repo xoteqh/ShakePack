@@ -3,22 +3,17 @@
  */
 
 (function() {
-    // --- 1. ÏÀÍÅËÜ ÑÏĞÀÂÊÈ È ÏÅĞÅÊËŞ×ÅÍÈÅ ßÇÛÊÎÂ ---
+    // --- 1. ĞŸĞĞĞ•Ğ›Ğ¬ Ğ¡ĞŸĞ ĞĞ’ĞšĞ˜ ---
     const helpToggle = document.getElementById('help-toggle');
     const helpPanel = document.getElementById('help-panel');
     const closeHelp = document.getElementById('close-help');
-    
-    const btnRu = document.getElementById('btn-lang-ru');
-    const btnEn = document.getElementById('btn-lang-en');
-    const textRu = document.getElementById('help-text-ru');
-    const textEn = document.getElementById('help-text-en');
 
     if (helpToggle && helpPanel) {
         helpToggle.addEventListener('click', () => helpPanel.classList.add('active'));
         if (closeHelp) closeHelp.addEventListener('click', () => helpPanel.classList.remove('active'));
     }
 
-    // --- 2. ÏÀÍÅËÜ ÏĞÅÂÜŞ (ÂÈÇÓÀËÜÍÛÉ ÒÅÑÒ ØÅÉÊÀ) ---
+    // --- 2. ĞŸĞĞĞ•Ğ›Ğ¬ ĞŸĞ Ğ•Ğ’Ğ¬Ğ® ---
     const previewPanel = document.getElementById('preview-panel');
     const closePreview = document.getElementById('close-preview');
     const previewLayer = document.getElementById('preview-layer');
@@ -31,49 +26,34 @@
         });
     }
 
-    // Ãëîáàëüíàÿ ôóíêöèÿ äëÿ çàïóñêà ïğåâüş
     window.showPreview = function(shakeId, shakeName) {
         if (!previewPanel || !previewTitle || !previewLayer) return;
 
         previewPanel.classList.add('active');
         previewTitle.innerText = shakeName;
-        
-        // Áåğåì ğåàëüíûå ïàğàìåòğû èç presets.js (window.shakeParams)
-        const params = (window.shakeParams && window.shakeParams[shakeId]) || { freq: 5, amp: 2 };
-        
-        const duration = 2.0; 
-        const maxAmp = params.amp * 6; 
-        const animName = 'shake_' + shakeId.replace(/-/g, '_');
 
-        let keyframes = '';
-        const steps = 20;
-        
-        for (let i = 0; i <= steps; i++) {
-            const progress = (i / steps) * 0.8; 
-            const percent = progress * 100;
-            const currentAmp = maxAmp * Math.exp(-3 * progress);
-            
-            const offsetX = (Math.random() - 0.5) * currentAmp;
-            const offsetY = (Math.random() - 0.5) * currentAmp;
-            const rotate = (Math.random() - 0.5) * currentAmp * 0.1;
+        const info = window.getShakePreviewInfo
+            ? window.getShakePreviewInfo(shakeId)
+            : { freq: 5, amp: 2, frames: 19, fx: 'S_Shake',
+                curve: { type: 'expo', a: 1.5 }, duration: 1.58 };
 
-            keyframes += `
-                ${percent}% { 
-                    transform: translate(${offsetX}px, ${offsetY}px) rotate(${rotate}deg); 
-                }
-            `;
+        const paramsEl = document.getElementById('preview-params');
+        if (paramsEl) {
+            paramsEl.innerHTML = '<span>' + info.fx + '</span>' +
+                '<span>Freq ' + info.freq + ' Hz</span>' +
+                '<span>Amp ' + info.amp + '</span>' +
+                '<span>' + info.frames + ' frames</span>' +
+                '<span>AE ' + (info.frames / 24).toFixed(2) + ' s (x2 slow-mo)</span>';
         }
 
-        keyframes += `
-            80% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        `;
+        const curveEl = document.getElementById('preview-curve');
+        if (curveEl && window.shakeSparkSVG) {
+            curveEl.innerHTML = window.shakeSparkSVG(info, 'shake-spark-large');
+        }
 
-        const css = `
-            @keyframes ${animName} {
-                ${keyframes}
-            }
-        `;
+        const animName = 'shake_' + shakeId.replace(/-/g, '_');
+        const css = '@keyframes ' + animName + ' { ' +
+            (window.buildPreviewKeyframes ? window.buildPreviewKeyframes(info) : '') + ' }';
 
         const oldStyle = document.getElementById('dynamic-shake-style');
         if (oldStyle) oldStyle.remove();
@@ -84,11 +64,11 @@
         document.head.appendChild(styleSheet);
 
         previewLayer.style.animation = 'none';
-        void previewLayer.offsetWidth; 
-        previewLayer.style.animation = `${animName} ${duration}s linear infinite`;
+        void previewLayer.offsetWidth;
+        previewLayer.style.animation = animName + ' ' + info.duration.toFixed(2) + 's linear infinite';
     };
 
-    // --- 3. ÀÊÊÎĞÄÅÎÍÛ (ÏÀÏÊÈ Ñ ØÅÉÊÀÌÈ) ---
+    // --- 3. ĞĞšĞšĞĞ Ğ”Ğ•ĞĞĞ« ---
     window.toggleCategory = function(id, btn) {
         var content = document.getElementById(id);
         var category = btn.parentElement;

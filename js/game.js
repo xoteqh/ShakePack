@@ -1,6 +1,5 @@
 ﻿/**
  * game.js
- * Логика мини-игры (пасхалки) с падающими звездами.
  */
 
 (function() {
@@ -33,7 +32,6 @@
         
         if (!overlay || !area) return;
         
-        // --- СБРОС ВСЕГО ПЕРЕД НОВОЙ ИГРОЙ ---
         clearInterval(gameInterval); 
         gameOverScreen.style.display = 'none'; 
         gameOverScreen.classList.remove('active'); 
@@ -42,12 +40,10 @@
         scoreDisplay.innerText = '0';
         gameActive = true;
         
-        // Плавное появление
         overlay.style.display = 'flex';
         overlay.style.opacity = '0';
         setTimeout(() => overlay.style.opacity = '1', 10);
         
-        // Функция проигрыша
         function gameOver() {
             gameActive = false;
             clearInterval(gameInterval);
@@ -60,7 +56,6 @@
             starsContainer.innerHTML = '';
         }
         
-        // Функция создания падающей звезды
         function spawnStar() {
             if (!gameActive) return;
             
@@ -93,7 +88,6 @@
             
             starsContainer.appendChild(star);
             
-            // Удаляем звезду, если она упала за пределы экрана
             setTimeout(() => {
                 if (star.parentNode) {
                     star.remove();
@@ -104,10 +98,8 @@
             }, duration * 1000);
         }
         
-        // Запускаем спавн звезд
         gameInterval = setInterval(spawnStar, 600 + Math.random() * 200);
         
-        // Кнопка закрытия (крестик)
         const closeBtn = document.getElementById('game-close');
         if (closeBtn) {
             closeBtn.onclick = function() {
@@ -121,7 +113,6 @@
             };
         }
 
-        // Кнопка Try Again
         const btnRestart = document.getElementById('btn-restart');
         if (btnRestart) {
             btnRestart.onclick = function() {
@@ -135,7 +126,6 @@
             };
         }
 
-        // Кнопка Close (на экране проигрыша)
         const btnCloseGame = document.getElementById('btn-close-game');
         if (btnCloseGame) {
             btnCloseGame.onclick = function() {
