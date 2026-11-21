@@ -1,4 +1,4 @@
-# 🎬 ShakePack (Beta Version)
+# 🎬 ShakePack (v0.1.1 Beta)
 
 **ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects, or create your own custom shakes!
 
@@ -40,18 +40,18 @@ ShakePack comes with **8 built-in color themes** to match your workflow. You can
 
 ## ✨ Features
 
-- **60+ ready-to-use** shake presets (15 in each category: Soft, Hard, Dirty, Fast).
-- **Create Custom Shakes**: Design your own presets with real-time visual preview! Adjust Amplitude, Frequency, and Duration.
-- **Smart Tags**: Add up to 3 tags to your custom shakes.
-- **Export & Import**: Share your custom shakes with others! Select up to 10 presets to export as a `.json` file, and easily import them back.
-- **Random Shake** (Picks a random shake from the folders for the selected layer).
-- **Apply to All** (Select multiple layers, e.g., 4, and a random shake will be applied to each of them).
+- **60 ready-to-use** shake presets (15 in each category: Soft, Hard, Dirty, Fast).
+- **Accurate Preview**: the preview uses the preset's **real Frequency, Amplitude and decay curve** — what you see in the panel is what After Effects does. An amplitude decay graph is displayed in the preview window.
+- **Create Custom Shakes**: design your own presets with a real-time visual preview! Adjust Amplitude, Frequency and Duration — the preview is accurate here too and reacts to all three sliders.
+- **Smart Tags**: add up to 3 tags to your custom shakes.
+- **Export & Import**: share your custom shakes with others! Select up to 10 presets to export as a `.json` file, and easily import them back.
+- **Random Shake** (picks a random shake from the folders for the selected layer).
+- **Apply to All** (select multiple layers, e.g. 4, and a random shake will be applied to each of them).
 - **Favorites** with Drag & Drop support.
-- **Visual preview** of the shake right inside the panel.
-- **Smart Positioning**: Shakes (Adjustment Layers) appear exactly above the selected clip in the timeline.
+- **Sapphire Status Indicator**: a green/red badge and dot in the footer show whether `S_Shake` and `S_DissolveShake` are available (checked on startup).
+- **Smart Positioning**: shakes (Adjustment Layers) appear exactly above the selected clip in the timeline.
 - **UI Customization**: 8 color themes, interface scale adjustment, custom cursor styles (Circle, Diamond, Square) and size.
-- **Full Localization**: English and Russian interface. You can switch the language in the Settings menu.
-- **Stylish Footer**: Quick access to the GitHub repository and current version.
+- **Full Localization**: English and Russian interface. Switch the language in the Settings menu.
 
 ## 📦 Installation
 
@@ -77,7 +77,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 > 4. Inside that folder, create a **String Value** named `PlayerDebugMode` and set its value to `1`.
 >
 > **macOS:**
-> Run this in Terminal (replace `XX` with your version, e.g., `CSXS.11` for AE 2022):
+> Run this in Terminal (replace `XX` with your version, e.g. `CSXS.11` for AE 2022):
 > ```bash
 > defaults write com.adobe.CSXS.XX PlayerDebugMode 1
 > ```
@@ -87,7 +87,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 ## ⚙️ Requirements
 
 - **After Effects** (2020 or newer recommended).
-- **Sapphire Plugin** (`S_Shake` and `S_DissolveShake` effects). The plugin cannot create shakes without it.
+- **Sapphire Plugin** (`S_Shake` and `S_DissolveShake` effects). The plugin cannot create shakes without it — check the badge in the footer to see if it was detected.
 
 ## 🛠 Tech Stack
 
@@ -99,7 +99,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 # 🇷🇺
 
-**ShakePack** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
+**ShakePack (v0.1.1 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
 
 > ⚠️ **ВАЖНО: ЭТО БЕТА-ВЕРСИЯ**
 >
@@ -109,18 +109,18 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 ## ✨ Что умеет плагин (на данный момент)
 
-- **60+ готовых пресетов** шейков (по 15 в каждой папке: Soft, Hard, Dirty, Fast).
-- **Создание своих пресетов**: Настраивай Амплитуду, Частоту и Длительность с живым визуальным превью!
-- **Умные теги**: Добавляй до 3 тегов (например, #Fast, #Smooth) к своим шейкам.
-- **Экспорт и Импорт**: Делись своими шейками с другими! Выбирай до 10 пресетов для экспорта в `.json` файл, и легко импортируй их обратно.
-- **Случайный шейк** (Выбирается из папок шейков один рандомный шейк на слой).
-- **Apply to All** (Выделил 4 слоя например и на эти 4 слоя накидывается рандомный шейк из папок).
+- **60 готовых пресетов** шейков (по 15 в каждой папке: Soft, Hard, Dirty, Fast).
+- **Точное превью**: анимация использует **реальные Частоту, Амплитуду и кривую затухания** выбранного шейка — что видишь в панели, то и будет в After Effects. В окне превью показывается график затухания амплитуды.
+- **Создание своих пресетов**: настраивай Амплитуду, Частоту и Длительность с живым точным превью — ползунок длительности тоже влияет на анимацию.
+- **Умные теги**: добавляй до 3 тегов (например, #Fast, #Smooth) к своим шейкам.
+- **Экспорт и Импорт**: делись своими шейками с другими! Выбирай до 10 пресетов для экспорта в `.json` файл, и легко импортируй их обратно.
+- **Случайный шейк** (выбирается из папок шейков один рандомный шейк на слой).
+- **Apply to All** (выделил 4 слоя например — и на эти 4 слоя накидывается рандомный шейк из папок).
 - **Избранное** с возможностью перетаскивания (Drag & Drop).
-- **Визуальное превью** шейка прямо в панели.
-- **Умное позиционирование**: Шейки (Adjustment Layers) появляются ровно над выделенным клипом в таймлайне.
+- **Индикатор Sapphire**: зелёная/красная плашка с точкой в футере показывает, доступны ли эффекты `S_Shake` и `S_DissolveShake` (проверка при запуске).
+- **Умное позиционирование**: шейки (Adjustment Layers) появляются ровно над выделенным клипом в таймлайне.
 - **Кастомизация интерфейса**: 8 цветовых тем, настройка масштаба, выбор стиля курсора (Круг, Алмаз, Квадрат) и его размера.
-- **Полная локализация**: Английский и русский интерфейс. Переключение языка в Настройках.
-- **Стильный футер**: Быстрый доступ к репозиторию GitHub и текущей версии плагина.
+- **Полная локализация**: английский и русский интерфейс. Переключение языка в Настройках.
 
 ## 📦 Установка
 
@@ -156,7 +156,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 ## ⚙️ Требования
 
 - **After Effects** (рекомендуется 2020 и выше).
-- **Sapphire Plugin** (эффекты `S_Shake` и `S_DissolveShake`). Без него плагин не сможет создавать шейки.
+- **Sapphire Plugin** (эффекты `S_Shake` и `S_DissolveShake`). Без него плагин не сможет создавать шейки — по плашке в футере можно узнать, найден ли он.
 
 ## 🛠 Технологии
 
