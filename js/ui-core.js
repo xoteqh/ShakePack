@@ -21,7 +21,7 @@
             catFast: "Fast Shakes",
             github: "github",
             xote: "xote",
-            version: "v0.1.1 Beta",
+            version: "v0.1.2 Beta",
             close: "Done",
             placeholderName: "My Custom Shake",
             cancelBtn: "Cancel",
@@ -66,6 +66,10 @@
             themePurple: "Neon Purple",
             themePink: "Pink Glow",
             themeGrim: "Grim Dark",
+            themeFrost: "Frost White",
+            themeSunset: "Sunset",
+            themeCosmos: "Cosmos",
+            themeVolt: "Volt",
             // Custom Presets
             createShakeTitle: "Create Shake",
             myPresetsTitle: "My Presets",
@@ -76,6 +80,10 @@
             duration: "Duration (Frames)",
             tags: "Tags",
             preview: "Preview",
+            previewTitle: "Shake Preview",
+            previewPlaceholder: "Select a shake...",
+            applyBtn: "Apply",
+            deleteBtn: "Delete",
             exportAll: "Export",
             importFile: "Import File",
             noPresets: "No custom presets yet.",
@@ -104,7 +112,7 @@
             catFast: "Быстрые шейки",
             github: "github",
             xote: "xote",
-            version: "v0.1.1 Beta",
+            version: "v0.1.2 Beta",
             close: "Готово",
             placeholderName: "Мой кастомный шейк",
             cancelBtn: "Отмена",
@@ -149,6 +157,10 @@
             themePurple: "Неоновый фиолетовый",
             themePink: "Розовое свечение",
             themeGrim: "Мрачная",
+            themeFrost: "Белый неон",
+            themeSunset: "Закат",
+            themeCosmos: "Космос",
+            themeVolt: "Вольт",
             // Custom Presets
             createShakeTitle: "Создать Шейк",
             myPresetsTitle: "Мои Пресеты",
@@ -159,6 +171,10 @@
             duration: "Длительность (Кадры)",
             tags: "Теги",
             preview: "Превью",
+            previewTitle: "Превью шейка",
+            previewPlaceholder: "Выбери шейк...",
+            applyBtn: "Применить",
+            deleteBtn: "Удалить",
             exportAll: "Экспорт",
             importFile: "Импорт",
             noPresets: "Пока нет кастомных пресетов.",
@@ -257,12 +273,18 @@
         // Панели
         safeSet('text-how-to-use', t.howToUse);
         safeSet('text-favorites', t.favoritesTitle);
+        safeSet('text-preview-title', t.previewTitle);
+
+        const previewTitleEl = document.getElementById('preview-title');
+        if (previewTitleEl && !previewTitleEl.classList.contains('has-shake')) {
+            previewTitleEl.innerText = t.previewPlaceholder;
+        }
 
         if (window.updateSapphireLabel) window.updateSapphireLabel();
         
         // Названия тем
         const themeNames = document.querySelectorAll('.theme-name');
-        if (themeNames.length >= 8) {
+        if (themeNames.length >= 12) {
             themeNames[0].innerText = t.themeClassic;
             themeNames[1].innerText = t.themeGold;
             themeNames[2].innerText = t.themeBlue;
@@ -271,9 +293,12 @@
             themeNames[5].innerText = t.themePurple;
             themeNames[6].innerText = t.themePink;
             themeNames[7].innerText = t.themeGrim;
+            themeNames[8].innerText = t.themeFrost;
+            themeNames[9].innerText = t.themeSunset;
+            themeNames[10].innerText = t.themeCosmos;
+            themeNames[11].innerText = t.themeVolt;
         }
 
-        // --- Переводы для Custom Presets ---
         safeSet('text-custom-presets-title', t.createShakeTitle);
         safeSet('text-my-presets-title', t.myPresetsTitle);
         safeSet('cp-export-btn', t.exportAll);
@@ -281,6 +306,9 @@
         safeSet('cp-confirm-export-btn', t.saveSelected);
         safeSet('close-custom-presets', t.close);
         safeSet('close-my-presets', t.close);
+
+        document.querySelectorAll('.cp-card-btn.apply').forEach(function(btn) { btn.innerText = t.applyBtn; });
+        document.querySelectorAll('.cp-card-btn.delete').forEach(function(btn) { btn.innerText = t.deleteBtn; });
 
         const cpNameInput = document.getElementById('cp-name');
         if (cpNameInput) cpNameInput.placeholder = t.placeholderName;
@@ -291,7 +319,6 @@
             if (span) span.innerText = t.savePreset;
         }
 
-        // Названия полей в конструкторе
         const cpTitles = document.querySelectorAll('#custom-presets-panel .settings-title');
         if (cpTitles.length >= 6) {
             cpTitles[0].innerText = t.presetName;
@@ -302,7 +329,6 @@
             cpTitles[5].innerText = t.preview;
         }
 
-        // Текст в пустом избранном
         const favList = document.getElementById('favorites-list');
         if (favList && favList.innerHTML.includes('No favorites yet')) {
             favList.innerHTML = `<div style="text-align: center; color: #8e8e9c; font-size: 12px; margin-top: 20px;">${t.emptyFavorites}</div>`;
@@ -359,7 +385,6 @@
         }, 500);
     };
 
-    // --- ГЛОБАЛЬНЫЕ УВЕДОМЛЕНИЯ ---
     window.showError = function(msg) {
         var toast = document.getElementById('error-toast');
         if (toast) {
@@ -378,7 +403,6 @@
         }
     };
 
-    // --- 0. ГЛОБАЛЬНЫЙ ФИКС РАЗМЕРА КУРСОРА И СИСТЕМНОГО КУРСОРА ---
     const globalCursor = document.getElementById('custom-cursor');
     const globalGlow = document.getElementById('mouse-glow');
     const globalSavedSize = localStorage.getItem('shakePackCursorSize') || '100';
@@ -422,10 +446,39 @@
     if (customCursor) {
         document.body.style.cursor = 'none';
 
+        let lastMouseX = 0, lastMouseY = 0;
+
         document.addEventListener('mousemove', (e) => {
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
             customCursor.style.left = e.clientX + 'px';
             customCursor.style.top = e.clientY + 'px';
         });
+
+        window.refreshNeonCursor = function() {
+            if (!customCursor || document.body.classList.contains('system-cursor')) return;
+
+            document.body.classList.add('system-cursor');
+            void document.body.offsetWidth;
+
+            setTimeout(function() {
+                document.body.classList.remove('system-cursor');
+                document.body.style.cursor = 'none';
+                void document.body.offsetWidth;
+
+                customCursor.style.display = 'none';
+                void customCursor.offsetWidth;
+                customCursor.style.display = 'block';
+                customCursor.style.left = lastMouseX + 'px';
+                customCursor.style.top = lastMouseY + 'px';
+
+                document.dispatchEvent(new MouseEvent('mousemove', {
+                    clientX: lastMouseX,
+                    clientY: lastMouseY,
+                    bubbles: true
+                }));
+            }, 30);
+        };
 
         document.addEventListener('mouseover', (e) => {
             if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb, #sapphire-status')) {

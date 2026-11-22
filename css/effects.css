@@ -1,17 +1,17 @@
 /* css/effects.css */
 
 /* --- КУРСОР --- */
-/* КОГДА КАСТОМНЫЙ КУРСОР ВКЛЮЧЕН (класса system-cursor нет) - скрываем ВСЁ */
 body:not(.system-cursor),
-body:not(.system-cursor) * {
+body:not(.system-cursor) *,
+body:not(.system-cursor) button:focus,
+body:not(.system-cursor) button:hover,
+body:not(.system-cursor) button:active {
     cursor: none !important;
 }
 
-/* КОГДА СИСТЕМНЫЙ КУРСОР (класс system-cursor есть) - возвращаем стандартные */
 body.system-cursor { cursor: auto !important; }
 body.system-cursor * { cursor: auto !important; }
 
-/* Точечные исключения для системного режима */
 body.system-cursor input, 
 body.system-cursor textarea { cursor: text !important; }
 
@@ -42,7 +42,6 @@ body.system-cursor input[type="range"] {
     box-shadow: 0 0 10px var(--primary), inset 0 0 5px var(--primary);
 }
 
-/* Плавное скрытие курсора, когда мышка уходит за пределы окна */
 #custom-cursor.hidden {
     opacity: 0 !important;
     transform: translate(-50%, -50%) scale(0.5) scale(var(--cursor-scale, 1)) !important;
@@ -51,18 +50,14 @@ body.system-cursor input[type="range"] {
 #custom-cursor.hover-active {
     width: 20px; height: 20px;
     background: color-mix(in srgb, var(--primary) 30%, transparent);
-    border-color: #fff;
+    border-color: var(--secondary);
     box-shadow: 0 0 15px var(--primary), inset 0 0 8px var(--primary);
 }
 
-/* --- НОВЫЕ ФОРМЫ КУРСОРА --- */
-
-/* Квадрат */
 #custom-cursor.style-square {
     border-radius: 2px;
 }
 
-/* Алмаз (поворачиваем на 45 градусов) */
 #custom-cursor.style-diamond {
     border-radius: 2px;
     transform: translate(-50%, -50%) rotate(45deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
@@ -143,7 +138,6 @@ body.system-cursor input[type="range"] {
     border-left: 1px solid var(--primary);
 }
 
-/* --- ПАСХАЛКА (БУКВЫ) --- */
 .secret-letter {
     position: fixed;
     font-size: 24px;
@@ -160,7 +154,6 @@ body.system-cursor input[type="range"] {
     100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.5) rotate(var(--r)); }
 }
 
-/* --- ПЛАШКИ ОШИБКИ И УСПЕХА --- */
 #error-toast, #success-toast {
     position: fixed;
     bottom: 20px;
@@ -203,8 +196,6 @@ body:not(.system-cursor) #github-link * {
     cursor: none !important;
 }
 
-/* Отдельное правило для плашки Sapphire — по образцу #github-link,
-   чтобы системный курсор никогда не пробивался сквозь кастомный */
 body:not(.system-cursor) #sapphire-status,
 body:not(.system-cursor) #sapphire-status * {
     cursor: none !important;
@@ -215,7 +206,7 @@ body.system-cursor input[type="range"]:active,
 body.system-cursor input[type="range"]:hover {
     cursor: pointer !important;
 }
-/* --- ПОЛОСА ЗАГРУЗКИ (LOADING BAR) --- */
+
 #loading-bar-container {
     position: fixed;
     bottom: 0;

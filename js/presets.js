@@ -1,9 +1,8 @@
 /**
  * presets.js
- * База данных всех шейков и их параметров.
  */
 
-// 1. Список всех ID шейков (для рандомайзера и проверок)
+// 1. Список всех ID шейков
 window.allShakes = [
     // SOFT
     'soft-shake-1', 'soft-shake-2', 'soft-shake-3', 'soft-shake-4', 'soft-shake-5',
@@ -46,7 +45,7 @@ window.shakeParams = {
     'hard-shake-2':  { freq: 4.7,  amp: 1.3 },
     'hard-shake-3':  { freq: 3.4,  amp: 2.5 },
     'hard-shake-4':  { freq: 10.0, amp: 2.0 },
-    'hard-shake-5':  { freq: 5.0,  amp: 3.2 },
+    'hard-shake-5':  { freq: 5.0,  amp: 1.2 },
     'hard-shake-6':  { freq: 7.0,  amp: 2.7 },
     'hard-shake-7':  { freq: 4.0,  amp: 2.6 },
     'hard-shake-8':  { freq: 8.0,  amp: 3.2 },
@@ -84,7 +83,7 @@ window.shakeParams = {
     'fast-shake-6':  { freq: 9.0,  amp: 2.5 },
     'fast-shake-7':  { freq: 18.0, amp: 2.3 },
     'fast-shake-8':  { freq: 10.0, amp: 1.6 },
-    'fast-shake-9':  { freq: 9.0,  amp: 3.2 },
+    'fast-shake-9':  { freq: 8.0,  amp: 2.0 },
     'fast-shake-10': { freq: 9.0,  amp: 3.3 },
     'fast-shake-11': { freq: 13.0, amp: 3.1 },
     'fast-shake-12': { freq: 12.0, amp: 3.1 },

@@ -160,7 +160,6 @@
             });
         }
 
-        // --- 4. DRAG & DROP В ИЗБРАННОМ ---
         if (favList) {
             const observer = new MutationObserver(() => {
                 favList.querySelectorAll('.shake-btn').forEach(item => {

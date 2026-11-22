@@ -31,6 +31,7 @@
 
         previewPanel.classList.add('active');
         previewTitle.innerText = shakeName;
+        previewTitle.classList.add('has-shake');
 
         const info = window.getShakePreviewInfo
             ? window.getShakePreviewInfo(shakeId)

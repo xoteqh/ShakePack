@@ -55,7 +55,7 @@
     text-shadow: 0 0 10px var(--primary);
 }
 
-/* --- ВНУТРЕННИЙ БОКС (С СЕТКОЙ) --- */
+/* --- ВНУТРЕННИЙ БОКС --- */
 .help-box {
     position: relative;
     width: 100%;
@@ -92,7 +92,6 @@
     z-index: 2;
 }
 
-/* --- ЕДИНЫЙ СТИЛЬ ДЛЯ ВСЕХ КНОПОК В ПАНЕЛЯХ --- */
 .close-btn {
     background: transparent;
     border: 1px solid var(--primary);
@@ -182,6 +181,10 @@
 .theme-option[data-theme="purple"] { background: linear-gradient(135deg, rgba(170, 85, 255, 0.15) 0%, rgba(255, 0, 255, 0.05) 100%); }
 .theme-option[data-theme="pink"] { background: linear-gradient(135deg, rgba(255, 102, 178, 0.15) 0%, rgba(255, 0, 102, 0.05) 100%); }
 .theme-option[data-theme="grim"] { background: linear-gradient(135deg, rgba(170, 170, 170, 0.15) 0%, rgba(51, 51, 51, 0.05) 100%); }
+.theme-option[data-theme="frost"] { background: linear-gradient(135deg, rgba(185, 238, 255, 0.15) 0%, rgba(79, 224, 192, 0.06) 100%); }
+.theme-option[data-theme="sunset"] { background: linear-gradient(135deg, rgba(255, 122, 69, 0.15) 0%, rgba(255, 46, 151, 0.06) 100%); }
+.theme-option[data-theme="cosmos"] { background: linear-gradient(135deg, rgba(91, 108, 255, 0.16) 0%, rgba(0, 229, 255, 0.05) 100%); }
+.theme-option[data-theme="volt"] { background: linear-gradient(135deg, rgba(255, 234, 0, 0.14) 0%, rgba(26, 26, 26, 0.08) 100%); }
 
 /* --- ПАНЕЛЬ СПРАВКИ --- */
 #help-panel { overflow-y: auto; padding: 20px; box-sizing: border-box; }
@@ -290,7 +293,6 @@
 #favorites-list::-webkit-scrollbar { width: 4px; }
 #favorites-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-/* Перетаскивание и удаление */
 .shake-btn.dragging { opacity: 0.5; border: 2px dashed var(--primary) !important; transform: scale(0.98) !important; cursor: grabbing !important; }
 #favorites-list .shake-btn * { user-select: none; }
 
@@ -351,7 +353,6 @@
     letter-spacing: 2px;
 }
 
-/* --- Реальные параметры превью и график затухания --- */
 .preview-params {
     display: flex;
     flex-wrap: wrap;

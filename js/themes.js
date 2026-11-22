@@ -1,10 +1,8 @@
 /**
  * themes.js
- * Логика переключения цветовых тем и обновления фоновых частиц.
  */
 
 (function() {
-    // Конфигурации частиц для всех тем
     const particleConfigs = {
         default: { particles: { number: { value: 30 }, color: { value: "#00ffcc" }, size: { value: 3 }, move: { speed: 1.5 } } },
         gold:    { particles: { number: { value: 30 }, color: { value: "#ffcc00" }, size: { value: 3 }, move: { speed: 1.5 } } },
@@ -13,14 +11,23 @@
         green:   { particles: { number: { value: 30 }, color: { value: "#00ff88" }, size: { value: 3 }, move: { speed: 1.5 } } },
         purple:  { particles: { number: { value: 30 }, color: { value: "#aa55ff" }, size: { value: 3 }, move: { speed: 1.5 } } },
         pink:    { particles: { number: { value: 30 }, color: { value: "#ff66b2" }, size: { value: 3 }, move: { speed: 1.5 } } },
-        grim:    { particles: { number: { value: 30 }, color: { value: "#aaaaaa" }, size: { value: 3 }, move: { speed: 1.5 } } }
+        grim:    { particles: { number: { value: 30 }, color: { value: "#aaaaaa" }, size: { value: 3 }, move: { speed: 1.5 } } },
+        frost:   { particles: { number: { value: 30 }, color: { value: "#B9EEFF" }, size: { value: 3 }, move: { speed: 1.5 } } },
+        sunset:  { particles: { number: { value: 30 }, color: { value: "#FF7A45" }, size: { value: 3 }, move: { speed: 1.5 } } },
+        cosmos:  { particles: { number: { value: 30 }, color: { value: "#5B6CFF" }, size: { value: 3 }, move: { speed: 1.5 } } },
+        volt:    { particles: { number: { value: 30 }, color: { value: "#FFEA00" }, size: { value: 3 }, move: { speed: 1.5 } } }
     };
 
     document.addEventListener('DOMContentLoaded', () => {
         // --- 1. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ---
         const savedTheme = localStorage.getItem('shakePackTheme') || 'default';
         
-        document.body.className = 'theme-' + savedTheme;
+        document.body.className = document.body.className.replace(/theme-\w+/g, '').trim();
+        document.body.classList.add('theme-' + savedTheme);
+
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.classList.toggle('active', option.getAttribute('data-theme') === savedTheme);
+        });
 
         setTimeout(() => {
             if (typeof particlesJS !== 'undefined') {

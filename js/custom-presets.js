@@ -16,7 +16,7 @@
         if (window.translations && window.translations[lang]) {
             return window.translations[lang];
         }
-        return { noPresets: "No custom presets yet.", framesShort: "frames", presetSaved: "Preset saved!" };
+        return { noPresets: "No custom presets yet.", framesShort: "frames", presetSaved: "Preset saved!", applyBtn: "Apply", deleteBtn: "Delete" };
     }
 
     // --- 1. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ---
@@ -190,8 +190,8 @@
                 <div class="cp-card-desc">Amp: ${preset.amp} | Freq: ${preset.freq}</div>
                 <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; margin-bottom: 5px;">${tagsHTML}</div>
                 <div class="cp-card-actions" style="display: ${isExportMode ? 'none' : 'flex'};">
-                    <button class="cp-card-btn apply" data-id="${preset.id}">Apply</button>
-                    <button class="cp-card-btn delete" data-id="${preset.id}">Delete</button>
+                    <button class="cp-card-btn apply" data-id="${preset.id}">${getT().applyBtn}</button>
+                    <button class="cp-card-btn delete" data-id="${preset.id}">${getT().deleteBtn}</button>
                 </div>
             `;
             list.appendChild(card);
@@ -322,7 +322,6 @@
             });
         }
 
-        // Кнопка сохранения выбранных пресетов
         if (confirmExportBtn) {
             confirmExportBtn.addEventListener('click', () => {
                 if (selectedForExport.length === 0) {
@@ -393,7 +392,6 @@
             });
         }
 
-        // Импорт
         if (importBtn && fileInput) {
             importBtn.addEventListener('click', () => fileInput.click());
 
@@ -460,6 +458,22 @@
             
             var targetLayer = comp.selectedLayers[0];
             
+            function hasSapphire() {
+                try {
+                    var effects = app.effects;
+                    var hasShake = false, hasDissolve = false;
+                    for (var i = 0; i < effects.length; i++) {
+                        var name = (effects[i].matchName || '') + '|' + (effects[i].displayName || '');
+                        if (name.indexOf('S_Shake') >= 0) hasShake = true;
+                        if (name.indexOf('S_DissolveShake') >= 0) hasDissolve = true;
+                    }
+                    return hasShake && hasDissolve;
+                } catch (e) {
+                    return false;
+                }
+            }
+            if (!hasSapphire()) return "ERROR_FX_MISSING";
+            
             app.beginUndoGroup("Apply Custom Shake");
             
             var layerName = "SHAKE - ${preset.name.replace(/"/g, '')}";
@@ -504,6 +518,9 @@
         })();`;
 
         csInterface.evalScript(script, function(result) {
+            setTimeout(function() {
+                if (window.refreshNeonCursor) window.refreshNeonCursor();
+            }, 50);
             if (window.hideLoadingBar) window.hideLoadingBar(result === "SUCCESS");
             
             if (result === "SUCCESS") {
@@ -512,6 +529,8 @@
                 if (window.showError) window.showError("Open a composition first!");
             } else if (result === "ERROR_NO_LAYER") {
                 if (window.showError) window.showError("Please select a layer first!");
+            } else if (result === "ERROR_FX_MISSING") {
+                if (window.showError) window.showError("Sapphire plugin not found!");
             } else {
                 if (window.showError) window.showError("Error: " + result);
             }

@@ -14,7 +14,6 @@ body {
     padding: 20px;
     user-select: none;
     
-    /* Оставляем только это, без height: 100vh и !important */
     overflow-x: hidden; 
     overflow-y: auto;
     
@@ -152,6 +151,13 @@ body.theme-green { --primary: #00ff88; --secondary: #00cc44; }
 body.theme-purple { --primary: #aa55ff; --secondary: #ff00ff; }
 body.theme-pink { --primary: #ff66b2; --secondary: #ff0066; }
 body.theme-grim { --primary: #aaaaaa; --secondary: #333333; }
+body.theme-frost { --primary: #B9EEFF; --secondary: #4FE0C0; }
+body.theme-sunset { --primary: #FF7A45; --secondary: #FF2E97; }
+body.theme-cosmos { --primary: #5B6CFF; --secondary: #00E5FF; }
+body.theme-volt { --primary: #FFEA00; --secondary: #1A1A1A; }
+
+body.theme-frost { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--primary) 16%, transparent) 0%, transparent 60%); }
+body.theme-cosmos { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--primary) 20%, transparent) 0%, transparent 60%); }
 
 /* --- СКРОЛЛБАР --- */
 ::-webkit-scrollbar { width: 6px; }

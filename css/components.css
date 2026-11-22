@@ -29,7 +29,6 @@
     transition: transform 0.1s ease; 
 }
 
-/* Возвращаем яркий пульс при клике на большие кнопки */
 .random-btn.clicked {
     box-shadow: 0 0 25px 5px var(--primary);
     transform: scale(0.98);
@@ -66,8 +65,16 @@ body.theme-pink .random-btn { background: linear-gradient(45deg, rgba(255, 102, 
 body.theme-pink .random-btn:hover { background: linear-gradient(45deg, rgba(255, 102, 178, 0.25), rgba(255, 0, 102, 0.25)); }
 body.theme-grim .random-btn { background: linear-gradient(45deg, rgba(170, 170, 170, 0.1), rgba(51, 51, 51, 0.1)); border-color: var(--primary); }
 body.theme-grim .random-btn:hover { background: linear-gradient(45deg, rgba(170, 170, 170, 0.25), rgba(51, 51, 51, 0.25)); }
+body.theme-frost .random-btn { background: linear-gradient(45deg, rgba(185, 238, 255, 0.1), rgba(79, 224, 192, 0.1)); }
+body.theme-frost .random-btn:hover { background: linear-gradient(45deg, rgba(185, 238, 255, 0.22), rgba(79, 224, 192, 0.22)); }
+body.theme-sunset .random-btn { background: linear-gradient(45deg, rgba(255, 122, 69, 0.12), rgba(255, 46, 151, 0.12)); }
+body.theme-sunset .random-btn:hover { background: linear-gradient(45deg, rgba(255, 122, 69, 0.25), rgba(255, 46, 151, 0.25)); }
+body.theme-cosmos .random-btn { background: linear-gradient(45deg, rgba(91, 108, 255, 0.14), rgba(46, 58, 168, 0.08)); }
+body.theme-cosmos .random-btn:hover { background: linear-gradient(45deg, rgba(91, 108, 255, 0.28), rgba(46, 58, 168, 0.18)); }
+body.theme-volt .random-btn { background: linear-gradient(45deg, rgba(255, 234, 0, 0.12), rgba(26, 26, 26, 0.12)); border-color: var(--primary); }
+body.theme-volt .random-btn:hover { background: linear-gradient(45deg, rgba(255, 234, 0, 0.25), rgba(26, 26, 26, 0.25)); }
 
-/* --- ПАПКИ (АККОРДЕОНЫ) --- */
+/* --- ПАПКИ --- */
 .category {
     margin-bottom: 15px;
     border-radius: 12px;
@@ -177,7 +184,7 @@ body.theme-grim .random-btn:hover { background: linear-gradient(45deg, rgba(170,
     padding: 10px 12px 12px 12px;
 }
 
-/* Цвета папок по темам (ИНВЕРТИРОВАННЫЕ) */
+/* Цвета папок по темам */
 
 body.theme-default .cat-soft { --cat-color: #00ffcc; background: linear-gradient(135deg, rgba(0, 255, 204, 0.15) 0%, rgba(0, 150, 255, 0.05) 100%); }
 body.theme-default .cat-hard { --cat-color: #3388ff; background: linear-gradient(135deg, rgba(51, 136, 255, 0.15) 0%, rgba(100, 0, 255, 0.05) 100%); }
@@ -218,6 +225,28 @@ body.theme-grim .cat-soft { --cat-color: #aaaaaa; background: linear-gradient(13
 body.theme-grim .cat-hard { --cat-color: #888888; background: linear-gradient(135deg, rgba(136, 136, 136, 0.2) 0%, rgba(60, 60, 60, 0.05) 100%); }
 body.theme-grim .cat-dirty { --cat-color: #666666; background: linear-gradient(135deg, rgba(102, 102, 102, 0.2) 0%, rgba(50, 50, 50, 0.05) 100%); }
 body.theme-grim .cat-fast { --cat-color: #555555; background: linear-gradient(135deg, rgba(85, 85, 85, 0.2) 0%, rgba(40, 40, 40, 0.05) 100%); }
+
+body.theme-frost .cat-soft { --cat-color: #D6F6FF; background: linear-gradient(135deg, rgba(185, 238, 255, 0.16) 0%, rgba(185, 238, 255, 0.07) 45%, rgba(185, 238, 255, 0.02) 100%); }
+body.theme-frost .cat-hard { --cat-color: #A8ECFF; background: linear-gradient(135deg, rgba(168, 236, 255, 0.16) 0%, rgba(122, 200, 225, 0.07) 45%, rgba(90, 170, 200, 0.02) 100%); }
+body.theme-frost .cat-dirty { --cat-color: #7AD8F5; background: linear-gradient(135deg, rgba(122, 216, 245, 0.16) 0%, rgba(90, 175, 205, 0.07) 45%, rgba(50, 130, 160, 0.02) 100%); }
+body.theme-frost .cat-fast { --cat-color: #4FB8DC; background: linear-gradient(135deg, rgba(79, 184, 220, 0.16) 0%, rgba(55, 140, 170, 0.07) 45%, rgba(30, 96, 118, 0.02) 100%); }
+
+body.theme-sunset .cat-soft { --cat-color: #FF9A6B; background: linear-gradient(135deg, rgba(255, 122, 69, 0.15) 0%, rgba(255, 122, 69, 0.04) 100%); }
+body.theme-sunset .cat-hard { --cat-color: #FF7A45; background: linear-gradient(135deg, rgba(255, 122, 69, 0.18) 0%, rgba(163, 74, 42, 0.05) 100%); }
+body.theme-sunset .cat-dirty { --cat-color: #FF2E97; background: linear-gradient(135deg, rgba(255, 46, 151, 0.18) 0%, rgba(140, 20, 79, 0.05) 100%); }
+body.theme-sunset .cat-fast { --cat-color: #B31E6B; background: linear-gradient(135deg, rgba(179, 30, 107, 0.18) 0%, rgba(90, 15, 54, 0.05) 100%); }
+
+body.theme-cosmos .cat-soft { --cat-color: #5B6CFF; background: linear-gradient(135deg, rgba(91, 108, 255, 0.18) 0%, rgba(60, 75, 190, 0.07) 45%, rgba(35, 48, 120, 0.02) 100%); }
+body.theme-cosmos .cat-hard { --cat-color: #4E5EE6; background: linear-gradient(135deg, rgba(91, 108, 255, 0.15) 0%, rgba(60, 75, 190, 0.06) 45%, rgba(35, 48, 120, 0.02) 100%); }
+body.theme-cosmos .cat-dirty { --cat-color: #404EC7; background: linear-gradient(135deg, rgba(91, 108, 255, 0.12) 0%, rgba(60, 75, 190, 0.05) 45%, rgba(35, 48, 120, 0.02) 100%); }
+body.theme-cosmos .cat-fast { --cat-color: #323EA6; background: linear-gradient(135deg, rgba(91, 108, 255, 0.09) 0%, rgba(60, 75, 190, 0.04) 45%, rgba(35, 48, 120, 0.02) 100%); }
+body.theme-cosmos .category::before { box-shadow: 0 0 8px var(--cat-color); }
+
+body.theme-volt .cat-soft { --cat-color: #FFEA00; background: linear-gradient(135deg, rgba(255, 234, 0, 0.13) 0%, rgba(255, 234, 0, 0.04) 100%); }
+body.theme-volt .cat-hard { --cat-color: #D6C400; background: linear-gradient(135deg, rgba(214, 196, 0, 0.15) 0%, rgba(122, 112, 0, 0.05) 100%); }
+body.theme-volt .cat-dirty { --cat-color: #A3A300; background: linear-gradient(135deg, rgba(163, 163, 0, 0.16) 0%, rgba(90, 90, 0, 0.05) 100%); }
+body.theme-volt .cat-fast { --cat-color: #6E6E00; background: linear-gradient(135deg, rgba(110, 110, 0, 0.16) 0%, rgba(56, 56, 0, 0.05) 100%); }
+
 
 body.theme-purple .category::before { box-shadow: 0 0 15px var(--cat-color); }
 body.theme-purple .shake-btn:hover { box-shadow: 0 0 20px color-mix(in srgb, var(--primary) 30%, transparent); }
@@ -297,7 +326,6 @@ body.theme-purple .subtitle span::before { filter: drop-shadow(0 0 5px rgba(255,
     text-shadow: 0 0 5px var(--cat-color);
 }
 
-/* --- Базовый стиль SVG-графика (используется только в превью) --- */
 .shake-spark {
     display: block;
     width: 100%;
@@ -313,7 +341,6 @@ body.theme-purple .subtitle span::before { filter: drop-shadow(0 0 5px rgba(255,
     100% { border-color: var(--cat-color); box-shadow: 0 0 0 0 transparent; }
 }
 
-/* --- ИКОНКИ (ГЛАЗ И ЗВЕЗДА) --- */
 .preview-btn, .fav-star {
     font-size: 14px;
     width: 32px; height: 32px;

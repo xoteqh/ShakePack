@@ -65,6 +65,22 @@
                     <div class="color-preview" style="background: linear-gradient(45deg, #aaaaaa, #333333);"></div>
                     <span class="theme-name">Grim Dark</span>
                 </div>
+                <div class="theme-option" data-theme="frost">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #B9EEFF, #4FE0C0);"></div>
+                    <span class="theme-name">Frost White</span>
+                </div>
+                <div class="theme-option" data-theme="sunset">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #FF7A45, #FF2E97);"></div>
+                    <span class="theme-name">Sunset</span>
+                </div>
+                <div class="theme-option" data-theme="cosmos">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #5B6CFF, #00E5FF);"></div>
+                    <span class="theme-name">Cosmos</span>
+                </div>
+                <div class="theme-option" data-theme="volt">
+                    <div class="color-preview" style="background: linear-gradient(45deg, #FFEA00, #1A1A1A);"></div>
+                    <span class="theme-name">Volt</span>
+                </div>
             </div>
             <button id="close-theme" class="close-btn" type="button" style="margin-top: 10px;">Done</button>
         </div>
@@ -75,7 +91,6 @@
         <div class="help-box settings-box">
             <h2 id="text-settings" style="text-align: center; margin-top: 0; margin-bottom: 20px;">Settings</h2>
             
-            <!-- Навигация по настройкам (Табы) -->
             <div class="settings-tabs">
                 <button class="settings-tab active" data-tab="general" id="text-tab-general">General</button>
                 <button class="settings-tab" data-tab="interface" id="text-tab-interface">Interface</button>
@@ -86,12 +101,11 @@
             <!-- Контент настроек -->
             <div class="settings-content">
                 
-                <!-- 1. Общие настройки (General) -->
+                <!-- 1. Общие настройки -->
                 <div class="settings-tab-content active" id="tab-general">
                     
                     <h3 class="settings-title" style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Interface Scale</h3>
                     <div class="scale-list-container" style="margin-bottom: 25px;">
-                        <!-- Сюда JS вставит кнопки масштаба -->
                     </div>
 
                     <h3 class="settings-title" style="color: var(--primary); margin-bottom: 10px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Size</h3>
@@ -137,15 +151,14 @@
                     </div>
                 </div>
 
-                <!-- 2. Только масштаб интерфейса (Interface) -->
+                <!-- 2. Только масштаб интерфейса -->
                 <div class="settings-tab-content" id="tab-interface">
                     <h3 class="settings-title" style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-align: left; letter-spacing: 1px;">Interface Scale</h3>
                     <div class="scale-list-container">
-                        <!-- Сюда JS вставит кнопки масштаба -->
                     </div>
                 </div>
 
-                <!-- 3. Только курсор (Cursor) -->
+                <!-- 3. Только курсор -->
                 <div class="settings-tab-content" id="tab-cursor">
                     <h3 class="settings-title" style="color: var(--primary); margin-bottom: 10px; font-size: 14px; text-align: left; letter-spacing: 1px;">Cursor Size</h3>
                     <p id="text-adjust-cursor" style="color: #8e8e9c; font-size: 12px; text-align: left; margin-bottom: 20px;">Adjust the size of the custom neon cursor.</p>
@@ -224,7 +237,6 @@
         <div class="help-box">
             <h2 id="text-favorites" style="text-align: center; margin-top: 0; margin-bottom: 20px;">Favorite Shakes</h2>
             <div id="favorites-list" style="width: 100%; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; padding-right: 5px; box-sizing: border-box; flex: 1;">
-                <!-- Сюда будут добавляться избранные шейки -->
             </div>
             <button id="close-favorites" class="close-btn" type="button" style="margin-top: 20px;">Done</button>
         </div>
@@ -315,7 +327,7 @@
         </div>
     </div>
 
-    <!-- Панель Create Shake (конструктор) -->
+    <!-- Панель Create Shake -->
     <div id="custom-presets-panel" class="theme-panel">
         <div class="help-box" style="max-width: 500px; width: 95%;">
             <h2 id="text-custom-presets-title" style="text-align: center; margin-top: 0; margin-bottom: 20px;">Create Shake</h2>
@@ -345,7 +357,6 @@
 
                 <h3 class="settings-title">Tags</h3>
                 <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 15px;" id="cp-tags-container">
-                    <!-- Теги будут добавлены через JS -->
                 </div>
 
                 <h3 class="settings-title">Preview</h3>
@@ -364,7 +375,7 @@
         </div>
     </div>
 
-    <!-- Панель My Presets (список) -->
+    <!-- Панель My Presets -->
     <div id="my-presets-panel" class="theme-panel">
         <div class="help-box" style="max-width: 500px; width: 95%;">
             <h2 id="text-my-presets-title" style="text-align: center; margin-top: 0; margin-bottom: 20px;">My Presets</h2>
@@ -377,7 +388,6 @@
                 </div>
                 <button id="cp-confirm-export-btn" class="close-btn" style="display: none; width: 100%; margin-bottom: 15px; border-color: var(--primary);">Save Selected</button>
                 <div id="cp-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
-                    <!-- Карточки пресетов будут здесь -->
                 </div>
             </div>
 
@@ -388,7 +398,6 @@
     <!-- Основной контент -->
     <div class="container">
         <div class="header">
-            <!-- Левая сторона: Настройки и Пресеты -->
             <div id="settings-toggle" class="theme-toggle" title="Settings" style="left: 0; right: auto;">
                 <span style="transform: translate(1px, -1px); display: block;">⚙️</span>
             </div>
@@ -396,7 +405,6 @@
 
             <div id="custom-presets-list-toggle" class="theme-toggle" title="My Presets" style="left: 110px; right: auto;">📁</div>
             
-            <!-- Правая сторона: Тема, Избранное, Справка -->
             <div id="theme-toggle" class="theme-toggle" title="Change Theme">🎨</div>
             <div id="favorites-toggle" class="theme-toggle" title="Favorites" style="right: 55px;">⭐</div>
             <div id="help-toggle" class="theme-toggle" title="Help / Info" style="right: 110px;">📜</div>
@@ -537,7 +545,7 @@
             <span class="footer-separator">|</span>
             <span class="footer-author" id="secret-xote" data-text="xote">xote</span>
             <span class="footer-separator">|</span>
-            <span class="footer-version" id="text-version">v0.1.1 Beta</span>
+            <span class="footer-version" id="text-version">v0.1.2 Beta</span>
             <span class="footer-separator">|</span>
             <span id="sapphire-status" class="sapphire-status checking">
                 <span class="status-dot"></span>

@@ -25,6 +25,22 @@
             var targetLayers = comp.selectedLayers;
             if (targetLayers.length === 0) return "ERROR_NO_LAYER";
             
+            function hasSapphire() {
+                try {
+                    var effects = app.effects;
+                    var hasShake = false, hasDissolve = false;
+                    for (var i = 0; i < effects.length; i++) {
+                        var name = (effects[i].matchName || '') + '|' + (effects[i].displayName || '');
+                        if (name.indexOf('S_Shake') >= 0) hasShake = true;
+                        if (name.indexOf('S_DissolveShake') >= 0) hasDissolve = true;
+                    }
+                    return hasShake && hasDissolve;
+                } catch (e) {
+                    return false;
+                }
+            }
+            if (!hasSapphire()) return "ERROR_FX_MISSING";
+            
             app.beginUndoGroup("Apply Shake Preset");
             
             var layersToProcess = isApplyAll ? targetLayers : [targetLayers[0]];
@@ -1205,6 +1221,9 @@
         })();`;
 
         csInterface.evalScript(script, function(result) {
+            setTimeout(function() {
+                if (window.refreshNeonCursor) window.refreshNeonCursor();
+            }, 50);
             if (window.hideLoadingBar) window.hideLoadingBar(result === "SUCCESS");
             if (result === "SUCCESS") {
                 if (window.showSuccess) window.showSuccess("Shake applied successfully!");
