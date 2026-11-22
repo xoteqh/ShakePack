@@ -1,4 +1,4 @@
-# 🎬 ShakePack (v0.1.1 Beta)
+# 🎬 ShakePack (v0.1.2 Beta)
 
 **ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects, or create your own custom shakes!
 
@@ -10,7 +10,7 @@
 
 ## 🎨 UI Themes
 
-ShakePack comes with **8 built-in color themes** to match your workflow. You can easily switch between them in the settings menu.
+ShakePack comes with **12 built-in color themes** to match your workflow. You can easily switch between them in the theme menu (🎨).
 
 <div align="center">
   <img src="screenshots/mainblue-screenshot.png" width="100%" /><br>
@@ -33,7 +33,19 @@ ShakePack comes with **8 built-in color themes** to match your workflow. You can
 
   <img src="screenshots/maindark-screenshot.png" width="100%" /><br>
   🌑 <b>Grim Dark</b><br><br>
-  
+
+  <img src="screenshots/mainfrost-screenshot.png" width="100%" /><br>
+  ❄️ <b>Frost White</b><br><br>
+
+  <img src="screenshots/mainsunset-screenshot.png" width="100%" /><br>
+  🌅 <b>Sunset</b><br><br>
+
+  <img src="screenshots/maincosmos-screenshot.png" width="100%" /><br>
+  🌌 <b>Cosmos</b><br><br>
+
+  <img src="screenshots/mainvolt-screenshot.png" width="100%" /><br>
+  ⚡ <b>Volt</b><br><br>
+
   <img src="screenshots/main-screenshot.png" width="100%" /><br>
   🌸 <b>Original / Default UI</b>
 </div>
@@ -48,9 +60,9 @@ ShakePack comes with **8 built-in color themes** to match your workflow. You can
 - **Random Shake** (picks a random shake from the folders for the selected layer).
 - **Apply to All** (select multiple layers, e.g. 4, and a random shake will be applied to each of them).
 - **Favorites** with Drag & Drop support.
-- **Sapphire Status Indicator**: a green/red badge and dot in the footer show whether `S_Shake` and `S_DissolveShake` are available (checked on startup).
+- **Sapphire Status Indicator**: a green/red badge and dot in the footer show whether `S_Shake` and `S_DissolveShake` are available (checked on startup). If Sapphire is missing, no adjustment layer is created.
 - **Smart Positioning**: shakes (Adjustment Layers) appear exactly above the selected clip in the timeline.
-- **UI Customization**: 8 color themes, interface scale adjustment, custom cursor styles (Circle, Diamond, Square) and size.
+- **UI Customization**: 12 color themes, interface scale adjustment, custom cursor styles (Circle, Diamond, Square) and size.
 - **Full Localization**: English and Russian interface. Switch the language in the Settings menu.
 
 ## 📦 Installation
@@ -99,7 +111,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 # 🇷🇺
 
-**ShakePack (v0.1.1 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
+**ShakePack (v0.1.2 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
 
 > ⚠️ **ВАЖНО: ЭТО БЕТА-ВЕРСИЯ**
 >
@@ -117,9 +129,9 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 - **Случайный шейк** (выбирается из папок шейков один рандомный шейк на слой).
 - **Apply to All** (выделил 4 слоя например — и на эти 4 слоя накидывается рандомный шейк из папок).
 - **Избранное** с возможностью перетаскивания (Drag & Drop).
-- **Индикатор Sapphire**: зелёная/красная плашка с точкой в футере показывает, доступны ли эффекты `S_Shake` и `S_DissolveShake` (проверка при запуске).
+- **Индикатор Sapphire**: зелёная/красная плашка с точкой в футере показывает, доступны ли эффекты `S_Shake` и `S_DissolveShake` (проверка при запуске). Если Sapphire не найден, adjustment-слой не создаётся.
 - **Умное позиционирование**: шейки (Adjustment Layers) появляются ровно над выделенным клипом в таймлайне.
-- **Кастомизация интерфейса**: 8 цветовых тем, настройка масштаба, выбор стиля курсора (Круг, Алмаз, Квадрат) и его размера.
+- **Кастомизация интерфейса**: 12 цветовых тем, настройка масштаба, выбор стиля курсора (Круг, Алмаз, Квадрат) и его размера.
 - **Полная локализация**: английский и русский интерфейс. Переключение языка в Настройках.
 
 ## 📦 Установка
