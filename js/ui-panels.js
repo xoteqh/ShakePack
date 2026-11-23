@@ -23,6 +23,12 @@
         closePreview.addEventListener('click', () => {
             previewPanel.classList.remove('active');
             if (previewLayer) previewLayer.style.animation = 'none';
+            if (previewTitle) {
+                previewTitle.classList.remove('has-shake');
+                var lang = localStorage.getItem('shakePackLang') || 'en';
+                var tr = window.translations && window.translations[lang];
+                previewTitle.innerText = (tr && tr.previewPlaceholder) || 'Select a shake...';
+            }
         });
     }
 
@@ -44,7 +50,7 @@
                 '<span>Freq ' + info.freq + ' Hz</span>' +
                 '<span>Amp ' + info.amp + '</span>' +
                 '<span>' + info.frames + ' frames</span>' +
-                '<span>AE ' + (info.frames / 24).toFixed(2) + ' s (x2 slow-mo)</span>';
+                '<span>Preview ' + info.duration.toFixed(2) + ' s (x2 slow-mo)</span>';
         }
 
         const curveEl = document.getElementById('preview-curve');
@@ -75,7 +81,10 @@
         var category = btn.parentElement;
         if (!content || !category) return;
 
-        if (category.dataset.animating === "true") return;
+        if (category.dataset.animating === "true") {
+            category.dataset.pendingToggle = "true";
+            return;
+        }
         category.dataset.animating = "true";
 
         var finished = false;
@@ -86,6 +95,12 @@
             content.removeEventListener('transitionend', onEnd);
             if (category.classList.contains('open')) content.style.maxHeight = 'none';
             category.dataset.animating = 'false';
+            if (category.dataset.pendingToggle === 'true') {
+                category.dataset.pendingToggle = 'false';
+                setTimeout(function() {
+                    window.toggleCategory(id, btn);
+                }, 0);
+            }
         }
 
         function onEnd(e) {

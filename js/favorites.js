@@ -20,7 +20,20 @@
             .replace(/'/g, '&#39;');
     }
 
+    function tuneTitle() {
+        const lang = localStorage.getItem('shakePackLang') || 'en';
+        const t = window.translations && window.translations[lang];
+        return (t && t.tipTune) || 'Shake settings';
+    }
+
+    function isTuned(id) {
+        if (!window.getShakeTuning) return false;
+        const tune = window.getShakeTuning(id);
+        return tune.strength !== 1 || tune.speed !== 1 || tune.blur !== 1;
+    }
+
     let draggedItem = null;
+    let favoritesBeforeDrag = null;
 
     document.addEventListener('DOMContentLoaded', () => {
         const allShakeBtns = document.querySelectorAll('.category .shake-btn');
@@ -37,6 +50,7 @@
                     <span class="btn-title">${escapeHtml(title)}</span>
                     <span class="btn-desc">${escapeHtml(desc)}</span>
                 </span>
+                <span class="tune-btn" data-id="${escapeHtml(id)}" title="${escapeHtml(tuneTitle())}">⚙️</span>
                 <span class="preview-btn" data-id="${escapeHtml(id)}" data-title="${escapeHtml(title)}">👁️</span>
                 <span class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${escapeHtml(id)}">⭐</span>
             `;
@@ -57,11 +71,12 @@
 
         function createShakeBtnHTML(id, title, desc) {
             return `
-                <div class="shake-btn" data-id="${escapeHtml(id)}" style="margin-bottom: 0; cursor: grab;" draggable="true">
+                <div class="shake-btn ${isTuned(id) ? 'tuned' : ''}" data-id="${escapeHtml(id)}" style="margin-bottom: 0; cursor: grab;" draggable="true">
                     <span style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
                         <span class="btn-title">${escapeHtml(title)}</span>
                         <span class="btn-desc">${escapeHtml(desc)}</span>
                     </span>
+                    <span class="tune-btn" data-id="${escapeHtml(id)}" title="${escapeHtml(tuneTitle())}">⚙️</span>
                     <span class="preview-btn" data-id="${escapeHtml(id)}" data-title="${escapeHtml(title)}">👁️</span>
                     <span class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${escapeHtml(id)}">⭐</span>
                 </div>
@@ -70,11 +85,17 @@
 
         function renderFavorites() {
             if (!favList) return;
+            const valid = favorites.filter(id => !!document.getElementById(id));
+            if (valid.length !== favorites.length) {
+                favorites = valid;
+                try { localStorage.setItem('shakeFavorites', JSON.stringify(favorites)); } catch (e) {}
+            }
             favList.innerHTML = '';
             
             if (favorites.length === 0) {
                 const savedLang = localStorage.getItem('shakePackLang') || 'en';
-                const emptyText = savedLang === 'ru' ? 'Пока нет избранных шейков. Нажми ⭐ на любом шейке!' : 'No favorites yet. Click ⭐ on any shake!';
+                const t = window.translations && window.translations[savedLang];
+                const emptyText = (t && t.emptyFavorites) || 'No favorites yet. Click ⭐ on any shake!';
                 favList.innerHTML = `<div data-empty-favorites="true" style="text-align: center; color: #8e8e9c; font-size: 12px; margin-top: 20px;">${escapeHtml(emptyText)}</div>`;
                 return;
             }
@@ -168,7 +189,7 @@
         if (favList) {
             favList.addEventListener('click', (e) => {
                 const btn = e.target.closest('.shake-btn');
-                if (btn && !e.target.classList.contains('fav-star') && !e.target.classList.contains('preview-btn')) {
+                if (btn && !e.target.closest('.fav-star') && !e.target.closest('.preview-btn') && !e.target.closest('.tune-btn')) {
                     const btnId = btn.getAttribute('data-id');
                     if (typeof applyPreset === 'function') applyPreset(btnId);
                 }
@@ -188,16 +209,25 @@
                 const target = e.target.closest('.shake-btn');
                 if (!target) return;
                 draggedItem = target;
+                favoritesBeforeDrag = favorites.slice();
                 setTimeout(() => {
                     if (draggedItem === target) target.classList.add('dragging');
                 }, 0);
             });
 
-            favList.addEventListener('dragend', () => {
+            favList.addEventListener('dragend', (e) => {
+                const cancelled = e.dataTransfer && e.dataTransfer.dropEffect === 'none';
                 if (draggedItem) {
                     draggedItem.classList.remove('dragging');
                     draggedItem = null;
                 }
+                if (cancelled) {
+                    if (favoritesBeforeDrag) favorites = favoritesBeforeDrag.slice();
+                    favoritesBeforeDrag = null;
+                    renderFavorites();
+                    return;
+                }
+                favoritesBeforeDrag = null;
                 const newFavorites = [];
                 favList.querySelectorAll('.shake-btn').forEach(btn => newFavorites.push(btn.getAttribute('data-id')));
                 favorites = newFavorites;

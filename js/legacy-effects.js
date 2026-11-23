@@ -9,8 +9,14 @@
         var csInterface = new CSInterface();
         
         var isApplyAll = Array.isArray(presetInput);
-        var presetArrayStr = isApplyAll ? JSON.stringify(presetInput) : JSON.stringify([presetInput]);
+        var presetIds = isApplyAll ? presetInput : [presetInput];
+        var presetArrayStr = JSON.stringify(presetIds);
         var usePlayhead = !isApplyAll;
+        var tuningsStr = JSON.stringify(presetIds.map(function(id) {
+            return window.getShakeTuning
+                ? window.getShakeTuning(id)
+                : { strength: 1, speed: 1, blur: 1 };
+        }));
 
         var script = `(function() {
             var comp = app.project.activeItem;
@@ -19,8 +25,27 @@
             if (comp.selectedLayers.length === 0) return "ERROR_NO_LAYER";
             
             var presets = ${presetArrayStr};
+            var tunings = ${tuningsStr};
             var isApplyAll = ${isApplyAll};
             var usePlayhead = ${usePlayhead};
+            var mutStrength = 1, mutSpeed = 1, mutBlur = 1;
+
+            function normalizeName(value) {
+                return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            }
+            function scaleFor(name) {
+                var n = normalizeName(name);
+                if (n.indexOf('motionblur') >= 0) {
+                    return (n.indexOf('length') >= 0 || n.indexOf('amount') >= 0) ? mutBlur : 1;
+                }
+                if (n.indexOf('blur') >= 0 && n.indexOf('length') >= 0) return mutBlur;
+                if (n.indexOf('speed') >= 0 || n.indexOf('freq') >= 0) return mutSpeed;
+                if (n.indexOf('amp') >= 0 || n.indexOf('dissolvepercent') >= 0 || n.indexOf('zdist') >= 0) return mutStrength;
+                return 1;
+            }
+            function propScale(prop) {
+                return scaleFor(((prop && prop.name) || '') + ' ' + ((prop && prop.matchName) || ''));
+            }
             
             var targetLayers = comp.selectedLayers;
             if (targetLayers.length === 0) return "ERROR_NO_LAYER";
@@ -34,7 +59,7 @@
                         if (name.indexOf('S_Shake') >= 0) hasShake = true;
                         if (name.indexOf('S_DissolveShake') >= 0) hasDissolve = true;
                     }
-                    return hasShake && hasDissolve;
+                    return hasShake || hasDissolve;
                 } catch (e) {
                     return false;
                 }
@@ -45,15 +70,17 @@
             
             try {
             var layersToProcess = isApplyAll ? targetLayers : [targetLayers[0]];
+            var fx = null;
+            var anyFxMissing = false;
             
-            // Поиск свойства по имени И по matchName — работает в любой локали AE
             function findFxProp(fx, name) {
                 try { var p = fx.property(name); if (p) return p; } catch(e) {}
                 try {
-                    var key = String(name).toLowerCase();
+                    var key = normalizeName(name);
+                    if (!key) return null;
                     for (var i = 1; i <= fx.numProperties; i++) {
                         var cand = fx.property(i);
-                        var nm = ((cand.matchName || '') + ' ' + (cand.name || '')).toLowerCase();
+                        var nm = normalizeName((cand.matchName || '') + ' ' + (cand.name || ''));
                         if (nm.indexOf(key) >= 0) return cand;
                     }
                 } catch(e) {}
@@ -64,18 +91,20 @@
             function setProp(fx, name, value) {
                 try {
                     var p = findFxProp(fx, name);
-                    if (p) p.setValue(value);
+                    if (!p) return;
+                    p.setValue(typeof value === 'boolean' ? value : value * scaleFor(name));
                 } catch(e) {}
             }
 
             function setExp(prop, startVal, powerVal, duration) {
                 try {
+                    var sv = startVal * propScale(prop);
                     var exp = "var t = time - inPoint;\\n" +
                               "var dur = " + duration + ";\\n" +
                               "if (t < 0) t = 0;\\n" +
                               "if (t > dur) t = dur;\\n" +
                               "var progress = t / dur;\\n" +
-                              startVal + " * (1 - Math.pow(progress, " + powerVal + "));";
+                              sv + " * (1 - Math.pow(progress, " + powerVal + "));";
                     prop.expressionEnabled = true;
                     prop.expression = exp;
                 } catch(e) {}
@@ -83,12 +112,13 @@
 
             function setExpExpo(prop, startVal, decayRate, duration) {
                 try {
+                    var sv = startVal * propScale(prop);
                     var exp = "var t = time - inPoint;\\n" +
                               "var dur = " + duration + ";\\n" +
                               "if (t < 0) t = 0;\\n" +
                               "if (t > dur) t = dur;\\n" +
                               "var progress = t / dur;\\n" +
-                              startVal + " * Math.exp(-" + decayRate + " * progress * 3) * (1 - Math.pow(progress, 10));";
+                              sv + " * Math.exp(-" + decayRate + " * progress * 3) * (1 - Math.pow(progress, 10));";
                     prop.expressionEnabled = true;
                     prop.expression = exp;
                 } catch(e) {}
@@ -96,13 +126,16 @@
 
             function setExpZDist(prop, startVal, endVal, powerVal, duration) {
                 try {
-                    var diff = startVal - endVal;
+                    var mul = propScale(prop);
+                    var sv = startVal * mul;
+                    var ev = endVal * mul;
+                    var diff = sv - ev;
                     var exp = "var t = time - inPoint;\\n" +
                               "var dur = " + duration + ";\\n" +
                               "if (t < 0) t = 0;\\n" +
                               "if (t > dur) t = dur;\\n" +
                               "var progress = t / dur;\\n" +
-                              startVal + " - (" + diff + " * Math.pow(progress, " + powerVal + "));";
+                              sv + " - (" + diff + " * Math.pow(progress, " + powerVal + "));";
                     prop.expressionEnabled = true;
                     prop.expression = exp;
                 } catch(e) {}
@@ -110,14 +143,17 @@
             
             function setExpSmooth(prop, startVal, endVal, duration) {
                 try {
-                    var diff = startVal - endVal;
+                    var mul = propScale(prop);
+                    var sv = startVal * mul;
+                    var ev = endVal * mul;
+                    var diff = sv - ev;
                     var exp = "var t = time - inPoint;\\n" +
                               "var dur = " + duration + ";\\n" +
                               "if (t < 0) t = 0;\\n" +
                               "if (t > dur) t = dur;\\n" +
                               "var progress = t / dur;\\n" +
                               "var smoothProgress = progress * progress * (3 - 2 * progress);\\n" +
-                              startVal + " - (" + diff + " * smoothProgress);";
+                              sv + " - (" + diff + " * smoothProgress);";
                     prop.expressionEnabled = true;
                     prop.expression = exp;
                 } catch(e) {}
@@ -126,6 +162,10 @@
             for (var k = 0; k < layersToProcess.length; k++) {
                 var targetLayer = layersToProcess[k];
                 var presetId = isApplyAll ? presets[k % presets.length] : presets[0];
+                var tune = tunings[k % tunings.length] || {};
+                mutStrength = isFinite(tune.strength) ? tune.strength : 1;
+                mutSpeed = isFinite(tune.speed) ? tune.speed : 1;
+                mutBlur = isFinite(tune.blur) ? tune.blur : 1;
 
                 var layerName = "SHAKE";
                 var frames = 19; 
@@ -203,7 +243,7 @@
                 adjLayer.outPoint = startTime + duration;
                 
                 if (presetId === 'soft-shake-1') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 4.70);
                         setProp(fx, "Phase", 3.00);
@@ -216,7 +256,7 @@
                     }
                 } 
                 else if (presetId === 'soft-shake-2') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 2.000);
                         setProp(fx, "Amplitude", 2.600);
@@ -229,7 +269,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-3') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 2.000);
                         setProp(fx, "Amplitude", 5.000);
@@ -242,7 +282,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-4') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 5.00);
                         setProp(fx, "Phase", 0.000);
@@ -261,7 +301,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-5') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 4.00);
                         setProp(fx, "Phase", 0.000);
@@ -280,7 +320,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-6') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 6.00);
                         setProp(fx, "Phase", 0.00);
@@ -296,7 +336,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-7') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 3.00);
                         setProp(fx, "Phase", 0.00);
@@ -312,7 +352,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-8') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 5.50);
                         setProp(fx, "Phase", 0.00);
@@ -328,7 +368,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-9') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 2.000);
                         setProp(fx, "Amplitude", 2.600);
@@ -345,7 +385,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-10') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 1.900);
                         setProp(fx, "Amplitude", 2.300);
@@ -362,7 +402,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-11') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.100);
@@ -380,7 +420,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-12') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.200);
@@ -398,7 +438,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-13') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 4.00);
                         setProp(fx, "Phase", 0.000);
@@ -414,7 +454,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-14') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 5.00);
                         setProp(fx, "Phase", 0.000);
@@ -430,7 +470,7 @@
                     }
                 }
                 else if (presetId === 'soft-shake-15') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.300);
@@ -448,7 +488,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-1') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 2.40);
                         setProp(fx, "Amplitude", 3.60);
@@ -466,7 +506,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-2') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 4.70);
                         setProp(fx, "Phase", 3.00);
@@ -479,7 +519,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-3') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 1.700);
                         setProp(fx, "Amplitude", 2.500);
@@ -499,7 +539,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-4') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 2.400);
                         setProp(fx, "Amplitude", 2.000);
@@ -519,7 +559,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-5') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 5.00);
                         setProp(fx, "Phase", 0.00);
@@ -535,7 +575,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-6') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.100);
@@ -553,7 +593,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-7') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 4.00);
                         setProp(fx, "Phase", 0.00);
@@ -569,7 +609,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-8') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.800);
@@ -587,7 +627,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-9') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.600);
@@ -605,7 +645,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-10') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.100);
@@ -625,7 +665,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-11') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.400);
@@ -643,7 +683,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-12') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.200);
@@ -661,7 +701,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-13') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.300);
@@ -679,7 +719,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-14') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.400);
@@ -697,7 +737,7 @@
                     }
                 }
                 else if (presetId === 'hard-shake-15') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.500);
@@ -715,7 +755,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-1') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 3.400);
                         setProp(fx, "Frequency", 3.10);
@@ -728,7 +768,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-2') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 3.400);
                         setProp(fx, "Amplitude", 3.700); 
@@ -742,7 +782,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-3') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 3.500);
                         setProp(fx, "Amplitude", 3.800); 
@@ -756,7 +796,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-4') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 3.600);
                         setProp(fx, "Amplitude", 3.900);
@@ -770,7 +810,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-5') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 1.900);
@@ -788,7 +828,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-6') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.400);
@@ -806,7 +846,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-7') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.300);
@@ -824,7 +864,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-8') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.600);
@@ -842,7 +882,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-9') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.700);
@@ -860,7 +900,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-10') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.900);
@@ -878,7 +918,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-11') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.600);
@@ -896,7 +936,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-12') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.300);
@@ -914,7 +954,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-13') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.600);
@@ -932,7 +972,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-14') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.700);
@@ -950,7 +990,7 @@
                     }
                 }
                 else if (presetId === 'dirty-shake-15') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.800);
@@ -968,7 +1008,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-1') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 2.400);
                         setProp(fx, "Amplitude", 2.600);
@@ -982,7 +1022,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-2') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 3.800);
                         setProp(fx, "Amplitude", 1.600);
@@ -996,7 +1036,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-3') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 2.000);
                         setProp(fx, "Amplitude", 0.600);
@@ -1010,7 +1050,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-4') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 3.000);
                         setProp(fx, "Amplitude", 1.000);
@@ -1024,7 +1064,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-5') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 3.200);
                         setProp(fx, "Amplitude", 1.300);
@@ -1038,7 +1078,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-6') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 7.000);
                         setProp(fx, "Amplitude", 2.500);
@@ -1052,7 +1092,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-7') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 1.500);
                         setProp(fx, "Amplitude", 2.300);
@@ -1081,7 +1121,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-8') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Dissolve Speed", 2.000);
                         setProp(fx, "Amplitude", 1.600);
@@ -1110,7 +1150,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-9') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.700);
@@ -1128,7 +1168,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-10') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.300);
@@ -1146,7 +1186,7 @@
                     }
                 }
                 else if (presetId === 'fast-shake-11') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.600);
@@ -1160,11 +1200,11 @@
                         setProp(fx, "X Wave Freq", 0.520);
                         setProp(fx, "Y Wave Amp", 65.00);
                         setProp(fx, "Y Wave Freq", 0.610);
-                        setExp(prop(fx, "Dissolve Percent"), 21.00, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Dissolve Percent"), 21.00, 1.0, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-12') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.100);
@@ -1178,11 +1218,11 @@
                         setProp(fx, "X Wave Freq", 0.670);
                         setProp(fx, "Y Wave Amp", 54.00);
                         setProp(fx, "Y Wave Freq", 0.820);
-                        setExp(prop(fx, "Dissolve Percent"), 20.00, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Dissolve Percent"), 20.00, 1.0, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-13') {
-                    var fx = adjLayer.Effects.addProperty("S_Shake");
+                    fx = adjLayer.Effects.addProperty("S_Shake");
                     if (fx) {
                         setProp(fx, "Frequency", 7.00);
                         setProp(fx, "Phase", 0.000);
@@ -1194,11 +1234,11 @@
                         setProp(fx, "X Wave Freq", 0.750);
                         setProp(fx, "Y Wave Amp", 44.00);
                         setProp(fx, "Y Wave Freq", 0.770);
-                        setExp(prop(fx, "Amplitude"), 2.000, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Amplitude"), 2.000, 1.0, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-14') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.200);
@@ -1212,11 +1252,11 @@
                         setProp(fx, "X Wave Freq", 0.620);
                         setProp(fx, "Y Wave Amp", 72.00);
                         setProp(fx, "Y Wave Freq", 0.870);
-                        setExp(prop(fx, "Dissolve Percent"), 18.00, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Dissolve Percent"), 18.00, 1.0, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-15') {
-                    var fx = adjLayer.Effects.addProperty("S_DissolveShake");
+                    fx = adjLayer.Effects.addProperty("S_DissolveShake");
                     if (fx) {
                         setProp(fx, "Transition Dir", 1);
                         setProp(fx, "Dissolve Speed", 2.800);
@@ -1230,10 +1270,15 @@
                         setProp(fx, "X Wave Freq", 0.610);
                         setProp(fx, "Y Wave Amp", 75.00);
                         setProp(fx, "Y Wave Freq", 0.740);
-                        setExp(prop(fx, "Dissolve Percent"), 20.00, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Dissolve Percent"), 20.00, 1.0, duration);
                     }
                 }
+                if (!fx) anyFxMissing = true;
             }
+                if (anyFxMissing) {
+                    app.endUndoGroup();
+                    return "ERROR_FX_MISSING";
+                }
             } catch (e) {
                 app.endUndoGroup();
                 return "ERROR_SCRIPT: " + (e.message || e);
@@ -1258,6 +1303,8 @@
                 if (window.showError) window.showError("Sapphire plugin not found!");
             } else if (result === "EvalScript error.") {
                 if (window.showError) window.showError("Script Error.");
+            } else if (String(result).indexOf("ERROR_SCRIPT") === 0) {
+                if (window.showError) window.showError("Script error: " + String(result).replace("ERROR_SCRIPT: ", ""));
             } else {
                 if (window.showError) window.showError("Error: " + result);
             }

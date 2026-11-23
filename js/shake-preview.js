@@ -84,9 +84,12 @@
         var params = (window.shakeParams && window.shakeParams[id]) || { freq: 5, amp: 2 };
         var meta = (window.shakeCurves && window.shakeCurves[id]) ||
             { fx: 'S_Shake', frames: 19, type: 'expo', a: 1.5 };
+        var tune = window.getShakeTuning
+            ? window.getShakeTuning(id)
+            : { strength: 1, speed: 1, blur: 1 };
         return {
-            freq: params.freq,
-            amp: params.amp,
+            freq: params.freq * tune.speed,
+            amp: params.amp * tune.strength,
             frames: meta.frames,
             fx: meta.fx,
             curve: { type: meta.type, a: meta.a },
@@ -101,8 +104,9 @@
 
     window.buildPreviewKeyframes = function(info) {
         info = info || window.getShakePreviewInfo('');
-        var freq = info.freq || 5;
-        var amp = (info.amp || 2) * 5;
+        var baseAmp = (typeof info.amp === 'number' && isFinite(info.amp)) ? info.amp : 2;
+        var freq = (typeof info.freq === 'number' && isFinite(info.freq)) ? info.freq : 5;
+        var amp = baseAmp * 5;
         var duration = info.duration || (info.frames || 19) / 12;
         var steps = Math.min(240, Math.max(48, Math.ceil(freq * duration * 8)));
         var css = '';
@@ -113,12 +117,11 @@
             var env = window.shakeEnvelope(p, info.curve);
             var x = wave(t, freq, 0.4) * amp * env;
             var y = wave(t, freq * 0.83, 2.1) * amp * env;
-            var r = wave(t, freq * 0.5, 4.2) * (info.amp || 2) * 0.4 * env;
+            var r = wave(t, freq * 0.5, 4.2) * baseAmp * 0.4 * env;
             css += (p * 100).toFixed(2) + '% { transform: translate(' +
                    x.toFixed(2) + 'px, ' + y.toFixed(2) + 'px) rotate(' +
                    r.toFixed(2) + 'deg); } ';
         }
-        css += '100% { transform: translate(0, 0) rotate(0deg); }';
         return css;
     };
 

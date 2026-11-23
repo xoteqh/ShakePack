@@ -26,7 +26,8 @@ body.system-cursor input[type="range"] {
     cursor: pointer !important; 
 }
 
-body:not(.system-cursor) #cp-name,
+body:not(.system-cursor) input:not([type="range"]),
+body:not(.system-cursor) textarea,
 body:not(.system-cursor) #cp-name * { cursor: text !important; }
 body.system-cursor .shake-btn[draggable="true"] { cursor: grab !important; }
 
@@ -122,6 +123,7 @@ body.system-cursor .shake-btn[draggable="true"] { cursor: grab !important; }
     transform: translate(-50%, 10px) scale(0.95); 
     transition: opacity 0.2s ease, transform 0.2s ease;
     white-space: nowrap;
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary);
     background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
@@ -236,4 +238,38 @@ body.system-cursor input[type="range"]:hover {
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     box-shadow: 0 0 10px var(--primary);
     transition: width 0.2s ease-out;
+}
+
+/* Fallback для старых CEP, где color-mix() не поддерживается */
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+    body { background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 60%); }
+    body.theme-frost, body.theme-cosmos { background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.09) 0%, transparent 60%); }
+    .random-btn, #cp-save-btn { background: linear-gradient(45deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)); }
+    #cp-save-btn { background: linear-gradient(45deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08)) !important; box-shadow: 0 0 12px var(--primary) !important; }
+    #cp-save-btn:hover { background: linear-gradient(45deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12)) !important; box-shadow: 0 0 18px var(--primary) !important; }
+    .help-box, .preview-stage { box-shadow: 0 0 20px var(--primary); }
+    .theme-option.active, .scale-option.active, .settings-tab.active, .toggle-switch.active,
+    .cursor-style-option.active, #favorites-list .shake-btn:hover, .cp-card:hover { box-shadow: 0 0 15px var(--primary); }
+    .scale-option:hover { box-shadow: 0 0 10px var(--primary); }
+    #favorites-list .shake-btn { box-shadow: 0 0 10px var(--primary); }
+    .preview-params span { border: 1px solid var(--primary); }
+    .scale-option.active, .settings-tab.active, .cursor-style-option.active { background: rgba(255, 255, 255, 0.08); }
+    .toggle-row.active, .toggle-row.active:hover { background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 15px var(--primary); }
+    .toggle-switch.active { background: rgba(255, 255, 255, 0.1); }
+    .cp-card .cp-tag { border: 1px solid var(--primary) !important; }
+    .cp-card .cp-tag.active { background: rgba(255, 255, 255, 0.1) !important; }
+    #mouse-glow { background: radial-gradient(circle at center, rgba(255, 255, 255, 0.18) 0%, transparent 50%); }
+    #custom-cursor.hover-active { background: rgba(255, 255, 255, 0.18); }
+    #custom-tooltip { box-shadow: 0 0 14px var(--primary); }
+}
+
+/* Замена flex-gap в старых CEF */
+body.no-flex-gap .plugin-footer > * + *,
+body.no-flex-gap .category-title > * + *,
+body.no-flex-gap .settings-tabs > * + *,
+body.no-flex-gap .preview-params > * + *,
+body.no-flex-gap .tune-actions > * + *,
+body.no-flex-gap .cp-card-actions > * + *,
+body.no-flex-gap #my-presets-panel .settings-content > div:first-child > * + * {
+    margin-left: 8px;
 }

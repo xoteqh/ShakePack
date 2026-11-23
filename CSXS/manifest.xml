@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="7.0" ExtensionBundleId="com.shakepack.panel" ExtensionBundleVersion="0.1.4" ExtensionBundleName="ShakePack Bundle">
+<ExtensionManifest Version="7.0" ExtensionBundleId="com.shakepack.panel" ExtensionBundleVersion="0.2.0" ExtensionBundleName="ShakePack Bundle">
     <ExtensionList>
-        <Extension Id="com.shakepack.panel" Version="0.1.4" />
+        <Extension Id="com.shakepack.panel" Version="0.2.0" />
     </ExtensionList>
     <ExecutionEnvironment>
         <HostList>
-            <Host Name="AEFT" Version="[14.0,99.0]" />
+            <Host Name="AEFT" Version="[17.0,99.0]" />
         </HostList>
         <LocaleList>
             <Locale Code="All" />
         </LocaleList>
         <RequiredRuntimeList>
-            <RequiredRuntime Name="CSXS" Version="7.0" />
+            <RequiredRuntime Name="CSXS" Version="10.0" />
         </RequiredRuntimeList>
     </ExecutionEnvironment>
     <DispatchInfoList>
@@ -19,10 +19,6 @@
             <DispatchInfo >
                 <Resources>
                     <MainPath>./index.html</MainPath>
-                    <CEFCommandLine>
-                        <Parameter>--enable-nodejs</Parameter>
-                        <Parameter>--mixed-context</Parameter>
-                    </CEFCommandLine>
                 </Resources>
                 <Lifecycle>
                     <AutoVisible>true</AutoVisible>

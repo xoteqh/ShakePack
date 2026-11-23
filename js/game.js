@@ -78,7 +78,6 @@
                 currentScore++;
                 scoreDisplay.innerText = currentScore;
 
-                // Не трогаем анимацию падения — просто плавно растворяем звезду на месте
                 const rect = star.getBoundingClientRect();
                 star.style.transition = 'opacity 0.2s ease';
                 star.style.opacity = '0';

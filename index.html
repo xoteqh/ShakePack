@@ -257,6 +257,43 @@
         <button id="close-preview" class="close-btn" type="button" style="margin-top: 20px;">Done</button>
     </div>
 
+    <!-- Панель персональных настроек шейка -->
+    <div id="tune-panel" class="theme-panel">
+        <div class="help-box tune-box">
+            <h2 id="tune-title">Shake Settings</h2>
+            <div id="tune-shake-name" class="tune-shake-name"></div>
+
+            <div class="tune-row">
+                <div class="tune-row-head">
+                    <span id="tune-label-strength">Strength</span>
+                    <span id="tune-value-strength" class="tune-value">1.0</span>
+                </div>
+                <input type="range" id="tune-strength" min="0.5" max="3" step="0.1" value="1">
+            </div>
+
+            <div class="tune-row">
+                <div class="tune-row-head">
+                    <span id="tune-label-speed">Speed</span>
+                    <span id="tune-value-speed" class="tune-value">1.0</span>
+                </div>
+                <input type="range" id="tune-speed" min="0.5" max="3" step="0.1" value="1">
+            </div>
+
+            <div class="tune-row">
+                <div class="tune-row-head">
+                    <span id="tune-label-blur">Motion Blur</span>
+                    <span id="tune-value-blur" class="tune-value">1.0</span>
+                </div>
+                <input type="range" id="tune-blur" min="0.5" max="3" step="0.1" value="1">
+            </div>
+
+            <div class="tune-actions">
+                <button id="tune-reset" class="close-btn" type="button">Reset</button>
+                <button id="tune-close" class="close-btn" type="button">Done</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Панель справки -->
     <div id="help-panel" class="theme-panel">
         <div class="help-box">
@@ -273,6 +310,7 @@
                     <li><strong>Превью:</strong> иконка глаза 👁️ рядом с шейком покажет анимацию прямо в панели.</li>
                     <li><strong>Избранное:</strong> звезда ⭐ сохраняет шейк, а кнопка ⭐ в шапке открывает список. Там можно менять порядок перетаскиванием.</li>
                     <li><strong>Темы:</strong> палитра 🎨 в шапке — 12 цветовых тем.</li>
+                    <li><strong>Своя настройка:</strong> шестерёнка ⚙️ на шейке открывает ползунки силы, скорости и Motion Blur (0.5–3). Настройки сохраняются для каждого шейка отдельно, сброс — кнопкой Reset.</li>
                 </ul>
                 <h3>🧩 Создать шейк</h3>
                 <p>Кнопка 🧩 в шапке открывает конструктор. Задай имя, амплитуду (силу), частоту (скорость) и длительность в кадрах, добавь до 3 тегов — превью обновляется сразу. Нажми <strong>«Save Preset»</strong>, чтобы сохранить.</p>
@@ -291,7 +329,7 @@
                     <li><strong>Language</strong> — переключение English / Русский для всей панели и этой справки.</li>
                 </ul>
                 <h3>⚙️ Требования</h3>
-                <p>Нужен установленный <strong>Sapphire Plugin</strong> (эффекты S_Shake и S_DissolveShake) и After Effects 14.0 или новее (CEP-панель).</p>
+                <p>Нужен установленный <strong>Sapphire Plugin</strong> (эффекты S_Shake и S_DissolveShake) и After Effects 2020 или новее (CEP-панель).</p>
             </div>
             <div class="help-content" id="help-text-en">
                 <h3>📖 Basics</h3>
@@ -303,6 +341,7 @@
                     <li><strong>Preview:</strong> the eye icon 👁️ next to a shake plays its animation inside the panel.</li>
                     <li><strong>Favorites:</strong> the star ⭐ saves a shake, and the ⭐ button in the header opens the list. Drag cards there to reorder them.</li>
                     <li><strong>Themes:</strong> the palette 🎨 in the header offers 12 color themes.</li>
+                    <li><strong>Fine tune:</strong> the ⚙️ on any shake opens sliders for Strength, Speed and Motion Blur (0.5–3). Settings are saved per shake; Reset restores defaults.</li>
                 </ul>
                 <h3>🧩 Create Shake</h3>
                 <p>The 🧩 button in the header opens the constructor. Set a name, amplitude (strength), frequency (speed) and duration in frames, add up to 3 tags — the preview updates live. Press <strong>"Save Preset"</strong> to keep it.</p>
@@ -321,7 +360,7 @@
                     <li><strong>Language</strong> — switch English / Русский for the whole panel and this help.</li>
                 </ul>
                 <h3>⚙️ Requirements</h3>
-                <p>Installed <strong>Sapphire Plugin</strong> (S_Shake and S_DissolveShake effects) and After Effects 14.0 or newer (CEP panel).</p>
+                <p>Installed <strong>Sapphire Plugin</strong> (S_Shake and S_DissolveShake effects) and After Effects 2020 or newer (CEP panel).</p>
             </div>
             <button id="close-help" class="close-btn" type="button" style="margin-top: 20px;">Done</button>
         </div>
@@ -398,16 +437,16 @@
     <!-- Основной контент -->
     <div class="container">
         <div class="header">
-            <div id="settings-toggle" class="theme-toggle" title="Settings" style="left: 0; right: auto;">
+            <div id="settings-toggle" class="theme-toggle" tabindex="0" role="button" title="Settings" style="left: 0; right: auto;">
                 <span style="transform: translate(1px, -1px); display: block;">⚙️</span>
             </div>
-            <div id="custom-presets-toggle" class="theme-toggle" title="Custom Presets" style="left: 55px; right: auto;">🧩</div>
+            <div id="custom-presets-toggle" class="theme-toggle" tabindex="0" role="button" title="Custom Presets" style="left: 55px; right: auto;">🧩</div>
 
-            <div id="custom-presets-list-toggle" class="theme-toggle" title="My Presets" style="left: 110px; right: auto;">📁</div>
+            <div id="custom-presets-list-toggle" class="theme-toggle" tabindex="0" role="button" title="My Presets" style="left: 110px; right: auto;">📁</div>
             
-            <div id="theme-toggle" class="theme-toggle" title="Change Theme">🎨</div>
-            <div id="favorites-toggle" class="theme-toggle" title="Favorites" style="right: 55px;">⭐</div>
-            <div id="help-toggle" class="theme-toggle" title="Help / Info" style="right: 110px;">📜</div>
+            <div id="theme-toggle" class="theme-toggle" tabindex="0" role="button" title="Change Theme">🎨</div>
+            <div id="favorites-toggle" class="theme-toggle" tabindex="0" role="button" title="Favorites" style="right: 55px;">⭐</div>
+            <div id="help-toggle" class="theme-toggle" tabindex="0" role="button" title="Help / Info" style="right: 110px;">📜</div>
             
             <h1>SHAKE PACK</h1>
         </div>
@@ -545,7 +584,7 @@
             <span class="footer-separator">|</span>
             <span class="footer-author" id="secret-xote" data-text="xote">xote</span>
             <span class="footer-separator">|</span>
-            <span class="footer-version" id="text-version">v0.1.4 Beta</span>
+            <span class="footer-version" id="text-version">v0.2.0 Beta</span>
             <span class="footer-separator">|</span>
             <span id="sapphire-status" class="sapphire-status checking">
                 <span class="status-dot"></span>
@@ -562,7 +601,7 @@
             <div style="position: absolute; top: 15px; left: 20px; color: #fff; font-size: 14px; z-index: 10; font-weight: bold; letter-spacing: 1px;">Score: <span id="game-score" style="color: var(--primary);">0</span></div>
             <div id="game-close" style="position: absolute; top: 15px; right: 20px; cursor: pointer; color: #fff; font-size: 20px; z-index: 10;">✖</div>
             <div id="game-stars-container"></div>
-            <div id="game-over-screen" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 8, 0.9); z-index: 20; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+            <div id="game-over-screen" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 8, 0.9); z-index: 20; flex-direction: column; justify-content: center; align-items: center; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);">
                 <h2 style="color: var(--primary); font-size: 28px; letter-spacing: 3px; text-shadow: 0 0 15px var(--primary);">GAME OVER</h2>
                 <p style="color: #fff; font-size: 16px;">Your Score: <span id="final-score" style="color: var(--primary); font-weight: bold;">0</span></p>
                 <div style="display: flex; gap: 15px;">
@@ -575,7 +614,7 @@
 
     <!-- ПОДКЛЮЧЕНИЕ БИБЛИОТЕК -->
     <script src="CSInterface.js"></script>
-    <script src="particles.min.js"></script>
+    <script src="particles.js"></script>
     
     <!-- ПОДКЛЮЧЕНИЕ МОДУЛЕЙ -->
     <script src="js/presets.js"></script>
@@ -585,6 +624,7 @@
     <script src="js/ui-panels.js"></script>
     <script src="js/themes.js"></script>
     <script src="js/favorites.js"></script>
+    <script src="js/shake-tuner.js"></script>
     <script src="js/game.js"></script>
     <script src="js/main.js"></script>
     <script src="js/custom-presets.js"></script>

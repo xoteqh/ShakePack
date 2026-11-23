@@ -4,7 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     
-    if (!window.allShakes || !window.shakeParams) {
+    if (!window.allShakes || !window.allShakes.length || !window.shakeParams) {
         console.error("Presets not loaded! Check js/presets.js");
         return;
     }
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(e) {
         var btn = e.target.closest('.shake-btn');
         if (btn) {
-            if (e.target.closest('.fav-star') || e.target.closest('.preview-btn')) return;
+            if (e.target.closest('.fav-star') || e.target.closest('.preview-btn') || e.target.closest('.tune-btn')) return;
             if (e.target.closest('#favorites-list')) return;
 
             var id = btn.id;
@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function runSlotMachine(finalId, onDone) {
         var btn = document.getElementById('random-shake-btn');
         var span = btn && btn.querySelector('.random-text');
-        if (!btn || !span || btn.dataset.slots === 'true') { onDone(); return; }
+        if (!btn || !span) { onDone(); return; }
+        if (btn.dataset.slots === 'true') return;
 
         btn.dataset.slots = 'true';
         var originalText = span.innerText;
@@ -75,7 +76,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 later(function() {
                     span.classList.add('slot-fade');
                     later(function() {
-                        span.innerText = originalText;
+                        var lang = localStorage.getItem('shakePackLang') || 'en';
+                        var tr = window.translations && window.translations[lang];
+                        span.innerText = tr && tr.random ? tr.random : originalText;
                         span.classList.remove('slot-fade');
                         btn.dataset.slots = 'false';
                         btn._slotTimers = null;
@@ -116,7 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const shakeBtns = document.querySelectorAll('.shake-btn');
     shakeBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            if (e.target.closest('.tune-btn')) return;
             this.classList.remove('stagger-in');
             this.style.animationDelay = '';
             this.classList.remove('clicked');
@@ -204,6 +208,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     checkSapphire();
+    if (window.updateSapphireLabel) window.updateSapphireLabel();
+
+    document.querySelectorAll('.theme-toggle[tabindex]').forEach(function(el) {
+        el.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                el.click();
+            }
+        });
+    });
 
     console.log("Shake Pack initialized successfully! 🚀");
 });

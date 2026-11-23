@@ -36,7 +36,7 @@ window.shakeParams = {
     'soft-shake-10': { freq: 5.0,  amp: 2.3 },
     'soft-shake-11': { freq: 6.0,  amp: 3.2 },
     'soft-shake-12': { freq: 6.5,  amp: 3.3 },
-    'soft-shake-13': { freq: 4.0,  amp: 2.5 },
+    'soft-shake-13': { freq: 4.0,  amp: 1.8 },
     'soft-shake-14': { freq: 5.0,  amp: 1.0 },
     'soft-shake-15': { freq: 4.0,  amp: 2.8 },
 

@@ -24,7 +24,7 @@
             .replace(/\n/g, '\\n')
             .replace(/\r/g, '\\r')
             .replace(/\t/g, '\\t')
-            .replace(/[\b\f\v]/g, '');
+            .replace(/[\u2028\u2029\u0000-\u001F]/g, '');
     }
 
     function escapeHtml(value) {
@@ -103,17 +103,20 @@
         const layer = document.getElementById('cp-preview-layer');
         if (!layer) return;
 
-        const amp = parseFloat(document.getElementById('cp-amp').value) || 2;
-        const freq = parseFloat(document.getElementById('cp-freq').value) || 5;
-        const frames = parseInt(document.getElementById('cp-frames').value, 10) || 19;
+        const amp = Number(document.getElementById('cp-amp').value);
+        const freq = Number(document.getElementById('cp-freq').value);
+        const frames = parseInt(document.getElementById('cp-frames').value, 10);
+        const safeAmp = isFinite(amp) ? amp : 2;
+        const safeFreq = isFinite(freq) ? freq : 5;
+        const safeFrames = isFinite(frames) ? frames : 19;
 
         const info = {
-            freq: freq,
-            amp: amp,
-            frames: frames,
+            freq: safeFreq,
+            amp: safeAmp,
+            frames: safeFrames,
             fx: 'S_DissolveShake',
             curve: { type: 'expo', a: 1 },
-            duration: frames / 12
+            duration: safeFrames / 12
         };
 
         const animName = 'cp_preview_shake';
@@ -145,15 +148,15 @@
     // --- 5. СОХРАНЕНИЕ ПРЕСЕТА ---
     function initSaveBtn() {
         const btn = document.getElementById('cp-save-btn');
-        if (!btn) return;
+        const nameInput = document.getElementById('cp-name');
+        if (!btn || !nameInput) return;
 
         btn.addEventListener('click', () => {
-            const nameInput = document.getElementById('cp-name');
             const name = nameInput.value.trim() || 'Custom Shake';
             
             const amp = parseFloat(document.getElementById('cp-amp').value);
             const freq = parseFloat(document.getElementById('cp-freq').value);
-            const frames = parseInt(document.getElementById('cp-frames').value);
+            const frames = parseInt(document.getElementById('cp-frames').value, 10);
 
             const newPreset = {
                 id: 'custom-' + Date.now(),
@@ -368,6 +371,10 @@
 
                     csInterface.evalScript(askPathScript, (result) => {
                         if (result === "CANCEL") return;
+                        if (typeof result !== 'string' || !result || /error/i.test(result)) {
+                            if (window.showError) window.showError('Failed to choose file.');
+                            return;
+                        }
                         
                         const escapedJson = escapeJsxString(jsonString);
                         
@@ -375,10 +382,11 @@
                             var file = new File("${escapeJsxString(result)}");
                             if (file) {
                                 file.encoding = "UTF-8";
-                                file.open("w");
-                                file.write("${escapedJson}");
-                                file.close();
-                                return "SUCCESS";
+                                if (file.open("w")) {
+                                    file.write("${escapedJson}");
+                                    file.close();
+                                    return "SUCCESS";
+                                }
                             }
                             return "ERROR";
                         })();`;
@@ -456,7 +464,7 @@
                             localStorage.setItem('shakePackCustomPresets', JSON.stringify(customPresets));
                             renderPresetsList();
                             if (window.showSuccess) {
-                                window.showSuccess(`Imported ${toAdd.length} presets!${wasTruncated ? ' (max 10)' : ''}`);
+                                window.showSuccess(`Imported ${toAdd.length} presets!${wasTruncated ? ` (${validPresets.length - 10} skipped, limit 10)` : ''}`);
                             }
                         } else {
                             if (window.showError) window.showError('Invalid file format.');
@@ -534,6 +542,9 @@
                 var frames = ${preset.frames};
                 var amp = ${preset.amp};
                 var freq = ${preset.freq};
+                if (!(frames > 0)) frames = 19;
+                if (!isFinite(amp)) amp = 2;
+                if (!isFinite(freq)) freq = 5;
 
                 var adjLayer = comp.layers.addSolid([1, 1, 1], layerName, comp.width, comp.height, comp.pixelAspect);
                 adjLayer.adjustmentLayer = true;
@@ -553,15 +564,18 @@
                     applyProp(fx, "Amplitude", amp);
                     applyProp(fx, "Frequency", freq);
                     applyProp(fx, "Motion Blur", true);
+                    applyProp(fx, "Mo Blur Length", 1.0);
                     applyProp(fx, "Wrap X", 3);
                     applyProp(fx, "Wrap Y", 3);
 
+                    var dissolveStart = Math.min(50, 8 + amp * 2.2);
+                    var decay = (2 + freq * 0.1) * (19 / frames);
                     var exp = "var t = time - inPoint;\\n" +
                               "var dur = " + duration + ";\\n" +
                               "if (t < 0) t = 0;\\n" +
                               "if (t > dur) t = dur;\\n" +
                               "var progress = t / dur;\\n" +
-                              "15.00 * Math.exp(-3 * progress);";
+                              dissolveStart.toFixed(2) + " * Math.exp(-" + decay.toFixed(3) + " * progress);";
 
                     var dissolveProp = findProp(fx, "Dissolve Percent");
                     if (dissolveProp) {

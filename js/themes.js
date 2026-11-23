@@ -31,7 +31,9 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         // --- 1. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ---
-        const savedTheme = localStorage.getItem('shakePackTheme') || 'default';
+        const rawSavedTheme = localStorage.getItem('shakePackTheme') || 'default';
+        const savedTheme = themeNames.indexOf(rawSavedTheme) >= 0 ? rawSavedTheme : 'default';
+        if (savedTheme !== rawSavedTheme) localStorage.setItem('shakePackTheme', savedTheme);
         
         setThemeClass(savedTheme);
 

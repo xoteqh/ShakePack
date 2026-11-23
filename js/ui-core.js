@@ -21,7 +21,7 @@
             catFast: "Fast Shakes",
             github: "github",
             xote: "xote",
-            version: "v0.1.4 Beta",
+            version: "v0.2.0 Beta",
             close: "Done",
             placeholderName: "My Custom Shake",
             cancelBtn: "Cancel",
@@ -40,6 +40,7 @@
             cursorSquare: "Square",
             // Тултипы
             tipPreview: "Click to see preview",
+            tipTune: "Customize this shake",
             tipAddFav: "Add to favorites",
             tipRemFav: "Remove from favorites",
             tipApply: "Click to apply to timeline (select a layer first)",
@@ -53,6 +54,11 @@
             tipSapphire: "Shows whether Sapphire is installed",
             tipCustomPresets: "Create your own shake",
             tipMyPresets: "Open your saved presets",
+            tuneTitle: "Shake Settings",
+            tuneStrength: "Strength",
+            tuneSpeed: "Speed",
+            tuneBlur: "Motion Blur",
+            tuneReset: "Reset",
             // Панели
             howToUse: "How to use",
             favoritesTitle: "Favorite Shakes",
@@ -112,7 +118,7 @@
             catFast: "Быстрые шейки",
             github: "github",
             xote: "xote",
-            version: "v0.1.4 Beta",
+            version: "v0.2.0 Beta",
             close: "Готово",
             placeholderName: "Мой кастомный шейк",
             cancelBtn: "Отмена",
@@ -131,6 +137,7 @@
             cursorSquare: "Квадрат",
             // Тултипы
             tipPreview: "Нажми, чтобы посмотреть превью",
+            tipTune: "Настроить этот шейк",
             tipAddFav: "Добавить в избранное",
             tipRemFav: "Удалить из избранного",
             tipApply: "Нажми, чтобы применить (сначала выдели слой)",
@@ -144,6 +151,11 @@
             tipSapphire: "Показывает, установлен ли Sapphire",
             tipCustomPresets: "Создать свой шейк",
             tipMyPresets: "Открыть сохраненные пресеты",
+            tuneTitle: "Настройки шейка",
+            tuneStrength: "Сила",
+            tuneSpeed: "Скорость",
+            tuneBlur: "Motion Blur",
+            tuneReset: "Сбросить",
             // Панели
             howToUse: "Как пользоваться",
             favoritesTitle: "Избранные шейки",
@@ -189,6 +201,21 @@
             sapphireNoAE: "Sapphire: только в AE",
         }
     };
+
+    (function() {
+        var probe = document.createElement('div');
+        probe.style.cssText = 'display:flex;gap:10px;position:absolute;visibility:hidden;width:0;height:0';
+        var a = document.createElement('div');
+        var b = document.createElement('div');
+        a.style.width = '1px';
+        b.style.width = '1px';
+        probe.appendChild(a);
+        probe.appendChild(b);
+        document.body.appendChild(probe);
+        var supported = (b.getBoundingClientRect().left - a.getBoundingClientRect().right) >= 9;
+        document.body.removeChild(probe);
+        if (!supported) document.body.classList.add('no-flex-gap');
+    })();
 
     window.translations = translations;
 
@@ -257,6 +284,15 @@
         const closePreviewBtn = document.getElementById('close-preview');
         if (closePreviewBtn) closePreviewBtn.innerText = t.close;
 
+        const tuneCloseBtn = document.getElementById('tune-close');
+        if (tuneCloseBtn) tuneCloseBtn.innerText = t.close;
+
+        safeSet('tune-title', t.tuneTitle);
+        safeSet('tune-label-strength', t.tuneStrength);
+        safeSet('tune-label-speed', t.tuneSpeed);
+        safeSet('tune-label-blur', t.tuneBlur);
+        safeSet('tune-reset', t.tuneReset);
+
         // Панели
         safeSet('text-how-to-use', t.howToUse);
         safeSet('text-favorites', t.favoritesTitle);
@@ -324,18 +360,25 @@
     };
 
     // --- УПРАВЛЕНИЕ ПОЛОСОЙ ЗАГРУЗКИ ---
+    let loadingShowTimer = null, loadingHideTimer = null, loadingResetTimer = null;
+
     window.showLoadingBar = function() {
         const barContainer = document.getElementById('loading-bar-container');
         const barFill = document.getElementById('loading-bar-fill');
         if (!barContainer || !barFill) return;
         
+        if (loadingShowTimer) clearTimeout(loadingShowTimer);
+        if (loadingHideTimer) clearTimeout(loadingHideTimer);
+        if (loadingResetTimer) clearTimeout(loadingResetTimer);
+
         barContainer.classList.add('active');
         barFill.style.transition = 'none'; 
         barFill.style.width = '0%';
         barFill.style.background = 'linear-gradient(90deg, var(--primary), var(--secondary))';
         barFill.style.boxShadow = '0 0 10px var(--primary)';
         
-        setTimeout(() => {
+        loadingShowTimer = setTimeout(() => {
+            loadingShowTimer = null;
             barFill.style.transition = 'width 1.2s cubic-bezier(0.25, 1, 0.5, 1)';
             barFill.style.width = '75%'; 
         }, 50);
@@ -357,33 +400,46 @@
             barFill.style.boxShadow = '0 0 10px var(--primary)';
         }
 
-        setTimeout(() => {
+        if (loadingShowTimer) clearTimeout(loadingShowTimer);
+        if (loadingHideTimer) clearTimeout(loadingHideTimer);
+        if (loadingResetTimer) clearTimeout(loadingResetTimer);
+
+        loadingHideTimer = setTimeout(() => {
+            loadingHideTimer = null;
             barContainer.classList.remove('active');
-            setTimeout(() => { barFill.style.width = '0%'; }, 300);
+            loadingResetTimer = setTimeout(() => {
+                loadingResetTimer = null;
+                barFill.style.width = '0%';
+            }, 300);
         }, 500);
     };
+
+    let errorToastTimer = null, successToastTimer = null;
 
     window.showError = function(msg) {
         var toast = document.getElementById('error-toast');
         if (toast) {
+            if (errorToastTimer) clearTimeout(errorToastTimer);
             toast.innerText = msg;
             toast.classList.add('show');
-            setTimeout(function() { toast.classList.remove('show'); }, 2500);
+            errorToastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2500);
         }
     };
 
     window.showSuccess = function(msg) {
         var toast = document.getElementById('success-toast');
         if (toast) {
+            if (successToastTimer) clearTimeout(successToastTimer);
             toast.innerText = msg;
             toast.classList.add('show');
-            setTimeout(function() { toast.classList.remove('show'); }, 2500);
+            successToastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2500);
         }
     };
 
     const globalCursor = document.getElementById('custom-cursor');
     const globalGlow = document.getElementById('mouse-glow');
-    const globalSavedSize = localStorage.getItem('shakePackCursorSize') || '100';
+    const rawCursorSize = Number(localStorage.getItem('shakePackCursorSize'));
+    const globalSavedSize = isFinite(rawCursorSize) ? Math.max(50, Math.min(150, rawCursorSize)) : 100;
     const isCustomCursorEnabled = localStorage.getItem('shakePackCustomCursor') !== 'false';
 
     let savedCursorStyle = localStorage.getItem('shakePackCursorStyle') || 'circle';
@@ -460,15 +516,17 @@
         };
 
         document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb, #sapphire-status')) {
+            if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .tune-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb, #sapphire-status')) {
                 customCursor.classList.add('hover-active');
             }
         });
 
         document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb, #sapphire-status')) {
-                customCursor.classList.remove('hover-active');
-            }
+            const sel = 'button, input, .theme-toggle, .theme-option, .fav-star, .preview-btn, .tune-btn, .lang-btn, .random-btn, .shake-btn, .category-btn, .toggle-switch, .cursor-style-option, .scale-option, .slider-thumb, #sapphire-status';
+            const from = e.target.closest(sel);
+            const to = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest(sel) : null;
+            if (from && from === to) return;
+            if (from) customCursor.classList.remove('hover-active');
         });
         
         document.addEventListener('mousedown', () => {
@@ -491,15 +549,17 @@
         });
 
         document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('.shake-btn, .category-btn, .random-btn, #secret-xote, .theme-toggle, .theme-option, .close-btn, .fav-star, .preview-btn, .lang-btn, #sapphire-status')) {
+            if (e.target.closest('.shake-btn, .category-btn, .random-btn, #secret-xote, .theme-toggle, .theme-option, .close-btn, .fav-star, .preview-btn, .tune-btn, .lang-btn, #sapphire-status')) {
                 mouseGlow.classList.add('active');
             }
         });
 
         document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('.shake-btn, .category-btn, .random-btn, #secret-xote, .theme-toggle, .theme-option, .close-btn, .fav-star, .preview-btn, .lang-btn, #sapphire-status')) {
-                mouseGlow.classList.remove('active');
-            }
+            const sel = '.shake-btn, .category-btn, .random-btn, #secret-xote, .theme-toggle, .theme-option, .close-btn, .fav-star, .preview-btn, .tune-btn, .lang-btn, #sapphire-status';
+            const from = e.target.closest(sel);
+            const to = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest(sel) : null;
+            if (from && from === to) return;
+            if (from) mouseGlow.classList.remove('active');
         });
     }
 
@@ -517,7 +577,8 @@
             const t = translations[savedLang] || translations.en;
             let text = '';
 
-            if (target.closest('.preview-btn')) text = t.tipPreview;
+            if (target.closest('.tune-btn')) text = t.tipTune;
+            else if (target.closest('.preview-btn')) text = t.tipPreview;
             else if (target.closest('.fav-star')) {
                 text = target.closest('.fav-star').classList.contains('active') ? t.tipRemFav : t.tipAddFav;
             }
@@ -550,7 +611,7 @@
         });
 
         document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('.shake-btn') || e.target.closest('.category-btn') || e.target.closest('.random-btn') || e.target.closest('.theme-toggle') || e.target.closest('#favorites-toggle') || e.target.closest('#help-toggle') || e.target.closest('#settings-toggle') || e.target.closest('#custom-presets-toggle') || e.target.closest('#custom-presets-list-toggle') || e.target.closest('#sapphire-status')) {
+            if (e.target.closest('.shake-btn') || e.target.closest('.category-btn') || e.target.closest('.random-btn') || e.target.closest('.preview-btn') || e.target.closest('.fav-star') || e.target.closest('.tune-btn') || e.target.closest('.theme-toggle') || e.target.closest('#favorites-toggle') || e.target.closest('#help-toggle') || e.target.closest('#settings-toggle') || e.target.closest('#custom-presets-toggle') || e.target.closest('#custom-presets-list-toggle') || e.target.closest('#sapphire-status')) {
                 tooltip.classList.remove('show');
             }
         });
@@ -609,11 +670,15 @@
     };
 
     document.addEventListener('DOMContentLoaded', () => {
-        const buttons = document.querySelectorAll('.shake-btn:not(#favorites-list .shake-btn), .category-btn, .random-btn, .theme-toggle, .theme-option, .close-btn, .lang-btn');
+        const buttons = Array.prototype.filter.call(
+            document.querySelectorAll('.shake-btn, .category-btn, .random-btn, .theme-toggle, .theme-option, .close-btn, .lang-btn'),
+            function(btn) { return !btn.closest('#favorites-list'); }
+        );
         buttons.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 if (e.target.tagName === 'A') return;
                 if (e.target.closest('#favorites-list')) return;
+                if (e.target.closest('.tune-btn')) return;
                 createParticles(e);
             });
         });
@@ -667,7 +732,8 @@
                 
                 tab.classList.add('active');
                 const targetId = 'tab-' + tab.getAttribute('data-tab');
-                document.getElementById(targetId).classList.add('active');
+                const targetContent = document.getElementById(targetId);
+                if (targetContent) targetContent.classList.add('active');
             });
         });
 
@@ -714,11 +780,12 @@
         const customCursor = document.getElementById('custom-cursor');
         const mouseGlow = document.getElementById('mouse-glow');
 
-        const savedCursorSize = localStorage.getItem('shakePackCursorSize') || '100';
+        const savedCursorSize = globalSavedSize;
         
         function applyCursorSize(size) {
             if (!customCursor) return;
-            const scaleFactor = size / 100;
+            const numericSize = isFinite(Number(size)) ? Math.max(50, Math.min(150, Number(size))) : 100;
+            const scaleFactor = numericSize / 100;
             customCursor.style.setProperty('--cursor-scale', scaleFactor);
             
             if (mouseGlow) {
@@ -727,8 +794,8 @@
                 mouseGlow.style.height = glowSize + 'px';
             }
 
-            cursorSliders.forEach(slider => slider.value = size);
-            cursorTexts.forEach(txt => txt.innerText = size);
+            cursorSliders.forEach(slider => slider.value = numericSize);
+            cursorTexts.forEach(txt => txt.innerText = numericSize);
         }
         
         applyCursorSize(savedCursorSize);
