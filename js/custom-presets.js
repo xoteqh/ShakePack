@@ -3,7 +3,13 @@
  */
 
 (function() {
-    let customPresets = JSON.parse(localStorage.getItem('shakePackCustomPresets') || '[]');
+    let customPresets = [];
+    try {
+        const savedPresets = JSON.parse(localStorage.getItem('shakePackCustomPresets') || '[]');
+        if (Array.isArray(savedPresets)) customPresets = savedPresets;
+    } catch (e) {
+        customPresets = [];
+    }
     const AVAILABLE_TAGS = ['#Fast', '#Smooth', '#Strong', '#Impact', '#Camera'];
     let selectedTags = [];
 
@@ -439,15 +445,19 @@
                                 return;
                             }
 
+                            const wasTruncated = validPresets.length > 10;
                             const toAdd = validPresets.slice(0, 10).map(p => ({
                                 ...p,
+                                tags: Array.isArray(p.tags) ? p.tags.filter(t => typeof t === 'string') : [],
                                 id: 'custom-' + Date.now() + '-' + Math.floor(Math.random() * 1000)
                             }));
                             
                             customPresets = customPresets.concat(toAdd);
                             localStorage.setItem('shakePackCustomPresets', JSON.stringify(customPresets));
                             renderPresetsList();
-                            if (window.showSuccess) window.showSuccess(`Imported ${toAdd.length} presets!`);
+                            if (window.showSuccess) {
+                                window.showSuccess(`Imported ${toAdd.length} presets!${wasTruncated ? ' (max 10)' : ''}`);
+                            }
                         } else {
                             if (window.showError) window.showError('Invalid file format.');
                         }
@@ -495,23 +505,7 @@
             if (!hasSapphire()) return "ERROR_FX_MISSING";
             
             app.beginUndoGroup("Apply Custom Shake");
-            
-            var layerName = "SHAKE - ${escapeJsxString(preset.name)}";
-            var frames = ${preset.frames};
-            var amp = ${preset.amp};
-            var freq = ${preset.freq};
-            
-            var adjLayer = comp.layers.addSolid([1, 1, 1], layerName, comp.width, comp.height, comp.pixelAspect);
-            adjLayer.adjustmentLayer = true;
-            adjLayer.moveBefore(targetLayer);
-            adjLayer.label = 10;  
-            
-            var duration = frames * comp.frameDuration; 
-            var startTime = comp.time;
-            
-            adjLayer.inPoint = startTime;
-            adjLayer.outPoint = startTime + duration;
-            
+
             // Ищем свойство и по отображаемому имени, и по matchName — чтобы работало в любой локали AE
             function findProp(fx, name) {
                 try { var p = fx.property(name); if (p) return p; } catch(e) {}
@@ -533,43 +527,61 @@
                 try { p.setValue(value); } catch(e) { missingProps.push(name); }
             }
 
+            var resultCode = "SUCCESS";
+
             try {
+                var layerName = "SHAKE - ${escapeJsxString(preset.name)}";
+                var frames = ${preset.frames};
+                var amp = ${preset.amp};
+                var freq = ${preset.freq};
+
+                var adjLayer = comp.layers.addSolid([1, 1, 1], layerName, comp.width, comp.height, comp.pixelAspect);
+                adjLayer.adjustmentLayer = true;
+                adjLayer.moveBefore(targetLayer);
+                adjLayer.label = 10;
+
+                var duration = frames * comp.frameDuration;
+                var startTime = comp.time;
+
+                adjLayer.inPoint = startTime;
+                adjLayer.outPoint = startTime + duration;
+
                 var fx = adjLayer.Effects.addProperty("S_DissolveShake");
                 if (!fx) {
-                    app.endUndoGroup();
-                    return "ERROR_FX_MISSING";
-                }
+                    resultCode = "ERROR_FX_MISSING";
+                } else {
+                    applyProp(fx, "Amplitude", amp);
+                    applyProp(fx, "Frequency", freq);
+                    applyProp(fx, "Motion Blur", true);
+                    applyProp(fx, "Wrap X", 3);
+                    applyProp(fx, "Wrap Y", 3);
 
-                applyProp(fx, "Amplitude", amp);
-                applyProp(fx, "Frequency", freq);
-                applyProp(fx, "Motion Blur", true);
-                applyProp(fx, "Wrap X", 3);
-                applyProp(fx, "Wrap Y", 3);
+                    var exp = "var t = time - inPoint;\\n" +
+                              "var dur = " + duration + ";\\n" +
+                              "if (t < 0) t = 0;\\n" +
+                              "if (t > dur) t = dur;\\n" +
+                              "var progress = t / dur;\\n" +
+                              "15.00 * Math.exp(-3 * progress);";
 
-                var exp = "var t = time - inPoint;\\n" +
-                          "var dur = " + duration + ";\\n" +
-                          "if (t < 0) t = 0;\\n" +
-                          "if (t > dur) t = dur;\\n" +
-                          "var progress = t / dur;\\n" +
-                          "15.00 * Math.exp(-3 * progress);";
-
-                var dissolveProp = findProp(fx, "Dissolve Percent");
-                if (dissolveProp) {
-                    try {
-                        dissolveProp.expressionEnabled = true;
-                        dissolveProp.expression = exp;
-                    } catch(e) {
+                    var dissolveProp = findProp(fx, "Dissolve Percent");
+                    if (dissolveProp) {
+                        try {
+                            dissolveProp.expressionEnabled = true;
+                            dissolveProp.expression = exp;
+                        } catch(e) {
+                            missingProps.push("Dissolve Percent");
+                        }
+                    } else {
                         missingProps.push("Dissolve Percent");
                     }
-                } else {
-                    missingProps.push("Dissolve Percent");
                 }
-            } catch(e) {
+            } catch (e) {
+                resultCode = "ERROR_FX_APPLY";
+            } finally {
                 app.endUndoGroup();
-                return "ERROR_FX_APPLY";
             }
 
-            app.endUndoGroup();
+            if (resultCode !== "SUCCESS") return resultCode;
             if (missingProps.length > 0) return "ERROR_FX_PROPERTY: " + missingProps.join(", ");
             return 'SUCCESS';
         })();`;

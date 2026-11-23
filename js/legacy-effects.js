@@ -43,6 +43,7 @@
             
             app.beginUndoGroup("Apply Shake Preset");
             
+            try {
             var layersToProcess = isApplyAll ? targetLayers : [targetLayers[0]];
             
             // Поиск свойства по имени И по matchName — работает в любой локали AE
@@ -1233,7 +1234,11 @@
                     }
                 }
             }
-            
+            } catch (e) {
+                app.endUndoGroup();
+                return "ERROR_SCRIPT: " + (e.message || e);
+            }
+
             app.endUndoGroup();
             return 'SUCCESS';
         })();`;

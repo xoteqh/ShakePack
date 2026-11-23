@@ -18,28 +18,29 @@
     box-shadow: 0 0 12px var(--primary);
     padding: 0;
     line-height: 1;
-    animation: iconGlow 5s ease-in-out infinite both;
 }
 
-/* Медленное дыхание уже существующего свечения */
+.theme-toggle::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px; right: -1px; bottom: -1px;
+    border-radius: 50%;
+    box-shadow: 0 0 22px var(--primary);
+    opacity: 0.15;
+    pointer-events: none;
+    animation: iconGlow 5s ease-in-out infinite;
+}
 @keyframes iconGlow {
-    0%, 100% { box-shadow: 0 0 12px var(--primary); }
-    50% { box-shadow: 0 0 22px var(--primary); }
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.85; }
 }
 
 .theme-toggle:hover {
-    animation: none;
     transform: scale(1.1);
     box-shadow: 0 0 25px var(--primary);
     background: rgba(35, 35, 48, 0.9);
 }
 
-#settings-toggle { animation-delay: 0s; }
-#custom-presets-toggle { animation-delay: 0.4s; }
-#custom-presets-list-toggle { animation-delay: 0.8s; }
-#theme-toggle { animation-delay: 1.2s; }
-#favorites-toggle { animation-delay: 1.6s; }
-#help-toggle { animation-delay: 2s; }
 
 /* --- ОБЩАЯ ОБЕРТКА ПАНЕЛЕЙ --- */
 .theme-panel {
@@ -76,7 +77,11 @@
     width: 100%;
     max-width: 500px;
     max-height: 80vh;
-    background: #050508;
+    background-color: #050508;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
     border: 2px solid var(--primary);
     border-radius: 12px;
     padding: 20px;
@@ -89,25 +94,13 @@
     padding: 25px 30px !important; 
 }
 
-.help-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
-    pointer-events: none;
-    z-index: 0;
-    border-radius: 10px;
-}
-
 .help-header, .help-content, .help-box .close-btn {
     position: relative;
     z-index: 2;
 }
 
 .close-btn {
+    position: relative;
     background: transparent;
     border: 1px solid var(--primary);
     color: #ffffff;
@@ -119,24 +112,32 @@
     font-size: 14px;
     letter-spacing: 1px;
     transition: all 0.3s;
-    box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 20%, transparent); 
+    box-shadow: 0 0 8px var(--primary);
     text-shadow: 0 0 4px var(--primary); 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.close-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--primary);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+.close-btn:hover::before { opacity: 0.14; }
 .close-btn:hover {
-    background: color-mix(in srgb, var(--primary) 15%, transparent);
     color: #ffffff;
-    box-shadow: 0 0 15px color-mix(in srgb, var(--primary) 40%, transparent), inset 0 0 8px color-mix(in srgb, var(--primary) 30%, transparent);
+    box-shadow: 0 0 18px var(--primary), inset 0 0 10px var(--primary);
 }
 
 /* --- ПАНЕЛЬ ТЕМ --- */
 #theme-panel .help-box {
     max-width: 500px;
     width: 90%;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -457,7 +458,7 @@
     padding-bottom: 40px;
 }
 
-#game-over-screen.active { opacity: 1; pointer-events: auto; }
+#game-over-screen.active { opacity: 1; pointer-events: auto; display: flex; }
 #game-over-screen h2 { margin: 0 0 10px 0; text-align: center; }
 #game-over-screen p { margin: 0; text-align: center; }
 #game-over-screen > div { position: absolute; bottom: 70px; left: 0; width: 100%; display: flex; justify-content: center; gap: 15px; }
@@ -521,7 +522,6 @@
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
-    padding-right: 5px;
     box-sizing: border-box;
     margin-bottom: 10px;
     padding: 10px 15px !important;
@@ -899,14 +899,4 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 .cp-checkbox.selected {
     background: var(--primary);
     box-shadow: 0 0 10px var(--primary);
-}
-
-/* Индикатор */
-.cp-max-warning {
-    color: #ff3366;
-    font-size: 12px;
-    text-align: center;
-    margin-top: 10px;
-    font-weight: bold;
-    display: none;
 }

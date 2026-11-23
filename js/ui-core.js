@@ -21,7 +21,7 @@
             catFast: "Fast Shakes",
             github: "github",
             xote: "xote",
-            version: "v0.1.3 Beta",
+            version: "v0.1.4 Beta",
             close: "Done",
             placeholderName: "My Custom Shake",
             cancelBtn: "Cancel",
@@ -112,7 +112,7 @@
             catFast: "Быстрые шейки",
             github: "github",
             xote: "xote",
-            version: "v0.1.3 Beta",
+            version: "v0.1.4 Beta",
             close: "Готово",
             placeholderName: "Мой кастомный шейк",
             cancelBtn: "Отмена",
@@ -193,8 +193,10 @@
     window.translations = translations;
 
     window.applyLanguage = function(lang) {
-        const t = translations[lang] || translations.en;
-        window.currentLang = lang;
+        const validLang = translations[lang] ? lang : 'en';
+        const t = translations[validLang];
+        window.currentLang = validLang;
+        document.documentElement.lang = validLang;
         
         const safeSet = (id, text) => {
             const el = document.getElementById(id);
@@ -219,20 +221,11 @@
         if (xoteEl) xoteEl.setAttribute('data-text', t.xote);
         safeSet('text-version', t.version);
 
-        // Заголовки настроек
-        const settingTitles = document.querySelectorAll('.settings-title');
-        if (settingTitles.length >= 8) {
-            settingTitles[0].innerText = t.interfaceScale; 
-            settingTitles[1].innerText = t.cursorSize;
-            settingTitles[2].innerText = t.cursorEffects;
-            settingTitles[3].innerText = t.cursorStyle;
-            settingTitles[4].innerText = t.interfaceScale; 
-            settingTitles[5].innerText = t.cursorSize; 
-            settingTitles[6].innerText = t.cursorEffects;
-            settingTitles[7].innerText = t.cursorStyle;
-        }
+        document.querySelectorAll('.settings-title[data-i18n]').forEach(function(el) {
+            const key = el.getAttribute('data-i18n');
+            if (t[key]) el.innerText = t[key];
+        });
 
-        // Описания под переключателями
         safeSet('text-custom-cursor', t.customCursor);
         safeSet('text-custom-cursor-2', t.customCursor);
         safeSet('text-enable-cursor', t.enableCursor);
@@ -243,16 +236,10 @@
         safeSet('text-show-glow-2', t.showGlow);
         safeSet('text-adjust-cursor', t.adjustCursor);
 
-        // Перевод стилей курсора
-        const cursorLabels = document.querySelectorAll('.cursor-style-option span');
-        if (cursorLabels.length >= 6) {
-            cursorLabels[0].innerText = t.cursorCircle;
-            cursorLabels[1].innerText = t.cursorDiamond;
-            cursorLabels[2].innerText = t.cursorSquare;
-            cursorLabels[3].innerText = t.cursorCircle; 
-            cursorLabels[4].innerText = t.cursorDiamond;
-            cursorLabels[5].innerText = t.cursorSquare;
-        }
+        document.querySelectorAll('.cursor-style-option span[data-i18n]').forEach(function(el) {
+            const key = el.getAttribute('data-i18n');
+            if (t[key]) el.innerText = t[key];
+        });
 
         // Кнопки закрытия
         const closeHelpBtn = document.getElementById('close-help');
@@ -319,20 +306,9 @@
             if (span) span.innerText = t.savePreset;
         }
 
-        const cpTitles = document.querySelectorAll('#custom-presets-panel .settings-title');
-        if (cpTitles.length >= 6) {
-            cpTitles[0].innerText = t.presetName;
-            cpTitles[1].innerText = t.amplitude;
-            cpTitles[2].innerText = t.frequency;
-            cpTitles[3].innerText = t.duration;
-            cpTitles[4].innerText = t.tags;
-            cpTitles[5].innerText = t.preview;
-        }
-
         const favList = document.getElementById('favorites-list');
-        if (favList && favList.innerHTML.includes('No favorites yet')) {
-            favList.innerHTML = `<div style="text-align: center; color: #8e8e9c; font-size: 12px; margin-top: 20px;">${t.emptyFavorites}</div>`;
-        }
+        const favEmpty = favList && favList.querySelector('[data-empty-favorites]');
+        if (favEmpty) favEmpty.innerText = t.emptyFavorites;
 
         const helpRu = document.getElementById('help-text-ru');
         const helpEn = document.getElementById('help-text-en');
@@ -356,6 +332,8 @@
         barContainer.classList.add('active');
         barFill.style.transition = 'none'; 
         barFill.style.width = '0%';
+        barFill.style.background = 'linear-gradient(90deg, var(--primary), var(--secondary))';
+        barFill.style.boxShadow = '0 0 10px var(--primary)';
         
         setTimeout(() => {
             barFill.style.transition = 'width 1.2s cubic-bezier(0.25, 1, 0.5, 1)';
@@ -453,6 +431,7 @@
             lastMouseY = e.clientY;
             customCursor.style.left = e.clientX + 'px';
             customCursor.style.top = e.clientY + 'px';
+            customCursor.style.opacity = '1';
         });
 
         window.refreshNeonCursor = function() {
@@ -783,16 +762,16 @@
 
         if (optLangEn) {
             optLangEn.addEventListener('click', () => {
-                window.applyLanguage('en');
                 localStorage.setItem('shakePackLang', 'en');
+                window.applyLanguage('en');
                 updateLangUI('en');
             });
         }
 
         if (optLangRu) {
             optLangRu.addEventListener('click', () => {
-                window.applyLanguage('ru');
                 localStorage.setItem('shakePackLang', 'ru');
+                window.applyLanguage('ru');
                 updateLangUI('ru');
             });
         }

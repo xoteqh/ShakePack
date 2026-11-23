@@ -30,7 +30,7 @@
         const gameOverScreen = document.getElementById('game-over-screen');
         const finalScoreDisplay = document.getElementById('final-score');
         
-        if (!overlay || !area) return;
+        if (!overlay || !area || !scoreDisplay || !starsContainer || !gameOverScreen || !finalScoreDisplay) return;
         
         clearInterval(gameInterval); 
         gameOverScreen.style.display = 'none'; 
@@ -62,7 +62,7 @@
             const star = document.createElement('div');
             star.className = 'falling-star';
             star.innerText = '⭐';
-            star.style.left = Math.random() * (area.clientWidth - 40) + 'px';
+            star.style.left = Math.max(0, Math.random() * (area.clientWidth - 40)) + 'px';
             star.style.top = '-40px';
             star.style.fontSize = (20 + Math.random() * 20) + 'px';
             
@@ -71,19 +71,23 @@
             
             star.onclick = function(e) {
                 e.stopPropagation();
-                if (!gameActive) return;
+                if (!gameActive || star.dataset.hit === '1') return;
+                star.dataset.hit = '1';
+                star.style.pointerEvents = 'none';
                 
                 currentScore++;
                 scoreDisplay.innerText = currentScore;
-                star.style.transform = 'scale(1.5)';
-                star.style.opacity = '0';
-                
+
+                // Не трогаем анимацию падения — просто плавно растворяем звезду на месте
                 const rect = star.getBoundingClientRect();
+                star.style.transition = 'opacity 0.2s ease';
+                star.style.opacity = '0';
+
                 if (window.createSparks) {
                     window.createSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 8);
                 }
                 
-                setTimeout(() => star.remove(), 150);
+                setTimeout(() => star.remove(), 220);
             };
             
             starsContainer.appendChild(star);
@@ -105,6 +109,8 @@
             closeBtn.onclick = function() {
                 gameActive = false;
                 clearInterval(gameInterval);
+                gameOverScreen.style.display = 'none';
+                gameOverScreen.classList.remove('active');
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     overlay.style.display = 'none';

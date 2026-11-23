@@ -3,7 +3,22 @@
  */
 
 (function() {
-    let favorites = JSON.parse(localStorage.getItem('shakeFavorites') || '[]');
+    let favorites = [];
+    try {
+        const savedFavorites = JSON.parse(localStorage.getItem('shakeFavorites') || '[]');
+        if (Array.isArray(savedFavorites)) favorites = savedFavorites;
+    } catch (e) {
+        favorites = [];
+    }
+
+    function escapeHtml(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
 
     let draggedItem = null;
 
@@ -18,12 +33,12 @@
             const desc = btn.querySelector('.btn-desc')?.innerText || '';
             
             btn.innerHTML = `
-                <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-                    <span class="btn-title">${title}</span>
-                    <span class="btn-desc">${desc}</span>
-                </div>
-                <div class="preview-btn" data-id="${id}" data-title="${title}">👁️</div>
-                <div class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${id}">⭐</div>
+                <span style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+                    <span class="btn-title">${escapeHtml(title)}</span>
+                    <span class="btn-desc">${escapeHtml(desc)}</span>
+                </span>
+                <span class="preview-btn" data-id="${escapeHtml(id)}" data-title="${escapeHtml(title)}">👁️</span>
+                <span class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${escapeHtml(id)}">⭐</span>
             `;
             btn.style.cursor = 'none';
         });
@@ -42,13 +57,13 @@
 
         function createShakeBtnHTML(id, title, desc) {
             return `
-                <div class="shake-btn" id="${id}" style="margin-bottom: 0; cursor: grab;" draggable="true">
-                    <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-                        <span class="btn-title">${title}</span>
-                        <span class="btn-desc">${desc}</span>
-                    </div>
-                    <div class="preview-btn" data-id="${id}" data-title="${title}">👁️</div>
-                    <div class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${id}">⭐</div>
+                <div class="shake-btn" data-id="${escapeHtml(id)}" style="margin-bottom: 0; cursor: grab;" draggable="true">
+                    <span style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+                        <span class="btn-title">${escapeHtml(title)}</span>
+                        <span class="btn-desc">${escapeHtml(desc)}</span>
+                    </span>
+                    <span class="preview-btn" data-id="${escapeHtml(id)}" data-title="${escapeHtml(title)}">👁️</span>
+                    <span class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${escapeHtml(id)}">⭐</span>
                 </div>
             `;
         }
@@ -60,7 +75,7 @@
             if (favorites.length === 0) {
                 const savedLang = localStorage.getItem('shakePackLang') || 'en';
                 const emptyText = savedLang === 'ru' ? 'Пока нет избранных шейков. Нажми ⭐ на любом шейке!' : 'No favorites yet. Click ⭐ on any shake!';
-                favList.innerHTML = `<div style="text-align: center; color: #8e8e9c; font-size: 12px; margin-top: 20px;">${emptyText}</div>`;
+                favList.innerHTML = `<div data-empty-favorites="true" style="text-align: center; color: #8e8e9c; font-size: 12px; margin-top: 20px;">${escapeHtml(emptyText)}</div>`;
                 return;
             }
             
@@ -101,7 +116,7 @@
 
                 if (isCurrentlyFav) {
                     const isInsideFavPanel = e.target.closest('#favorites-list');
-                    const favCard = isInsideFavPanel ? document.querySelector(`#favorites-list .shake-btn#${id}`) : null;
+                    const favCard = isInsideFavPanel ? favList.querySelector(`.shake-btn[data-id="${id}"]`) : null;
                     
                     if (favCard) {
                         const rect = favCard.getBoundingClientRect();
@@ -154,7 +169,7 @@
             favList.addEventListener('click', (e) => {
                 const btn = e.target.closest('.shake-btn');
                 if (btn && !e.target.classList.contains('fav-star') && !e.target.classList.contains('preview-btn')) {
-                    const btnId = btn.id;
+                    const btnId = btn.getAttribute('data-id');
                     if (typeof applyPreset === 'function') applyPreset(btnId);
                 }
             });
@@ -173,7 +188,9 @@
                 const target = e.target.closest('.shake-btn');
                 if (!target) return;
                 draggedItem = target;
-                setTimeout(() => target.classList.add('dragging'), 0);
+                setTimeout(() => {
+                    if (draggedItem === target) target.classList.add('dragging');
+                }, 0);
             });
 
             favList.addEventListener('dragend', () => {
@@ -182,7 +199,7 @@
                     draggedItem = null;
                 }
                 const newFavorites = [];
-                favList.querySelectorAll('.shake-btn').forEach(btn => newFavorites.push(btn.id));
+                favList.querySelectorAll('.shake-btn').forEach(btn => newFavorites.push(btn.getAttribute('data-id')));
                 favorites = newFavorites;
                 localStorage.setItem('shakeFavorites', JSON.stringify(favorites));
             });

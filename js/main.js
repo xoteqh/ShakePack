@@ -43,22 +43,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
         btn.classList.add('slot-machine');
         var index = 0;
+        var timers = [];
+        btn._slotTimers = timers;
+
+        if (!window._slotCleanupBound) {
+            window._slotCleanupBound = true;
+            window.addEventListener('beforeunload', function() {
+                document.querySelectorAll('.random-btn').forEach(function(b) {
+                    if (b._slotTimers) b._slotTimers.forEach(clearTimeout);
+                });
+            });
+        }
+
+        function later(fn, delay) {
+            timers.push(setTimeout(fn, delay));
+        }
 
         function tick() {
             if (index < steps.length) {
                 span.innerText = shakeNameById(steps[index]);
                 index++;
-                setTimeout(tick, index < steps.length ? 55 + index * 14 : 0);
+                later(tick, index < steps.length ? 55 + index * 14 : 0);
             } else {
-                onDone();
+                try {
+                    onDone();
+                } catch (e) {
+                    console.error('applyPreset failed:', e);
+                }
                 btn.classList.remove('slot-machine');
 
-                setTimeout(function() {
+                later(function() {
                     span.classList.add('slot-fade');
-                    setTimeout(function() {
+                    later(function() {
                         span.innerText = originalText;
                         span.classList.remove('slot-fade');
                         btn.dataset.slots = 'false';
+                        btn._slotTimers = null;
                     }, 320);
                 }, 3000);
             }
@@ -85,15 +105,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            this.classList.remove('clicked');
-            void this.offsetWidth;
-            this.classList.add('clicked');
-        });
-
-        btn.addEventListener('click', function() {
-            if (this.timeoutId) clearTimeout(this.timeoutId);
             var self = this;
-            this.timeoutId = setTimeout(function() { self.classList.remove('clicked'); }, 200); 
+            if (self.clickTimeout) clearTimeout(self.clickTimeout);
+            self.classList.remove('clicked');
+            void self.offsetWidth;
+            self.classList.add('clicked');
+            self.clickTimeout = setTimeout(function() { self.classList.remove('clicked'); }, 320);
         });
     });
 

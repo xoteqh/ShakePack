@@ -26,6 +26,10 @@ body.system-cursor input[type="range"] {
     cursor: pointer !important; 
 }
 
+body:not(.system-cursor) #cp-name,
+body:not(.system-cursor) #cp-name * { cursor: text !important; }
+body.system-cursor .shake-btn[draggable="true"] { cursor: grab !important; }
+
 #custom-cursor {
     position: fixed;
     top: 0; left: 0;
@@ -36,7 +40,7 @@ body.system-cursor input[type="range"] {
     transform: translate(-50%, -50%) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
     transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s, transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
     will-change: left, top, transform;
-    opacity: 1;
+    opacity: 0;
     border: 2px solid var(--primary);
     border-radius: 50%;
     box-shadow: 0 0 10px var(--primary), inset 0 0 5px var(--primary);
@@ -44,7 +48,7 @@ body.system-cursor input[type="range"] {
 
 #custom-cursor.hidden {
     opacity: 0 !important;
-    transform: translate(-50%, -50%) scale(0.5) scale(var(--cursor-scale, 1)) !important;
+    transform: translate(-50%, -50%) scale(0.5) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1)) !important;
 }
 
 

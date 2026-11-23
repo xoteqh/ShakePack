@@ -18,18 +18,29 @@
         volt:    { particles: { number: { value: 30 }, color: { value: "#FFEA00" }, size: { value: 3 }, move: { speed: 1.5 } } }
     };
 
+    const themeNames = Object.keys(particleConfigs);
+    let initParticlesTimer = null;
+
+    function setThemeClass(theme) {
+        themeNames.forEach(function(name) {
+            document.body.classList.remove('theme-' + name);
+        });
+        document.body.className = document.body.className.replace(/\s+/g, ' ').trim();
+        document.body.classList.add('theme-' + (themeNames.indexOf(theme) >= 0 ? theme : 'default'));
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         // --- 1. ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ---
         const savedTheme = localStorage.getItem('shakePackTheme') || 'default';
         
-        document.body.className = document.body.className.replace(/theme-\w+/g, '').trim();
-        document.body.classList.add('theme-' + savedTheme);
+        setThemeClass(savedTheme);
 
         document.querySelectorAll('.theme-option').forEach(option => {
             option.classList.toggle('active', option.getAttribute('data-theme') === savedTheme);
         });
 
-        setTimeout(() => {
+        initParticlesTimer = setTimeout(() => {
+            initParticlesTimer = null;
             if (typeof particlesJS !== 'undefined') {
                 const initialConfig = particleConfigs[savedTheme] || particleConfigs.default;
                 particlesJS("particles-js", initialConfig);
@@ -75,8 +86,12 @@
 
                 const theme = option.getAttribute('data-theme');
 
-                document.body.className = document.body.className.replace(/theme-\w+/g, '');
-                document.body.classList.add(`theme-${theme}`);
+                if (initParticlesTimer) {
+                    clearTimeout(initParticlesTimer);
+                    initParticlesTimer = null;
+                }
+
+                setThemeClass(theme);
 
                 if (typeof particlesJS !== 'undefined') {
                     particlesJS("particles-js", particleConfigs[theme] || particleConfigs.default);

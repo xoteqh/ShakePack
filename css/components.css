@@ -37,7 +37,6 @@
 
 .random-btn.slot-machine { box-shadow: 0 0 30px var(--primary); }
 .random-btn.slot-machine .random-text { animation: slotPulse 0.12s ease-in-out infinite alternate; }
-.random-text { transition: opacity 0.32s ease; }
 .random-text.slot-fade { opacity: 0; }
 @keyframes slotPulse {
     from { opacity: 0.6; transform: scaleY(0.9); }
@@ -51,6 +50,7 @@
     font-weight: 600;
     position: relative;
     z-index: 2;
+    transition: opacity 0.32s ease;
     background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 25%, #ffffff 50%, var(--secondary) 75%, var(--primary) 100%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
@@ -259,7 +259,6 @@ body.theme-volt .cat-fast { --cat-color: #6E6E00; background: linear-gradient(13
 
 body.theme-purple .category::before { box-shadow: 0 0 15px var(--cat-color); }
 body.theme-purple .shake-btn:hover { box-shadow: 0 0 20px color-mix(in srgb, var(--primary) 30%, transparent); }
-body.theme-purple .subtitle span::before { filter: drop-shadow(0 0 5px rgba(255, 0, 255, 0.6)); }
 
 /* --- КАРТОЧКИ ШЕЙКОВ --- */
 .shake-btn {
