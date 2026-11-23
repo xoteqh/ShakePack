@@ -15,16 +15,31 @@
     cursor: pointer;
     z-index: 100;
     transition: all 0.3s ease;
-    box-shadow: 0 0 15px var(--primary);
+    box-shadow: 0 0 12px var(--primary);
     padding: 0;
     line-height: 1;
+    animation: iconGlow 5s ease-in-out infinite both;
+}
+
+/* Медленное дыхание уже существующего свечения */
+@keyframes iconGlow {
+    0%, 100% { box-shadow: 0 0 12px var(--primary); }
+    50% { box-shadow: 0 0 22px var(--primary); }
 }
 
 .theme-toggle:hover {
+    animation: none;
     transform: scale(1.1);
     box-shadow: 0 0 25px var(--primary);
     background: rgba(35, 35, 48, 0.9);
 }
+
+#settings-toggle { animation-delay: 0s; }
+#custom-presets-toggle { animation-delay: 0.4s; }
+#custom-presets-list-toggle { animation-delay: 0.8s; }
+#theme-toggle { animation-delay: 1.2s; }
+#favorites-toggle { animation-delay: 1.6s; }
+#help-toggle { animation-delay: 2s; }
 
 /* --- ОБЩАЯ ОБЕРТКА ПАНЕЛЕЙ --- */
 .theme-panel {
@@ -352,6 +367,7 @@
     box-shadow: 0 0 20px var(--primary);
     letter-spacing: 2px;
 }
+
 
 .preview-params {
     display: flex;
@@ -730,6 +746,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 .icon-circle { border-radius: 50%; width: 15px; height: 15px; }
 .icon-square { border-radius: 2px; width: 14px; height: 14px; transform: translateY(1px); }
 .icon-diamond { transform: rotate(45deg); border-radius: 2px; width: 12px; height: 12px; margin: 2px; }
+
 
 /* --- ПАНЕЛИ ПРЕСЕТОВ --- */
 

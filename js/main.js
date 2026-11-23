@@ -22,6 +22,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    function shakeNameById(id) {
+        var btn = document.getElementById(id);
+        var title = btn && btn.querySelector('.btn-title');
+        return title ? title.innerText : id;
+    }
+
+    function runSlotMachine(finalId, onDone) {
+        var btn = document.getElementById('random-shake-btn');
+        var span = btn && btn.querySelector('.random-text');
+        if (!btn || !span || btn.dataset.slots === 'true') { onDone(); return; }
+
+        btn.dataset.slots = 'true';
+        var originalText = span.innerText;
+        var steps = [];
+        for (var i = 0; i < 9; i++) {
+            steps.push(window.allShakes[Math.floor(Math.random() * window.allShakes.length)]);
+        }
+        steps.push(finalId);
+
+        btn.classList.add('slot-machine');
+        var index = 0;
+
+        function tick() {
+            if (index < steps.length) {
+                span.innerText = shakeNameById(steps[index]);
+                index++;
+                setTimeout(tick, index < steps.length ? 55 + index * 14 : 0);
+            } else {
+                onDone();
+                btn.classList.remove('slot-machine');
+
+                setTimeout(function() {
+                    span.classList.add('slot-fade');
+                    setTimeout(function() {
+                        span.innerText = originalText;
+                        span.classList.remove('slot-fade');
+                        btn.dataset.slots = 'false';
+                    }, 320);
+                }, 3000);
+            }
+        }
+        tick();
+    }
+
     var actionButtons = document.querySelectorAll('#random-shake-btn, #apply-all-btn');
     
     actionButtons.forEach(function(btn) {
@@ -35,7 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (typeof window.applyPreset === 'function') window.applyPreset(randomIds); 
             } else {
                 var randomIndex = Math.floor(Math.random() * window.allShakes.length);
-                if (typeof window.applyPreset === 'function') window.applyPreset(window.allShakes[randomIndex]);
+                var finalId = window.allShakes[randomIndex];
+                runSlotMachine(finalId, function() {
+                    if (typeof window.applyPreset === 'function') window.applyPreset(finalId);
+                });
             }
 
             this.classList.remove('clicked');
@@ -53,6 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const shakeBtns = document.querySelectorAll('.shake-btn');
     shakeBtns.forEach(btn => {
         btn.addEventListener('click', function() {
+            this.classList.remove('stagger-in');
+            this.style.animationDelay = '';
             this.classList.remove('clicked');
             void this.offsetWidth; 
             this.classList.add('clicked');

@@ -45,8 +45,26 @@
             
             var layersToProcess = isApplyAll ? targetLayers : [targetLayers[0]];
             
+            // Поиск свойства по имени И по matchName — работает в любой локали AE
+            function findFxProp(fx, name) {
+                try { var p = fx.property(name); if (p) return p; } catch(e) {}
+                try {
+                    var key = String(name).toLowerCase();
+                    for (var i = 1; i <= fx.numProperties; i++) {
+                        var cand = fx.property(i);
+                        var nm = ((cand.matchName || '') + ' ' + (cand.name || '')).toLowerCase();
+                        if (nm.indexOf(key) >= 0) return cand;
+                    }
+                } catch(e) {}
+                return null;
+            }
+            function prop(fx, name) { return findFxProp(fx, name); }
+
             function setProp(fx, name, value) {
-                try { fx.property(name).setValue(value); } catch(e) {}
+                try {
+                    var p = findFxProp(fx, name);
+                    if (p) p.setValue(value);
+                } catch(e) {}
             }
 
             function setExp(prop, startVal, powerVal, duration) {
@@ -192,8 +210,8 @@
                         setProp(fx, "Mo Blur Length", 1.26);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Amplitude"), 1.300, 0.5, duration);
-                        setExpZDist(fx.property("Z Dist"), 1.100, 1.000, 0.5, duration);
+                        setExp(prop(fx, "Amplitude"), 1.300, 0.5, duration);
+                        setExpZDist(prop(fx, "Z Dist"), 1.100, 1.000, 0.5, duration);
                     }
                 } 
                 else if (presetId === 'soft-shake-2') {
@@ -206,7 +224,7 @@
                         setProp(fx, "Mo Blur Length", 1.200);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 15.00, 0.7, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 15.00, 0.7, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-3') {
@@ -219,7 +237,7 @@
                         setProp(fx, "Mo Blur Length", 1.200);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 7.00, 0.4, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 7.00, 0.4, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-4') {
@@ -238,7 +256,7 @@
                         setProp(fx, "Y Rand Freq", 1.000);
                         setProp(fx, "Y Wave Amp", 0.00);
                         setProp(fx, "Y Wave Freq", 0.550);
-                        setExp(fx.property("Amplitude"), 1.200, 0.3, duration);
+                        setExp(prop(fx, "Amplitude"), 1.200, 0.3, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-5') {
@@ -257,7 +275,7 @@
                         setProp(fx, "Y Rand Freq", 1.000);
                         setProp(fx, "Y Wave Amp", 0.00);
                         setProp(fx, "Y Wave Freq", 0.500);
-                        setExp(fx.property("Amplitude"), 1.300, 0.3, duration);
+                        setExp(prop(fx, "Amplitude"), 1.300, 0.3, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-6') {
@@ -273,7 +291,7 @@
                         setProp(fx, "X Wave Freq", 1.03);
                         setProp(fx, "Y Wave Amp", 21.00);
                         setProp(fx, "Y Wave Freq", 0.65);
-                        setExpExpo(fx.property("Amplitude"), 2.300, 1.5, duration);
+                        setExpExpo(prop(fx, "Amplitude"), 2.300, 1.5, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-7') {
@@ -289,7 +307,7 @@
                         setProp(fx, "X Wave Freq", 1.62);
                         setProp(fx, "Y Wave Amp", 24.00);
                         setProp(fx, "Y Wave Freq", 0.80);
-                        setExpExpo(fx.property("Amplitude"), 1.000, 1.2, duration);
+                        setExpExpo(prop(fx, "Amplitude"), 1.000, 1.2, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-8') {
@@ -305,7 +323,7 @@
                         setProp(fx, "X Wave Freq", 0.86);
                         setProp(fx, "Y Wave Amp", 45.00);
                         setProp(fx, "Y Wave Freq", 0.88);
-                        setExpExpo(fx.property("Amplitude"), 1.600, 1.5, duration);
+                        setExpExpo(prop(fx, "Amplitude"), 1.600, 1.5, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-9') {
@@ -322,7 +340,7 @@
                         setProp(fx, "X Wave Freq", 2.790);
                         setProp(fx, "Y Wave Amp", 24.00);
                         setProp(fx, "Y Wave Freq", 1.990);
-                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 14.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-10') {
@@ -339,7 +357,7 @@
                         setProp(fx, "X Wave Freq", 1.100);
                         setProp(fx, "Y Wave Amp", 25.00);
                         setProp(fx, "Y Wave Freq", 1.140);
-                        setExpSmooth(fx.property("Dissolve Percent"), 13.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 13.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-11') {
@@ -357,7 +375,7 @@
                         setProp(fx, "X Wave Freq", 0.670);
                         setProp(fx, "Y Wave Amp", 51.00);
                         setProp(fx, "Y Wave Freq", 0.720);
-                        setExpSmooth(fx.property("Dissolve Percent"), 12.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 12.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-12') {
@@ -375,7 +393,7 @@
                         setProp(fx, "X Wave Freq", 0.820);
                         setProp(fx, "Y Wave Amp", 85.00);
                         setProp(fx, "Y Wave Freq", 0.640);
-                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 14.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-13') {
@@ -391,7 +409,7 @@
                         setProp(fx, "X Wave Freq", 0.660);
                         setProp(fx, "Y Wave Amp", 34.00);
                         setProp(fx, "Y Wave Freq", 0.530);
-                        setExpSmooth(fx.property("Amplitude"), 1.800, 0.00, duration);
+                        setExpSmooth(prop(fx, "Amplitude"), 1.800, 0.00, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-14') {
@@ -407,7 +425,7 @@
                         setProp(fx, "X Wave Freq", 0.810);
                         setProp(fx, "Y Wave Amp", 24.00);
                         setProp(fx, "Y Wave Freq", 0.790);
-                        setExpSmooth(fx.property("Amplitude"), 1.000, 0.00, duration);
+                        setExpSmooth(prop(fx, "Amplitude"), 1.000, 0.00, duration);
                     }
                 }
                 else if (presetId === 'soft-shake-15') {
@@ -425,7 +443,7 @@
                         setProp(fx, "X Wave Freq", 0.590);
                         setProp(fx, "Y Wave Amp", 41.00);
                         setProp(fx, "Y Wave Freq", 1.090);
-                        setExpSmooth(fx.property("Dissolve Percent"), 16.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 16.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-1') {
@@ -442,8 +460,8 @@
                         setProp(fx, "Z Wave Amp", 0.00);
                         setProp(fx, "Z Wave Freq", 0.500);
                         setProp(fx, "Z Phase", 0.000);
-                        setExp(fx.property("Dissolve Percent"), 12.00, 0.3, duration);
-                        setExp(fx.property("Z Rand Amp"), 100.00, 0.3, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 12.00, 0.3, duration);
+                        setExp(prop(fx, "Z Rand Amp"), 100.00, 0.3, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-2') {
@@ -455,8 +473,8 @@
                         setProp(fx, "Mo Blur Length", 1.26);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Amplitude"), 1.300, 0.2, duration);
-                        setExpZDist(fx.property("Z Dist"), 1.100, 1.000, 0.2, duration);
+                        setExp(prop(fx, "Amplitude"), 1.300, 0.2, duration);
+                        setExpZDist(prop(fx, "Z Dist"), 1.100, 1.000, 0.2, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-3') {
@@ -475,8 +493,8 @@
                         setProp(fx, "Z Phase", 3.800);
                         setProp(fx, "X Rand Amp", 192.00);
                         setProp(fx, "Y Rand Amp", 96.00);
-                        setExp(fx.property("Dissolve Percent"), 9.00, 0.3, duration);
-                        setExp(fx.property("Z Rand Amp"), 300.00, 0.3, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 9.00, 0.3, duration);
+                        setExp(prop(fx, "Z Rand Amp"), 300.00, 0.3, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-4') {
@@ -496,7 +514,7 @@
                         setProp(fx, "Y Rand Freq", 1.000);
                         setProp(fx, "Y Wave Amp", 0.00);
                         setProp(fx, "Y Wave Freq", 0.500);
-                        setExp(fx.property("Dissolve Percent"), 18.00, 0.3, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 18.00, 0.3, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-5') {
@@ -512,7 +530,7 @@
                         setProp(fx, "X Wave Freq", 1.06);
                         setProp(fx, "Y Wave Amp", 25.00);
                         setProp(fx, "Y Wave Freq", 1.39);
-                        setExp(fx.property("Amplitude"), 1.200, 1.0, duration);
+                        setExp(prop(fx, "Amplitude"), 1.200, 1.0, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-6') {
@@ -530,7 +548,7 @@
                         setProp(fx, "X Wave Freq", 0.980);
                         setProp(fx, "Y Wave Amp", 37.00);
                         setProp(fx, "Y Wave Freq", 1.390);
-                        setExpExpo(fx.property("Dissolve Percent"), 22.00, 1.0, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 22.00, 1.0, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-7') {
@@ -546,7 +564,7 @@
                         setProp(fx, "X Wave Freq", 0.58);
                         setProp(fx, "Y Wave Amp", 49.00);
                         setProp(fx, "Y Wave Freq", 0.67);
-                        setExpExpo(fx.property("Amplitude"), 2.600, 1.5, duration);
+                        setExpExpo(prop(fx, "Amplitude"), 2.600, 1.5, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-8') {
@@ -564,7 +582,7 @@
                         setProp(fx, "X Wave Freq", 0.830);
                         setProp(fx, "Y Wave Amp", 30.00);
                         setProp(fx, "Y Wave Freq", 0.880);
-                        setExpExpo(fx.property("Dissolve Percent"), 23.00, 1.5, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 23.00, 1.5, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-9') {
@@ -582,7 +600,7 @@
                         setProp(fx, "X Wave Freq", 0.900);
                         setProp(fx, "Y Wave Amp", 30.00);
                         setProp(fx, "Y Wave Freq", 1.130);
-                        setExpExpo(fx.property("Dissolve Percent"), 28.00, 1.5, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 28.00, 1.5, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-10') {
@@ -602,7 +620,7 @@
                         setProp(fx, "Y Wave Freq", 0.730);
                         setProp(fx, "X Rand Amp", 0.00);
                         setProp(fx, "Y Rand Amp", 0.00);
-                        setExpExpo(fx.property("Dissolve Percent"), 30.00, 1.2, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 30.00, 1.2, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-11') {
@@ -620,7 +638,7 @@
                         setProp(fx, "X Wave Freq", 0.840);
                         setProp(fx, "Y Wave Amp", 78.00);
                         setProp(fx, "Y Wave Freq", 0.850);
-                        setExpSmooth(fx.property("Dissolve Percent"), 12.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 12.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-12') {
@@ -638,7 +656,7 @@
                         setProp(fx, "X Wave Freq", 0.600);
                         setProp(fx, "Y Wave Amp", 46.00);
                         setProp(fx, "Y Wave Freq", 0.560);
-                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 14.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-13') {
@@ -656,7 +674,7 @@
                         setProp(fx, "X Wave Freq", 0.560);
                         setProp(fx, "Y Wave Amp", 59.00);
                         setProp(fx, "Y Wave Freq", 0.670);
-                        setExpSmooth(fx.property("Dissolve Percent"), 13.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 13.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-14') {
@@ -674,7 +692,7 @@
                         setProp(fx, "X Wave Freq", 0.600);
                         setProp(fx, "Y Wave Amp", 78.00);
                         setProp(fx, "Y Wave Freq", 0.580);
-                        setExpSmooth(fx.property("Dissolve Percent"), 13.50, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 13.50, 0.00, duration);
                     }
                 }
                 else if (presetId === 'hard-shake-15') {
@@ -692,7 +710,7 @@
                         setProp(fx, "X Wave Freq", 0.800);
                         setProp(fx, "Y Wave Amp", 43.00);
                         setProp(fx, "Y Wave Freq", 0.500);
-                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 14.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-1') {
@@ -705,7 +723,7 @@
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
                         setProp(fx, "Dissolve Percent", 24.00); 
-                        setExp(fx.property("Amplitude"), 3.200, 0.3, duration); 
+                        setExp(prop(fx, "Amplitude"), 3.200, 0.3, duration); 
                     }
                 }
                 else if (presetId === 'dirty-shake-2') {
@@ -719,7 +737,7 @@
                         setProp(fx, "Seed", 0.960);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExpExpo(fx.property("Dissolve Percent"), 31.00, 2.0, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 31.00, 2.0, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-3') {
@@ -733,7 +751,7 @@
                         setProp(fx, "Seed", 0.310);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 28.00, 0.2, duration); 
+                        setExp(prop(fx, "Dissolve Percent"), 28.00, 0.2, duration); 
                     }
                 }
                 else if (presetId === 'dirty-shake-4') {
@@ -747,7 +765,7 @@
                         setProp(fx, "Seed", 0.450);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 29.00, 0.15, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 29.00, 0.15, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-5') {
@@ -765,7 +783,7 @@
                         setProp(fx, "X Wave Freq", 0.590);
                         setProp(fx, "Y Wave Amp", 41.00);
                         setProp(fx, "Y Wave Freq", 0.760);
-                        setExpExpo(fx.property("Dissolve Percent"), 18.00, 0.6, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 18.00, 0.6, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-6') {
@@ -783,7 +801,7 @@
                         setProp(fx, "X Wave Freq", 0.840);
                         setProp(fx, "Y Wave Amp", 54.00);
                         setProp(fx, "Y Wave Freq", 1.200);
-                        setExpExpo(fx.property("Dissolve Percent"), 22.00, 1.5, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 22.00, 1.5, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-7') {
@@ -801,7 +819,7 @@
                         setProp(fx, "X Wave Freq", 0.620);
                         setProp(fx, "Y Wave Amp", 40.00);
                         setProp(fx, "Y Wave Freq", 0.850);
-                        setExpExpo(fx.property("Dissolve Percent"), 28.00, 1.5, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 28.00, 1.5, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-8') {
@@ -819,7 +837,7 @@
                         setProp(fx, "X Wave Freq", 0.840);
                         setProp(fx, "Y Wave Amp", 24.00);
                         setProp(fx, "Y Wave Freq", 0.710);
-                        setExpExpo(fx.property("Dissolve Percent"), 25.00, 1.5, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 25.00, 1.5, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-9') {
@@ -837,7 +855,7 @@
                         setProp(fx, "X Wave Freq", 0.740);
                         setProp(fx, "Y Wave Amp", 32.00);
                         setProp(fx, "Y Wave Freq", 0.900);
-                        setExpExpo(fx.property("Dissolve Percent"), 23.00, 1.0, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 23.00, 1.0, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-10') {
@@ -855,7 +873,7 @@
                         setProp(fx, "X Wave Freq", 0.640);
                         setProp(fx, "Y Wave Amp", 38.00);
                         setProp(fx, "Y Wave Freq", 0.840);
-                        setExpExpo(fx.property("Dissolve Percent"), 28.00, 1.5, duration);
+                        setExpExpo(prop(fx, "Dissolve Percent"), 28.00, 1.5, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-11') {
@@ -873,7 +891,7 @@
                         setProp(fx, "X Wave Freq", 0.670);
                         setProp(fx, "Y Wave Amp", 47.00);
                         setProp(fx, "Y Wave Freq", 0.640);
-                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 14.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-12') {
@@ -891,7 +909,7 @@
                         setProp(fx, "X Wave Freq", 0.620);
                         setProp(fx, "Y Wave Amp", 63.00);
                         setProp(fx, "Y Wave Freq", 0.720);
-                        setExpSmooth(fx.property("Dissolve Percent"), 14.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 14.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-13') {
@@ -909,7 +927,7 @@
                         setProp(fx, "X Wave Freq", 0.730);
                         setProp(fx, "Y Wave Amp", 42.00);
                         setProp(fx, "Y Wave Freq", 0.740);
-                        setExpSmooth(fx.property("Dissolve Percent"), 13.50, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 13.50, 0.00, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-14') {
@@ -927,7 +945,7 @@
                         setProp(fx, "X Wave Freq", 0.630);
                         setProp(fx, "Y Wave Amp", 53.00);
                         setProp(fx, "Y Wave Freq", 0.620);
-                        setExpSmooth(fx.property("Dissolve Percent"), 13.50, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 13.50, 0.00, duration);
                     }
                 }
                 else if (presetId === 'dirty-shake-15') {
@@ -945,7 +963,7 @@
                         setProp(fx, "X Wave Freq", 0.530);
                         setProp(fx, "Y Wave Amp", 58.00);
                         setProp(fx, "Y Wave Freq", 0.800);
-                        setExpSmooth(fx.property("Dissolve Percent"), 13.00, 0.00, duration);
+                        setExpSmooth(prop(fx, "Dissolve Percent"), 13.00, 0.00, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-1') {
@@ -959,7 +977,7 @@
                         setProp(fx, "Seed", 0.250);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 19.00, 0.25, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 19.00, 0.25, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-2') {
@@ -973,7 +991,7 @@
                         setProp(fx, "Seed", 0.380);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 30.00, 0.4, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 30.00, 0.4, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-3') {
@@ -987,7 +1005,7 @@
                         setProp(fx, "Seed", 0.180);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 10.00, 4.0, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 10.00, 4.0, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-4') {
@@ -1001,7 +1019,7 @@
                         setProp(fx, "Seed", 0.180);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 28.00, 4.0, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 28.00, 4.0, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-5') {
@@ -1015,7 +1033,7 @@
                         setProp(fx, "Seed", 0.050);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 27.00, 4.0, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 27.00, 4.0, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-6') {
@@ -1029,7 +1047,7 @@
                         setProp(fx, "Seed", 0.480);
                         setProp(fx, "Wrap X", 3);
                         setProp(fx, "Wrap Y", 3);
-                        setExp(fx.property("Dissolve Percent"), 15.00, 4.0, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 15.00, 4.0, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-7') {
@@ -1058,7 +1076,7 @@
                         setProp(fx, "Z Wave Amp", 0.00);
                         setProp(fx, "Z Wave Freq", 0.500);
                         setProp(fx, "Z Phase", 0.000);
-                        setExp(fx.property("Dissolve Percent"), 16.00, 0.5, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 16.00, 0.5, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-8') {
@@ -1087,7 +1105,7 @@
                         setProp(fx, "Z Wave Amp", 0.00);
                         setProp(fx, "Z Wave Freq", 0.500);
                         setProp(fx, "Z Phase", 0.000);
-                        setExp(fx.property("Dissolve Percent"), 20.00, 0.6, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 20.00, 0.6, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-9') {
@@ -1105,7 +1123,7 @@
                         setProp(fx, "X Wave Freq", 0.570);
                         setProp(fx, "Y Wave Amp", 35.00);
                         setProp(fx, "Y Wave Freq", 1.150);
-                        setExp(fx.property("Dissolve Percent"), 22.00, 2.0, duration);
+                        setExp(prop(fx, "Dissolve Percent"), 22.00, 2.0, duration);
                     }
                 }
                 else if (presetId === 'fast-shake-10') {
@@ -1123,7 +1141,7 @@
                         setProp(fx, "X Wave Freq", 1.050);
                         setProp(fx, "Y Wave Amp", 40.00);
                         setProp(fx, "Y Wave Freq", 1.230);
-                        setExpExpo(fx.property("Dissolve Percent"), 18.00, 0.4, duration); 
+                        setExpExpo(prop(fx, "Dissolve Percent"), 18.00, 0.4, duration); 
                     }
                 }
                 else if (presetId === 'fast-shake-11') {
@@ -1141,7 +1159,7 @@
                         setProp(fx, "X Wave Freq", 0.520);
                         setProp(fx, "Y Wave Amp", 65.00);
                         setProp(fx, "Y Wave Freq", 0.610);
-                        setExp(fx.property("Dissolve Percent"), 21.00, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Dissolve Percent"), 21.00, 1.0, duration); // Линейно
                     }
                 }
                 else if (presetId === 'fast-shake-12') {
@@ -1159,7 +1177,7 @@
                         setProp(fx, "X Wave Freq", 0.670);
                         setProp(fx, "Y Wave Amp", 54.00);
                         setProp(fx, "Y Wave Freq", 0.820);
-                        setExp(fx.property("Dissolve Percent"), 20.00, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Dissolve Percent"), 20.00, 1.0, duration); // Линейно
                     }
                 }
                 else if (presetId === 'fast-shake-13') {
@@ -1175,7 +1193,7 @@
                         setProp(fx, "X Wave Freq", 0.750);
                         setProp(fx, "Y Wave Amp", 44.00);
                         setProp(fx, "Y Wave Freq", 0.770);
-                        setExp(fx.property("Amplitude"), 2.000, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Amplitude"), 2.000, 1.0, duration); // Линейно
                     }
                 }
                 else if (presetId === 'fast-shake-14') {
@@ -1193,7 +1211,7 @@
                         setProp(fx, "X Wave Freq", 0.620);
                         setProp(fx, "Y Wave Amp", 72.00);
                         setProp(fx, "Y Wave Freq", 0.870);
-                        setExp(fx.property("Dissolve Percent"), 18.00, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Dissolve Percent"), 18.00, 1.0, duration); // Линейно
                     }
                 }
                 else if (presetId === 'fast-shake-15') {
@@ -1211,7 +1229,7 @@
                         setProp(fx, "X Wave Freq", 0.610);
                         setProp(fx, "Y Wave Amp", 75.00);
                         setProp(fx, "Y Wave Freq", 0.740);
-                        setExp(fx.property("Dissolve Percent"), 20.00, 1.0, duration); // Линейно
+                        setExp(prop(fx, "Dissolve Percent"), 20.00, 1.0, duration); // Линейно
                     }
                 }
             }

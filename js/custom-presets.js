@@ -11,6 +11,25 @@
     let selectedForExport = [];
     const MAX_EXPORT = 10;
 
+    function escapeJsxString(value) {
+        return String(value == null ? '' : value)
+            .replace(/\\/g, '\\\\')
+            .replace(/"/g, '\\"')
+            .replace(/\n/g, '\\n')
+            .replace(/\r/g, '\\r')
+            .replace(/\t/g, '\\t')
+            .replace(/[\b\f\v]/g, '');
+    }
+
+    function escapeHtml(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     function getT() {
         const lang = localStorage.getItem('shakePackLang') || 'en';
         if (window.translations && window.translations[lang]) {
@@ -173,7 +192,7 @@
             card.className = 'cp-card';
             if (isExportMode) card.classList.add('exp-mode');
             
-            const tagsHTML = preset.tags ? preset.tags.map(t => `<span class="cp-tag active" style="font-size: 10px; margin: 0; padding: 3px 8px; pointer-events: none;">${t}</span>`).join('') : '';
+            const tagsHTML = preset.tags ? preset.tags.map(t => `<span class="cp-tag active" style="font-size: 10px; margin: 0; padding: 3px 8px; pointer-events: none;">${escapeHtml(t)}</span>`).join('') : '';
             
             const checkboxHTML = isExportMode 
                 ? `<div class="cp-checkbox ${selectedForExport.includes(preset.id) ? 'selected' : ''}" data-id="${preset.id}"></div>` 
@@ -183,7 +202,7 @@
                 <div class="cp-card-header" style="align-items: flex-start;">
                     <div style="display: flex; align-items: center; width: 100%;">
                         ${checkboxHTML}
-                        <span class="cp-card-title" style="flex: 1; text-align: left;">${preset.name}</span>
+                        <span class="cp-card-title" style="flex: 1; text-align: left;">${escapeHtml(preset.name)}</span>
                         <div style="font-size: 10px; color: #8e8e9c; margin-left: 5px;">${preset.frames} ${getT().framesShort}</div>
                     </div>
                 </div>
@@ -344,11 +363,12 @@
                     csInterface.evalScript(askPathScript, (result) => {
                         if (result === "CANCEL") return;
                         
-                        const escapedJson = jsonString.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
+                        const escapedJson = escapeJsxString(jsonString);
                         
                         const writeScript = `(function() {
-                            var file = new File("${result.replace(/\\/g, '\\\\')}");
+                            var file = new File("${escapeJsxString(result)}");
                             if (file) {
+                                file.encoding = "UTF-8";
                                 file.open("w");
                                 file.write("${escapedJson}");
                                 file.close();
@@ -476,7 +496,7 @@
             
             app.beginUndoGroup("Apply Custom Shake");
             
-            var layerName = "SHAKE - ${preset.name.replace(/"/g, '')}";
+            var layerName = "SHAKE - ${escapeJsxString(preset.name)}";
             var frames = ${preset.frames};
             var amp = ${preset.amp};
             var freq = ${preset.freq};
@@ -492,28 +512,65 @@
             adjLayer.inPoint = startTime;
             adjLayer.outPoint = startTime + duration;
             
+            // Ищем свойство и по отображаемому имени, и по matchName — чтобы работало в любой локали AE
+            function findProp(fx, name) {
+                try { var p = fx.property(name); if (p) return p; } catch(e) {}
+                try {
+                    var key = String(name).toLowerCase();
+                    for (var i = 1; i <= fx.numProperties; i++) {
+                        var cand = fx.property(i);
+                        var nm = ((cand.matchName || '') + ' ' + (cand.name || '')).toLowerCase();
+                        if (nm.indexOf(key) >= 0) return cand;
+                    }
+                } catch(e) {}
+                return null;
+            }
+
+            var missingProps = [];
+            function applyProp(fx, name, value) {
+                var p = findProp(fx, name);
+                if (!p) { missingProps.push(name); return; }
+                try { p.setValue(value); } catch(e) { missingProps.push(name); }
+            }
+
             try {
                 var fx = adjLayer.Effects.addProperty("S_DissolveShake");
-                if (fx) {
-                    fx.property("Amplitude").setValue(amp);
-                    fx.property("Frequency").setValue(freq);
-                    fx.property("Motion Blur").setValue(true);
-                    fx.property("Wrap X").setValue(3);
-                    fx.property("Wrap Y").setValue(3);
-                    
-                    var exp = "var t = time - inPoint;\\n" +
-                              "var dur = " + duration + ";\\n" +
-                              "if (t < 0) t = 0;\\n" +
-                              "if (t > dur) t = dur;\\n" +
-                              "var progress = t / dur;\\n" +
-                              "15.00 * Math.exp(-3 * progress);";
-                              
-                    fx.property("Dissolve Percent").expressionEnabled = true;
-                    fx.property("Dissolve Percent").expression = exp;
+                if (!fx) {
+                    app.endUndoGroup();
+                    return "ERROR_FX_MISSING";
                 }
-            } catch(e) {}
-            
+
+                applyProp(fx, "Amplitude", amp);
+                applyProp(fx, "Frequency", freq);
+                applyProp(fx, "Motion Blur", true);
+                applyProp(fx, "Wrap X", 3);
+                applyProp(fx, "Wrap Y", 3);
+
+                var exp = "var t = time - inPoint;\\n" +
+                          "var dur = " + duration + ";\\n" +
+                          "if (t < 0) t = 0;\\n" +
+                          "if (t > dur) t = dur;\\n" +
+                          "var progress = t / dur;\\n" +
+                          "15.00 * Math.exp(-3 * progress);";
+
+                var dissolveProp = findProp(fx, "Dissolve Percent");
+                if (dissolveProp) {
+                    try {
+                        dissolveProp.expressionEnabled = true;
+                        dissolveProp.expression = exp;
+                    } catch(e) {
+                        missingProps.push("Dissolve Percent");
+                    }
+                } else {
+                    missingProps.push("Dissolve Percent");
+                }
+            } catch(e) {
+                app.endUndoGroup();
+                return "ERROR_FX_APPLY";
+            }
+
             app.endUndoGroup();
+            if (missingProps.length > 0) return "ERROR_FX_PROPERTY: " + missingProps.join(", ");
             return 'SUCCESS';
         })();`;
 
@@ -531,6 +588,10 @@
                 if (window.showError) window.showError("Please select a layer first!");
             } else if (result === "ERROR_FX_MISSING") {
                 if (window.showError) window.showError("Sapphire plugin not found!");
+            } else if (result === "ERROR_FX_APPLY") {
+                if (window.showError) window.showError("Could not configure Sapphire effect.");
+            } else if (String(result).indexOf("ERROR_FX_PROPERTY") === 0) {
+                if (window.showError) window.showError("Effect properties not found: " + String(result).replace("ERROR_FX_PROPERTY: ", ""));
             } else {
                 if (window.showError) window.showError("Error: " + result);
             }

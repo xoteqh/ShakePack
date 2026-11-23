@@ -47,6 +47,7 @@ body.system-cursor input[type="range"] {
     transform: translate(-50%, -50%) scale(0.5) scale(var(--cursor-scale, 1)) !important;
 }
 
+
 #custom-cursor.hover-active {
     width: 20px; height: 20px;
     background: color-mix(in srgb, var(--primary) 30%, transparent);
@@ -65,6 +66,7 @@ body.system-cursor input[type="range"] {
 #custom-cursor.style-diamond.hover-active {
     transform: translate(-50%, -50%) rotate(135deg) scale(var(--cursor-scale, 1)) scale(var(--click-scale, 1));
 }
+
 
 /* --- СВЕЧЕНИЕ ЗА КУРСОРОМ --- */
 #mouse-glow {

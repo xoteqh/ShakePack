@@ -73,24 +73,57 @@
     window.toggleCategory = function(id, btn) {
         var content = document.getElementById(id);
         var category = btn.parentElement;
-        
+        if (!content || !category) return;
+
         if (category.dataset.animating === "true") return;
         category.dataset.animating = "true";
 
+        var finished = false;
+
+        function finish() {
+            if (finished) return;
+            finished = true;
+            content.removeEventListener('transitionend', onEnd);
+            if (category.classList.contains('open')) content.style.maxHeight = 'none';
+            category.dataset.animating = 'false';
+        }
+
+        function onEnd(e) {
+            if (e.target !== content || e.propertyName !== 'max-height') return;
+            finish();
+        }
+
+        content.addEventListener('transitionend', onEnd);
+        setTimeout(finish, 900);
+
+        var buttons = content.querySelectorAll('.shake-btn');
+
         if (category.classList.contains('open')) {
-            var currentHeight = content.getBoundingClientRect().height;
-            content.style.maxHeight = currentHeight + "px";
-            content.offsetHeight;
+            Array.prototype.forEach.call(buttons, function(btn) {
+                btn.classList.remove('stagger-in');
+                btn.style.animationDelay = '';
+            });
+            content.style.maxHeight = content.getBoundingClientRect().height + 'px';
+            void content.offsetHeight;
             category.classList.remove('open');
-            content.style.maxHeight = "0px";
-            setTimeout(function() { category.dataset.animating = "false"; }, 600);
+            content.style.maxHeight = '0px';
         } else {
             category.classList.add('open');
-            content.style.maxHeight = content.scrollHeight + "px";
+
+            Array.prototype.forEach.call(buttons, function(btn, i) {
+                btn.classList.remove('stagger-in');
+                void btn.offsetWidth;
+                btn.style.animationDelay = (i * 30) + 'ms';
+                btn.classList.add('stagger-in');
+            });
             setTimeout(function() {
-                content.style.maxHeight = "none";
-                category.dataset.animating = "false";
-            }, 600); 
+                Array.prototype.forEach.call(buttons, function(btn) {
+                    btn.classList.remove('stagger-in');
+                    btn.style.animationDelay = '';
+                });
+            }, buttons.length * 30 + 400);
+
+            content.style.maxHeight = (content.scrollHeight + 22) + 'px';
         }
     };
 })();

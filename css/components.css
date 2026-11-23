@@ -35,6 +35,15 @@
     transition: box-shadow 0.15s ease, transform 0.1s ease;
 }
 
+.random-btn.slot-machine { box-shadow: 0 0 30px var(--primary); }
+.random-btn.slot-machine .random-text { animation: slotPulse 0.12s ease-in-out infinite alternate; }
+.random-text { transition: opacity 0.32s ease; }
+.random-text.slot-fade { opacity: 0; }
+@keyframes slotPulse {
+    from { opacity: 0.6; transform: scaleY(0.9); }
+    to { opacity: 1; transform: scaleY(1.06); }
+}
+
 .random-text {
     font-size: 16px;
     letter-spacing: 3px;
@@ -168,7 +177,7 @@ body.theme-volt .random-btn:hover { background: linear-gradient(45deg, rgba(255,
 .category-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: max-height 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .category.open .category-content {
@@ -177,7 +186,7 @@ body.theme-volt .random-btn:hover { background: linear-gradient(45deg, rgba(255,
 
 .category-content-inner {
     padding: 0 12px;
-    transition: padding 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: padding 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .category.open .category-content-inner {
@@ -334,6 +343,13 @@ body.theme-purple .subtitle span::before { filter: drop-shadow(0 0 5px rgba(255,
 
 .shake-btn:active { transform: scale(0.99) !important; transition: transform 0.05s ease; }
 .shake-btn.clicked { animation: borderPulse 0.4s ease-out; }
+
+/* Появление кнопок в папке по очереди */
+@keyframes shakeIn {
+    from { opacity: 0; transform: translateX(-16px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+.shake-btn.stagger-in { animation: shakeIn 0.35s ease-out both; }
 
 @keyframes borderPulse {
     0% { border-color: var(--cat-color); box-shadow: 0 0 0 0 transparent; }
