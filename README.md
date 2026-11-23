@@ -1,4 +1,4 @@
-# 🎬 ShakePack (v0.1.4 Beta)
+# 🎬 ShakePack (v0.2.0 Beta)
 
 **ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects, or create your own custom shakes!
 
@@ -53,6 +53,7 @@ ShakePack comes with **12 built-in color themes** to match your workflow. You ca
 ## ✨ Features
 
 - **60 ready-to-use** shake presets (15 in each category: Soft, Hard, Dirty, Fast).
+- **Per-Shake Tuning:** click the ⚙️ on any built-in shake to adjust **Strength**, **Speed** and **Motion Blur** (0.5–3, default 1). Settings are saved per shake and applied every time — no need to create a custom preset.
 - **Accurate Preview**: the preview uses the preset's **real Frequency, Amplitude and decay curve** — what you see in the panel is what After Effects does. An amplitude decay graph is displayed in the preview window.
 - **Create Custom Shakes**: design your own presets with a real-time visual preview! Adjust Amplitude, Frequency and Duration — the preview is accurate here too and reacts to all three sliders.
 - **Smart Tags**: add up to 3 tags to your custom shakes.
@@ -111,7 +112,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 # 🇷🇺
 
-**ShakePack (v0.1.4 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
+**ShakePack (v0.2.0 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
 
 > ⚠️ **ВАЖНО: ЭТО БЕТА-ВЕРСИЯ**
 >
@@ -122,6 +123,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 ## ✨ Что умеет плагин (на данный момент)
 
 - **60 готовых пресетов** шейков (по 15 в каждой папке: Soft, Hard, Dirty, Fast).
+- **Настройка каждого шейка:** шестерёнка ⚙️ на любом встроенном шейке открывает ползунки **силы**, **скорости** и **Motion Blur** (0.5–3, по умолчанию 1). Настройки сохраняются **для каждого шейка** и применяются при каждом использовании — не нужно создавать кастомный пресет.
 - **Точное превью**: анимация использует **реальные Частоту, Амплитуду и кривую затухания** выбранного шейка — что видишь в панели, то и будет в After Effects. В окне превью показывается график затухания амплитуды.
 - **Создание своих пресетов**: настраивай Амплитуду, Частоту и Длительность с живым точным превью — ползунок длительности тоже влияет на анимацию.
 - **Умные теги**: добавляй до 3 тегов (например, #Fast, #Smooth) к своим шейкам.
