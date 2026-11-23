@@ -1,4 +1,4 @@
-# 🎬 ShakePack (v0.1.3 Beta)
+# 🎬 ShakePack (v0.1.4 Beta)
 
 **ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects, or create your own custom shakes!
 
@@ -111,7 +111,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 # 🇷🇺
 
-**ShakePack (v0.1.3 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
+**ShakePack (v0.1.4 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
 
 > ⚠️ **ВАЖНО: ЭТО БЕТА-ВЕРСИЯ**
 >
