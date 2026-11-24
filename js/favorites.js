@@ -20,6 +20,10 @@
             .replace(/'/g, '&#39;');
     }
 
+    function ico(name, fallback) {
+        return window.ShakeIcons ? window.ShakeIcons.get(name) : fallback;
+    }
+
     function tuneTitle() {
         const lang = localStorage.getItem('shakePackLang') || 'en';
         const t = window.translations && window.translations[lang];
@@ -50,9 +54,9 @@
                     <span class="btn-title">${escapeHtml(title)}</span>
                     <span class="btn-desc">${escapeHtml(desc)}</span>
                 </span>
-                <span class="tune-btn" data-id="${escapeHtml(id)}" title="${escapeHtml(tuneTitle())}">⚙️</span>
-                <span class="preview-btn" data-id="${escapeHtml(id)}" data-title="${escapeHtml(title)}">👁️</span>
-                <span class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${escapeHtml(id)}">⭐</span>
+                <span class="tune-btn" data-id="${escapeHtml(id)}" title="${escapeHtml(tuneTitle())}">${ico('settings', '⚙️')}</span>
+                <span class="preview-btn" data-id="${escapeHtml(id)}" data-title="${escapeHtml(title)}">${ico('eye', '👁️')}</span>
+                <span class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${escapeHtml(id)}">${ico('star', '⭐')}</span>
             `;
             btn.style.cursor = 'none';
         });
@@ -76,9 +80,9 @@
                         <span class="btn-title">${escapeHtml(title)}</span>
                         <span class="btn-desc">${escapeHtml(desc)}</span>
                     </span>
-                    <span class="tune-btn" data-id="${escapeHtml(id)}" title="${escapeHtml(tuneTitle())}">⚙️</span>
-                    <span class="preview-btn" data-id="${escapeHtml(id)}" data-title="${escapeHtml(title)}">👁️</span>
-                    <span class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${escapeHtml(id)}">⭐</span>
+                    <span class="tune-btn" data-id="${escapeHtml(id)}" title="${escapeHtml(tuneTitle())}">${ico('settings', '⚙️')}</span>
+                    <span class="preview-btn" data-id="${escapeHtml(id)}" data-title="${escapeHtml(title)}">${ico('eye', '👁️')}</span>
+                    <span class="fav-star ${favorites.includes(id) ? 'active' : ''}" data-id="${escapeHtml(id)}">${ico('star', '⭐')}</span>
                 </div>
             `;
         }
@@ -95,7 +99,7 @@
             if (favorites.length === 0) {
                 const savedLang = localStorage.getItem('shakePackLang') || 'en';
                 const t = window.translations && window.translations[savedLang];
-                const emptyText = (t && t.emptyFavorites) || 'No favorites yet. Click ⭐ on any shake!';
+                const emptyText = (t && t.emptyFavorites) || 'No favorites yet. Click the star on any shake!';
                 favList.innerHTML = `<div data-empty-favorites="true" style="text-align: center; color: #8e8e9c; font-size: 12px; margin-top: 20px;">${escapeHtml(emptyText)}</div>`;
                 return;
             }

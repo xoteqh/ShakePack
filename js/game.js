@@ -8,6 +8,10 @@
     let currentScore = 0;
     let gameInterval;
 
+    function ico(name, fallback) {
+        return window.ShakeIcons ? window.ShakeIcons.get(name) : fallback;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const xoteBtn = document.getElementById('secret-xote');
         
@@ -61,10 +65,12 @@
             
             const star = document.createElement('div');
             star.className = 'falling-star';
-            star.innerText = '⭐';
+            star.innerHTML = ico('star', '⭐');
             star.style.left = Math.max(0, Math.random() * (area.clientWidth - 40)) + 'px';
             star.style.top = '-40px';
-            star.style.fontSize = (20 + Math.random() * 20) + 'px';
+            const size = 20 + Math.random() * 20;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
             
             const duration = 2 + Math.random() * 2;
             star.style.animation = `fall ${duration}s linear forwards`;

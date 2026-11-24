@@ -36,12 +36,7 @@
 }
 
 .random-btn.slot-machine { box-shadow: 0 0 30px var(--primary); }
-.random-btn.slot-machine .random-text { animation: slotPulse 0.12s ease-in-out infinite alternate; }
 .random-text.slot-fade { opacity: 0; }
-@keyframes slotPulse {
-    from { opacity: 0.6; transform: scaleY(0.9); }
-    to { opacity: 1; transform: scaleY(1.06); }
-}
 
 .random-text {
     font-size: 16px;
@@ -51,7 +46,9 @@
     position: relative;
     z-index: 2;
     transition: opacity 0.32s ease;
-    background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 25%, #ffffff 50%, var(--secondary) 75%, var(--primary) 100%);
+    background: linear-gradient(90deg,
+        var(--primary) 0%, var(--secondary) 12.5%, #ffffff 25%, var(--secondary) 37.5%, var(--primary) 50%,
+        var(--secondary) 62.5%, #ffffff 75%, var(--secondary) 87.5%, var(--primary) 100%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -387,7 +384,6 @@ body.theme-purple .shake-btn:hover { box-shadow: 0 0 20px color-mix(in srgb, var
 
 .preview-btn:hover, .fav-star:hover, .tune-btn:hover {
     background: rgba(255, 255, 255, 0.08) !important;
-    color: #fff !important;
     border-color: var(--cat-color) !important;
     box-shadow: 0 0 20px var(--cat-color), inset 0 0 8px var(--cat-color) !important;
     transform: scale(1.15) !important;

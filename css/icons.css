@@ -1,0 +1,79 @@
+/* css/icons.css */
+
+.icon-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    filter: drop-shadow(0 0 3px currentColor);
+    transition: transform 0.55s cubic-bezier(0.34, 1.35, 0.64, 1),
+                filter 0.4s ease;
+}
+
+.theme-toggle { color: var(--primary); }
+.theme-toggle .icon-svg { width: 24px; height: 24px; }
+
+.fav-star.active .icon-svg {
+    fill: currentColor;
+    filter: drop-shadow(0 0 5px currentColor);
+}
+.shake-btn.tuned .tune-btn .icon-svg {
+    filter: drop-shadow(0 0 5px currentColor);
+}
+
+#settings-toggle:hover .icon-svg {
+    transform: rotate(120deg);
+    filter: drop-shadow(0 0 7px currentColor);
+}
+#custom-presets-toggle:hover .icon-svg {
+    transform: rotate(-12deg) scale(1.08);
+    filter: drop-shadow(0 0 7px currentColor);
+}
+#custom-presets-list-toggle:hover .icon-svg {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 7px currentColor);
+}
+#theme-toggle:hover .icon-svg {
+    transform: rotate(-20deg) scale(1.06);
+    filter: drop-shadow(0 0 7px currentColor);
+}
+#favorites-toggle:hover .icon-svg {
+    transform: scale(1.28) rotate(20deg);
+    filter: drop-shadow(0 0 8px currentColor);
+}
+#help-toggle:hover .icon-svg {
+    transform: rotate(10deg) scale(1.06);
+    filter: drop-shadow(0 0 7px currentColor);
+}
+
+.preview-btn, .fav-star, .tune-btn { color: var(--cat-color); }
+.preview-btn .icon-svg,
+.fav-star .icon-svg,
+.tune-btn .icon-svg { width: 18px; height: 18px; }
+
+.tune-btn:hover .icon-svg {
+    transform: rotate(90deg);
+    filter: drop-shadow(0 0 6px currentColor);
+}
+.preview-btn:hover .icon-svg {
+    transform: scale(1.2) translateY(-1px);
+    filter: drop-shadow(0 0 6px currentColor);
+}
+.fav-star:hover .icon-svg {
+    transform: scale(1.3) rotate(18deg);
+    filter: drop-shadow(0 0 7px currentColor);
+}
+
+.falling-star { color: var(--primary); }
+.falling-star .icon-svg { width: 100%; height: 100%; }
+
+.inline-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    vertical-align: -3px;
+    color: var(--primary);
+}
+.inline-icon .icon-svg { width: 100%; height: 100%; }

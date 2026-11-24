@@ -21,7 +21,7 @@
             catFast: "Fast Shakes",
             github: "github",
             xote: "xote",
-            version: "v0.2.0 Beta",
+            version: "v0.2.1 Beta",
             close: "Done",
             placeholderName: "My Custom Shake",
             cancelBtn: "Cancel",
@@ -62,7 +62,7 @@
             // Панели
             howToUse: "How to use",
             favoritesTitle: "Favorite Shakes",
-            emptyFavorites: "No favorites yet. Click ⭐ on any shake!",
+            emptyFavorites: "No favorites yet. Click the star on any shake!",
             // Темы
             themeClassic: "Neon Classic",
             themeGold: "Golden Glow",
@@ -118,7 +118,7 @@
             catFast: "Быстрые шейки",
             github: "github",
             xote: "xote",
-            version: "v0.2.0 Beta",
+            version: "v0.2.1 Beta",
             close: "Готово",
             placeholderName: "Мой кастомный шейк",
             cancelBtn: "Отмена",
@@ -159,7 +159,7 @@
             // Панели
             howToUse: "Как пользоваться",
             favoritesTitle: "Избранные шейки",
-            emptyFavorites: "Пока нет избранных шейков. Нажми ⭐ на любом шейке!",
+            emptyFavorites: "Пока нет избранных шейков. Нажми звёздочку на любом шейке!",
             // Темы
             themeClassic: "Неоновый классический",
             themeGold: "Золотое свечение",
