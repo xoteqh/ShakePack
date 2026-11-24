@@ -93,7 +93,8 @@
             frames: meta.frames,
             fx: meta.fx,
             curve: { type: meta.type, a: meta.a },
-            duration: meta.frames / 12
+            duration: meta.frames / 12,
+            seed: 1
         };
     };
 
@@ -109,15 +110,17 @@
         var amp = baseAmp * 5;
         var duration = info.duration || (info.frames || 19) / 12;
         var steps = Math.min(240, Math.max(48, Math.ceil(freq * duration * 8)));
+        var seed = (typeof info.seed === 'number' && isFinite(info.seed)) ? info.seed : 1;
+        if (seed <= 0) seed = 1;
         var css = '';
 
         for (var i = 0; i <= steps; i++) {
             var p = i / steps;
             var t = p * duration;
             var env = window.shakeEnvelope(p, info.curve);
-            var x = wave(t, freq, 0.4) * amp * env;
-            var y = wave(t, freq * 0.83, 2.1) * amp * env;
-            var r = wave(t, freq * 0.5, 4.2) * baseAmp * 0.4 * env;
+            var x = wave(t, freq, 0.4 * seed) * amp * env;
+            var y = wave(t, freq * 0.83, 2.1 * seed) * amp * env;
+            var r = wave(t, freq * 0.5, 4.2 * seed) * baseAmp * 0.4 * env;
             css += (p * 100).toFixed(2) + '% { transform: translate(' +
                    x.toFixed(2) + 'px, ' + y.toFixed(2) + 'px) rotate(' +
                    r.toFixed(2) + 'deg); } ';

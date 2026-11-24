@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="7.0" ExtensionBundleId="com.shakepack.panel" ExtensionBundleVersion="0.2.1" ExtensionBundleName="ShakePack Bundle">
+<ExtensionManifest Version="7.0" ExtensionBundleId="com.shakepack.panel" ExtensionBundleVersion="0.2.2" ExtensionBundleName="ShakePack Bundle">
     <ExtensionList>
-        <Extension Id="com.shakepack.panel" Version="0.2.1" />
+        <Extension Id="com.shakepack.panel" Version="0.2.2" />
     </ExtensionList>
     <ExecutionEnvironment>
         <HostList>

@@ -312,6 +312,7 @@
                     <li><strong>Избранное:</strong> звезда <span class="inline-icon" data-icon="star"></span> сохраняет шейк, а кнопка <span class="inline-icon" data-icon="star"></span> в шапке открывает список. Там можно менять порядок перетаскиванием.</li>
                     <li><strong>Темы:</strong> палитра <span class="inline-icon" data-icon="palette"></span> в шапке — 12 цветовых тем.</li>
                     <li><strong>Своя настройка:</strong> шестерёнка <span class="inline-icon" data-icon="settings"></span> на шейке открывает ползунки силы, скорости и Motion Blur (0.5–3). Настройки сохраняются для каждого шейка отдельно, сброс — кнопкой Reset.</li>
+                    <li><strong>Сид:</strong> ползунок Seed (0.1–10) в конструкторе меняет рисунок тряски — результат сразу видно в живом превью.</li>
                 </ul>
                 <h3><span class="inline-icon" data-icon="constructor"></span> Создать шейк</h3>
                 <p>Кнопка <span class="inline-icon" data-icon="constructor"></span> в шапке открывает конструктор. Задай имя, амплитуду (силу), частоту (скорость) и длительность в кадрах, добавь до 3 тегов — превью обновляется сразу. Нажми <strong>«Save Preset»</strong>, чтобы сохранить.</p>
@@ -343,6 +344,7 @@
                     <li><strong>Favorites:</strong> the star <span class="inline-icon" data-icon="star"></span> saves a shake, and the <span class="inline-icon" data-icon="star"></span> button in the header opens the list. Drag cards there to reorder them.</li>
                     <li><strong>Themes:</strong> the palette <span class="inline-icon" data-icon="palette"></span> in the header offers 12 color themes.</li>
                     <li><strong>Fine tune:</strong> the <span class="inline-icon" data-icon="settings"></span> on any shake opens sliders for Strength, Speed and Motion Blur (0.5–3). Settings are saved per shake; Reset restores defaults.</li>
+                    <li><strong>Seed:</strong> the Seed slider (0.1–10) in the constructor changes the shake pattern — see it in the live preview.</li>
                 </ul>
                 <h3><span class="inline-icon" data-icon="constructor"></span> Create Shake</h3>
                 <p>The <span class="inline-icon" data-icon="constructor"></span> button in the header opens the constructor. Set a name, amplitude (strength), frequency (speed) and duration in frames, add up to 3 tags — the preview updates live. Press <strong>"Save Preset"</strong> to keep it.</p>
@@ -393,6 +395,12 @@
                 <div class="slider-container" style="margin-bottom: 15px;">
                     <input type="range" id="cp-frames" min="1" max="30" value="19" step="1">
                     <div class="slider-value"><span id="cp-frames-text">19</span></div>
+                </div>
+
+                <h3 class="settings-title" data-i18n="seed">Seed</h3>
+                <div class="slider-container" style="margin-bottom: 15px;">
+                    <input type="range" id="cp-seed" min="0.1" max="10" value="1.0" step="0.1">
+                    <div class="slider-value"><span id="cp-seed-text">1.0</span></div>
                 </div>
 
                 <h3 class="settings-title" data-i18n="tags">Tags</h3>
@@ -585,7 +593,7 @@
             <span class="footer-separator">|</span>
             <span class="footer-author" id="secret-xote" data-text="xote">xote</span>
             <span class="footer-separator">|</span>
-            <span class="footer-version" id="text-version">v0.2.1 Beta</span>
+            <span class="footer-version" id="text-version">v0.2.2 Beta</span>
             <span class="footer-separator">|</span>
             <span id="sapphire-status" class="sapphire-status checking">
                 <span class="status-dot"></span>

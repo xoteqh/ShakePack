@@ -59,7 +59,8 @@
         const sliders = [
             { id: 'cp-amp', textId: 'cp-amp-text', fixed: 1 },
             { id: 'cp-freq', textId: 'cp-freq-text', fixed: 1 },
-            { id: 'cp-frames', textId: 'cp-frames-text', fixed: 0 }
+            { id: 'cp-frames', textId: 'cp-frames-text', fixed: 0 },
+            { id: 'cp-seed', textId: 'cp-seed-text', fixed: 1 }
         ];
 
         sliders.forEach(s => {
@@ -106,9 +107,11 @@
         const amp = Number(document.getElementById('cp-amp').value);
         const freq = Number(document.getElementById('cp-freq').value);
         const frames = parseInt(document.getElementById('cp-frames').value, 10);
+        const seed = parseFloat(document.getElementById('cp-seed').value);
         const safeAmp = isFinite(amp) ? amp : 2;
         const safeFreq = isFinite(freq) ? freq : 5;
         const safeFrames = isFinite(frames) ? frames : 19;
+        const safeSeed = isFinite(seed) && seed > 0 ? Math.min(10, Math.max(0.1, seed)) : 1;
 
         const info = {
             freq: safeFreq,
@@ -116,7 +119,8 @@
             frames: safeFrames,
             fx: 'S_DissolveShake',
             curve: { type: 'expo', a: 1 },
-            duration: safeFrames / 12
+            duration: safeFrames / 12,
+            seed: safeSeed
         };
 
         const animName = 'cp_preview_shake';
@@ -157,6 +161,8 @@
             const amp = parseFloat(document.getElementById('cp-amp').value);
             const freq = parseFloat(document.getElementById('cp-freq').value);
             const frames = parseInt(document.getElementById('cp-frames').value, 10);
+            const seed = parseFloat(document.getElementById('cp-seed').value);
+            const safeSeed = isFinite(seed) && seed > 0 ? Math.min(10, Math.max(0.1, seed)) : 1;
 
             const newPreset = {
                 id: 'custom-' + Date.now(),
@@ -164,6 +170,7 @@
                 amp: amp,
                 freq: freq,
                 frames: frames,
+                seed: safeSeed,
                 tags: [...selectedTags]
             };
 
@@ -215,7 +222,7 @@
                         <div style="font-size: 10px; color: #8e8e9c; margin-left: 5px;">${preset.frames} ${getT().framesShort}</div>
                     </div>
                 </div>
-                <div class="cp-card-desc">Amp: ${preset.amp} | Freq: ${preset.freq}</div>
+                <div class="cp-card-desc">Amp: ${preset.amp} | Freq: ${preset.freq} | Seed: ${preset.seed != null ? preset.seed : 1}</div>
                 <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; margin-bottom: 5px;">${tagsHTML}</div>
                 <div class="cp-card-actions" style="display: ${isExportMode ? 'none' : 'flex'};">
                     <button class="cp-card-btn apply" data-id="${preset.id}">${getT().applyBtn}</button>
@@ -456,6 +463,8 @@
                             const wasTruncated = validPresets.length > 10;
                             const toAdd = validPresets.slice(0, 10).map(p => ({
                                 ...p,
+                                seed: (typeof p.seed === 'number' && isFinite(p.seed) && p.seed > 0)
+                                    ? Math.min(10, Math.max(0.1, p.seed)) : 1,
                                 tags: Array.isArray(p.tags) ? p.tags.filter(t => typeof t === 'string') : [],
                                 id: 'custom-' + Date.now() + '-' + Math.floor(Math.random() * 1000)
                             }));
@@ -486,6 +495,9 @@
 
         if (typeof CSInterface === 'undefined') return;
         if (window.showLoadingBar) window.showLoadingBar();
+
+        const rawSeed = parseFloat(preset.seed);
+        const safeSeed = isFinite(rawSeed) && rawSeed > 0 ? Math.min(10, Math.max(0.1, rawSeed)) : 1;
         
         const csInterface = new CSInterface();
         
@@ -514,7 +526,6 @@
             
             app.beginUndoGroup("Apply Custom Shake");
 
-            // Ищем свойство и по отображаемому имени, и по matchName — чтобы работало в любой локали AE
             function findProp(fx, name) {
                 try { var p = fx.property(name); if (p) return p; } catch(e) {}
                 try {
@@ -535,6 +546,15 @@
                 try { p.setValue(value); } catch(e) { missingProps.push(name); }
             }
 
+            function applySeed(fx, seed) {
+                var names = ["Random Seed", "Seed"];
+                for (var i = 0; i < names.length; i++) {
+                    var p = findProp(fx, names[i]);
+                    if (p) { try { p.setValue(seed); return true; } catch(e) {} }
+                }
+                return false;
+            }
+
             var resultCode = "SUCCESS";
 
             try {
@@ -542,9 +562,11 @@
                 var frames = ${preset.frames};
                 var amp = ${preset.amp};
                 var freq = ${preset.freq};
+                var seed = ${safeSeed};
                 if (!(frames > 0)) frames = 19;
                 if (!isFinite(amp)) amp = 2;
                 if (!isFinite(freq)) freq = 5;
+                if (!isFinite(seed) || seed <= 0) seed = 1;
 
                 var adjLayer = comp.layers.addSolid([1, 1, 1], layerName, comp.width, comp.height, comp.pixelAspect);
                 adjLayer.adjustmentLayer = true;
@@ -563,6 +585,7 @@
                 } else {
                     applyProp(fx, "Amplitude", amp);
                     applyProp(fx, "Frequency", freq);
+                    applySeed(fx, seed);
                     applyProp(fx, "Motion Blur", true);
                     applyProp(fx, "Mo Blur Length", 1.0);
                     applyProp(fx, "Wrap X", 3);
