@@ -28,7 +28,9 @@
             var tunings = ${tuningsStr};
             var isApplyAll = ${isApplyAll};
             var usePlayhead = ${usePlayhead};
+            if (!presets || presets.length === 0) return "SUCCESS";
             var mutStrength = 1, mutSpeed = 1, mutBlur = 1;
+            var createdLayers = [];
 
             function normalizeName(value) {
                 return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -65,6 +67,12 @@
                 }
             }
             if (!hasSapphire()) return "ERROR_FX_MISSING";
+
+            function cleanupLayers() {
+                for (var ci = 0; ci < createdLayers.length; ci++) {
+                    try { createdLayers[ci].remove(); } catch (e) {}
+                }
+            }
             
             app.beginUndoGroup("Apply Shake Preset");
             
@@ -78,11 +86,16 @@
                 try {
                     var key = normalizeName(name);
                     if (!key) return null;
+                    var fallback = null;
                     for (var i = 1; i <= fx.numProperties; i++) {
                         var cand = fx.property(i);
-                        var nm = normalizeName((cand.matchName || '') + ' ' + (cand.name || ''));
-                        if (nm.indexOf(key) >= 0) return cand;
+                        var cn = normalizeName((cand && cand.name) || '');
+                        var mn = normalizeName((cand && cand.matchName) || '');
+                        if (cn === key || mn === key) return cand;
+                        if ((cn.indexOf(key) >= 0 || mn.indexOf(key) >= 0) &&
+                            (!fallback || cn.length < normalizeName((fallback.name || '')))) fallback = cand;
                     }
+                    return fallback;
                 } catch(e) {}
                 return null;
             }
@@ -92,7 +105,10 @@
                 try {
                     var p = findFxProp(fx, name);
                     if (!p) return;
-                    p.setValue(typeof value === 'boolean' ? value : value * scaleFor(name));
+                    var scaled = typeof value === 'boolean' ? value : value * scaleFor(name);
+                    // У Sapphire Dissolve Speed минимум 1 — не даём ползунку Speed уйти ниже
+                    if (typeof scaled === 'number' && normalizeName(name).indexOf('dissolvespeed') >= 0 && scaled < 1) scaled = 1;
+                    p.setValue(scaled);
                 } catch(e) {}
             }
 
@@ -232,6 +248,7 @@
                 else if (presetId === 'fast-shake-15') { layerName = "SHAKE - Fast 15"; frames = 8; }
 
                 var adjLayer = comp.layers.addSolid([1, 1, 1], layerName, comp.width, comp.height, comp.pixelAspect);
+                createdLayers.push(adjLayer);
                 adjLayer.adjustmentLayer = true;
                 adjLayer.moveBefore(targetLayer);
                 adjLayer.label = 10;  
@@ -1276,10 +1293,12 @@
                 if (!fx) anyFxMissing = true;
             }
                 if (anyFxMissing) {
+                    cleanupLayers();
                     app.endUndoGroup();
                     return "ERROR_FX_MISSING";
                 }
             } catch (e) {
+                cleanupLayers();
                 app.endUndoGroup();
                 return "ERROR_SCRIPT: " + (e.message || e);
             }

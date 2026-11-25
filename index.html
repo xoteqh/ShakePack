@@ -125,12 +125,21 @@
                             <div class="toggle-knob"></div>
                         </div>
                     </div>
-                    <div class="toggle-row" style="margin-bottom: 25px;">
+                    <div class="toggle-row">
                         <div class="toggle-info">
                             <span class="toggle-title" id="text-cursor-glow">Cursor Glow</span>
                             <span class="toggle-desc" id="text-show-glow">Show glow behind cursor</span>
                         </div>
                         <div class="toggle-switch active" id="toggle-cursor-glow-general">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                    <div class="toggle-row" style="margin-bottom: 25px;">
+                        <div class="toggle-info">
+                            <span class="toggle-title" id="text-tooltips">Button Tooltips</span>
+                            <span class="toggle-desc" id="text-tooltips-desc">Show hints when hovering buttons</span>
+                        </div>
+                        <div class="toggle-switch active" id="toggle-tooltips-general">
                             <div class="toggle-knob"></div>
                         </div>
                     </div>
@@ -181,12 +190,21 @@
                         </div>
                     </div>
 
-                    <div class="toggle-row" style="margin-bottom: 25px;">
+                    <div class="toggle-row">
                         <div class="toggle-info">
                             <span class="toggle-title" id="text-cursor-glow-2">Cursor Glow</span>
                             <span class="toggle-desc" id="text-show-glow-2">Show glow behind cursor</span>
                         </div>
                         <div class="toggle-switch active" id="toggle-cursor-glow">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                    <div class="toggle-row" style="margin-bottom: 25px;">
+                        <div class="toggle-info">
+                            <span class="toggle-title" id="text-tooltips-2">Button Tooltips</span>
+                            <span class="toggle-desc" id="text-tooltips-desc-2">Show hints when hovering buttons</span>
+                        </div>
+                        <div class="toggle-switch active" id="toggle-tooltips">
                             <div class="toggle-knob"></div>
                         </div>
                     </div>
@@ -327,7 +345,7 @@
                 <p>Шестерёнка <span class="inline-icon" data-icon="settings"></span> в шапке открывает 4 вкладки:</p>
                 <ul>
                     <li><strong>General / Interface</strong> — масштаб интерфейса от 50% до 150%.</li>
-                    <li><strong>Cursor</strong> — размер неонового курсора, включение курсора и свечения, форма (круг / алмаз / квадрат).</li>
+                    <li><strong>Cursor</strong> — размер неонового курсора, включение курсора, свечения, фонарика, искр при клике и подсказок, форма (круг / алмаз / квадрат).</li>
                     <li><strong>Language</strong> — переключение English / Русский для всей панели и этой справки.</li>
                 </ul>
                 <h3><span class="inline-icon" data-icon="settings"></span> Требования</h3>
@@ -359,7 +377,7 @@
                 <p>The gear <span class="inline-icon" data-icon="settings"></span> in the header opens 4 tabs:</p>
                 <ul>
                     <li><strong>General / Interface</strong> — UI scale from 50% to 150%.</li>
-                    <li><strong>Cursor</strong> — neon cursor size, cursor and glow on/off, shape (circle / diamond / square).</li>
+                    <li><strong>Cursor</strong> — neon cursor size, cursor/glow/flashlight/click-particles/tooltips on/off, shape (circle / diamond / square).</li>
                     <li><strong>Language</strong> — switch English / Русский for the whole panel and this help.</li>
                 </ul>
                 <h3><span class="inline-icon" data-icon="settings"></span> Requirements</h3>
@@ -446,16 +464,16 @@
     <!-- Основной контент -->
     <div class="container">
         <div class="header">
-            <div id="settings-toggle" class="theme-toggle" tabindex="0" role="button" title="Settings" style="left: 0; right: auto;">
+            <div id="settings-toggle" class="theme-toggle" tabindex="0" role="button" aria-label="Settings" style="left: 0; right: auto;">
                 <span data-icon="settings"></span>
             </div>
-            <div id="custom-presets-toggle" class="theme-toggle" tabindex="0" role="button" title="Custom Presets" style="left: 55px; right: auto;"><span data-icon="constructor"></span></div>
+            <div id="custom-presets-toggle" class="theme-toggle" tabindex="0" role="button" aria-label="Custom Presets" style="left: 55px; right: auto;"><span data-icon="constructor"></span></div>
 
-            <div id="custom-presets-list-toggle" class="theme-toggle" tabindex="0" role="button" title="My Presets" style="left: 110px; right: auto;"><span data-icon="folder"></span></div>
+            <div id="custom-presets-list-toggle" class="theme-toggle" tabindex="0" role="button" aria-label="My Presets" style="left: 110px; right: auto;"><span data-icon="folder"></span></div>
             
-            <div id="theme-toggle" class="theme-toggle" tabindex="0" role="button" title="Change Theme"><span data-icon="palette"></span></div>
-            <div id="favorites-toggle" class="theme-toggle" tabindex="0" role="button" title="Favorites" style="right: 55px;"><span data-icon="star"></span></div>
-            <div id="help-toggle" class="theme-toggle" tabindex="0" role="button" title="Help / Info" style="right: 110px;"><span data-icon="help"></span></div>
+            <div id="theme-toggle" class="theme-toggle" tabindex="0" role="button" aria-label="Change Theme"><span data-icon="palette"></span></div>
+            <div id="favorites-toggle" class="theme-toggle" tabindex="0" role="button" aria-label="Favorites" style="right: 55px;"><span data-icon="star"></span></div>
+            <div id="help-toggle" class="theme-toggle" tabindex="0" role="button" aria-label="Help / Info" style="right: 110px;"><span data-icon="help"></span></div>
             
             <h1>SHAKE PACK</h1>
         </div>
@@ -593,7 +611,7 @@
             <span class="footer-separator">|</span>
             <span class="footer-author" id="secret-xote" data-text="xote">xote</span>
             <span class="footer-separator">|</span>
-            <span class="footer-version" id="text-version">v0.2.2 Beta</span>
+            <span class="footer-version" id="text-version">v0.2.3 Beta</span>
             <span class="footer-separator">|</span>
             <span id="sapphire-status" class="sapphire-status checking">
                 <span class="status-dot"></span>
@@ -608,7 +626,7 @@
         <div id="mini-game-area">
             <div class="game-grid"></div>
             <div style="position: absolute; top: 15px; left: 20px; color: #fff; font-size: 14px; z-index: 10; font-weight: bold; letter-spacing: 1px;">Score: <span id="game-score" style="color: var(--primary);">0</span></div>
-            <div id="game-close" style="position: absolute; top: 15px; right: 20px; cursor: pointer; color: #fff; font-size: 20px; z-index: 10;">✖</div>
+            <div id="game-close" style="position: absolute; top: 15px; right: 20px; cursor: pointer; color: #fff; font-size: 20px; z-index: 15;">✖</div>
             <div id="game-stars-container"></div>
             <div id="game-over-screen" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 8, 0.9); z-index: 20; flex-direction: column; justify-content: center; align-items: center; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);">
                 <h2 style="color: var(--primary); font-size: 28px; letter-spacing: 3px; text-shadow: 0 0 15px var(--primary);">GAME OVER</h2>

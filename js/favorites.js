@@ -4,11 +4,22 @@
 
 (function() {
     let favorites = [];
+    let favRenderTimer = null;
     try {
         const savedFavorites = JSON.parse(localStorage.getItem('shakeFavorites') || '[]');
-        if (Array.isArray(savedFavorites)) favorites = savedFavorites;
+        if (Array.isArray(savedFavorites)) favorites = normalizeFavorites(savedFavorites);
     } catch (e) {
         favorites = [];
+    }
+
+    function normalizeFavorites(list) {
+        if (!Array.isArray(list)) return [];
+        const seen = {};
+        return list.filter(id => {
+            if (typeof id !== 'string' || !id || seen[id]) return false;
+            seen[id] = true;
+            return true;
+        });
     }
 
     function escapeHtml(value) {
@@ -88,8 +99,12 @@
         }
 
         function renderFavorites() {
+            if (favRenderTimer) {
+                clearTimeout(favRenderTimer);
+                favRenderTimer = null;
+            }
             if (!favList) return;
-            const valid = favorites.filter(id => !!document.getElementById(id));
+            const valid = normalizeFavorites(favorites).filter(id => !!document.getElementById(id));
             if (valid.length !== favorites.length) {
                 favorites = valid;
                 try { localStorage.setItem('shakeFavorites', JSON.stringify(favorites)); } catch (e) {}
@@ -132,7 +147,7 @@
                     favorites.push(id);
                     e.target.classList.add('active');
                 }
-                localStorage.setItem('shakeFavorites', JSON.stringify(favorites));
+                try { localStorage.setItem('shakeFavorites', JSON.stringify(favorites)); } catch (e) {}
 
                 document.querySelectorAll(`.fav-star[data-id="${id}"]`).forEach(star => {
                     if (favorites.includes(id)) star.classList.add('active');
@@ -172,7 +187,10 @@
                             }
                         }
                         favCard.classList.add('removing');
-                        setTimeout(() => renderFavorites(), 300);
+                        favRenderTimer = setTimeout(() => {
+                            favRenderTimer = null;
+                            renderFavorites();
+                        }, 300);
                     } else {
                         renderFavorites();
                     }

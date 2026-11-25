@@ -269,6 +269,11 @@ body.no-flex-gap .settings-tabs > * + *,
 body.no-flex-gap .preview-params > * + *,
 body.no-flex-gap .tune-actions > * + *,
 body.no-flex-gap .cp-card-actions > * + *,
-body.no-flex-gap #my-presets-panel .settings-content > div:first-child > * + * {
+body.no-flex-gap #my-presets-panel .settings-content > div:first-child > * + *,
+body.no-flex-gap .theme-grid > * + *,
+body.no-flex-gap .cursor-styles-grid > * + *,
+body.no-flex-gap .cp-card > * + *,
+body.no-flex-gap #cp-tags-container > * + *,
+body.no-flex-gap #game-over-screen > div > * + * {
     margin-left: 8px;
 }

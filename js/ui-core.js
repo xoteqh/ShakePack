@@ -21,7 +21,7 @@
             catFast: "Fast Shakes",
             github: "github",
             xote: "xote",
-            version: "v0.2.2 Beta",
+            version: "v0.2.3 Beta",
             close: "Done",
             placeholderName: "My Custom Shake",
             cancelBtn: "Cancel",
@@ -33,7 +33,9 @@
             cursorGlow: "Cursor Glow",
             cursorStyle: "Cursor Style",
             enableCursor: "Enable the neon cursor",
-            showGlow: "Show glow behind cursor",
+            showGlow: "Glow, flashlight and click particles",
+            tooltips: "Button Tooltips",
+            showTooltips: "Show hints when hovering buttons",
             adjustCursor: "Adjust the size of the custom neon cursor.",
             cursorCircle: "Circle",
             cursorDiamond: "Diamond",
@@ -119,7 +121,7 @@
             catFast: "Быстрые шейки",
             github: "github",
             xote: "xote",
-            version: "v0.2.2 Beta",
+            version: "v0.2.3 Beta",
             close: "Готово",
             placeholderName: "Мой кастомный шейк",
             cancelBtn: "Отмена",
@@ -131,7 +133,9 @@
             cursorGlow: "Свечение курсора",
             cursorStyle: "Стиль курсора",
             enableCursor: "Включить неоновый курсор",
-            showGlow: "Показывать свечение за курсором",
+            showGlow: "Свечение, фонарик и искры при клике",
+            tooltips: "Подсказки кнопок",
+            showTooltips: "Показывать подсказки при наведении",
             adjustCursor: "Настройте размер кастомного неонового курсора.",
             cursorCircle: "Круг",
             cursorDiamond: "Алмаз",
@@ -263,6 +267,10 @@
         safeSet('text-cursor-glow-2', t.cursorGlow);
         safeSet('text-show-glow', t.showGlow);
         safeSet('text-show-glow-2', t.showGlow);
+        safeSet('text-tooltips', t.tooltips);
+        safeSet('text-tooltips-2', t.tooltips);
+        safeSet('text-tooltips-desc', t.showTooltips);
+        safeSet('text-tooltips-desc-2', t.showTooltips);
         safeSet('text-adjust-cursor', t.adjustCursor);
 
         document.querySelectorAll('.cursor-style-option span[data-i18n]').forEach(function(el) {
@@ -440,9 +448,18 @@
 
     const globalCursor = document.getElementById('custom-cursor');
     const globalGlow = document.getElementById('mouse-glow');
-    const rawCursorSize = Number(localStorage.getItem('shakePackCursorSize'));
+    const storedCursorSize = localStorage.getItem('shakePackCursorSize');
+    const rawCursorSize = (storedCursorSize === null || storedCursorSize === '') ? 100 : Number(storedCursorSize);
     const globalSavedSize = isFinite(rawCursorSize) ? Math.max(50, Math.min(150, rawCursorSize)) : 100;
     const isCustomCursorEnabled = localStorage.getItem('shakePackCustomCursor') !== 'false';
+
+    function areCursorEffectsEnabled() {
+        return localStorage.getItem('shakePackCursorGlow') !== 'false';
+    }
+
+    function areTooltipsEnabled() {
+        return localStorage.getItem('shakePackTooltips') !== 'false';
+    }
 
     let savedCursorStyle = localStorage.getItem('shakePackCursorStyle') || 'circle';
     
@@ -573,35 +590,46 @@
             tooltip.style.top = e.clientY + 'px';
         });
 
-        document.addEventListener('mouseover', (e) => {
-            const target = e.target;
+        function getTooltipText(target) {
+            if (!target || typeof target.closest !== 'function') return '';
             const savedLang = localStorage.getItem('shakePackLang') || 'en';
             const t = translations[savedLang] || translations.en;
-            let text = '';
 
-            if (target.closest('.tune-btn')) text = t.tipTune;
-            else if (target.closest('.preview-btn')) text = t.tipPreview;
-            else if (target.closest('.fav-star')) {
-                text = target.closest('.fav-star').classList.contains('active') ? t.tipRemFav : t.tipAddFav;
+            if (target.closest('.tune-btn')) return t.tipTune;
+            if (target.closest('.preview-btn')) return t.tipPreview;
+            if (target.closest('.fav-star')) {
+                return target.closest('.fav-star').classList.contains('active') ? t.tipRemFav : t.tipAddFav;
             }
-            else if (target.closest('.shake-btn')) text = t.tipApply;
-            else if (target.closest('.category-btn')) text = t.tipCategory;
-            else if (target.closest('#theme-toggle')) text = t.tipTheme;
-            else if (target.closest('#favorites-toggle')) text = t.tipFavorites;
-            else if (target.closest('#help-toggle')) text = t.tipHelp;
-            else if (target.closest('#settings-toggle')) text = t.tipSettings;
-            else if (target.closest('#custom-presets-toggle')) text = t.tipCustomPresets;
-            else if (target.closest('#custom-presets-list-toggle')) text = t.tipMyPresets;
-            else if (target.closest('#random-shake-btn')) text = t.tipRandom;
-            else if (target.closest('#apply-all-btn')) text = t.tipApplyAll;
-            else if (target.closest('#sapphire-status')) text = t.tipSapphire;
-            else return;
+            if (target.closest('.shake-btn')) return t.tipApply;
+            if (target.closest('.category-btn')) return t.tipCategory;
+            if (target.closest('#theme-toggle')) return t.tipTheme;
+            if (target.closest('#favorites-toggle')) return t.tipFavorites;
+            if (target.closest('#help-toggle')) return t.tipHelp;
+            if (target.closest('#settings-toggle')) return t.tipSettings;
+            if (target.closest('#custom-presets-toggle')) return t.tipCustomPresets;
+            if (target.closest('#custom-presets-list-toggle')) return t.tipMyPresets;
+            if (target.closest('#random-shake-btn')) return t.tipRandom;
+            if (target.closest('#apply-all-btn')) return t.tipApplyAll;
+            if (target.closest('#sapphire-status')) return t.tipSapphire;
+            return '';
+        }
 
+        document.addEventListener('mouseover', (e) => {
+            if (!areTooltipsEnabled()) {
+                tooltip.classList.remove('show');
+                return;
+            }
+            const text = getTooltipText(e.target);
+            if (!text) {
+                tooltip.classList.remove('show');
+                return;
+            }
             tooltip.innerText = text;
             tooltip.classList.add('show');
         });
         
         document.addEventListener('click', (e) => {
+            if (!areTooltipsEnabled()) return;
             if (e.target.closest('.fav-star')) {
                 const star = e.target.closest('.fav-star');
                 setTimeout(() => {
@@ -613,15 +641,14 @@
         });
 
         document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('.shake-btn') || e.target.closest('.category-btn') || e.target.closest('.random-btn') || e.target.closest('.preview-btn') || e.target.closest('.fav-star') || e.target.closest('.tune-btn') || e.target.closest('.theme-toggle') || e.target.closest('#favorites-toggle') || e.target.closest('#help-toggle') || e.target.closest('#settings-toggle') || e.target.closest('#custom-presets-toggle') || e.target.closest('#custom-presets-list-toggle') || e.target.closest('#sapphire-status')) {
-                tooltip.classList.remove('show');
-            }
+            if (getTooltipText(e.relatedTarget)) return;
+            tooltip.classList.remove('show');
         });
     }
 
     // --- 4. ЧАСТИЦЫ ПРИ КЛИКЕ ---
     function createParticles(e) {
-        if (localStorage.getItem('shakePackCursorGlow') === 'false') return;
+        if (!areCursorEffectsEnabled()) return;
 
         const primaryColor = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#00ffcc';
         const particleCount = 12;
@@ -918,7 +945,7 @@
         }
 
         if (togglesGlow.length > 0) {
-            const savedGlow = localStorage.getItem('shakePackCursorGlow') !== 'false';
+            const savedGlow = areCursorEffectsEnabled();
             applyGlowToggle(savedGlow);
 
             togglesGlow.forEach(toggle => {
@@ -926,6 +953,27 @@
                     const isNowActive = !toggle.classList.contains('active');
                     applyGlowToggle(isNowActive);
                     localStorage.setItem('shakePackCursorGlow', isNowActive);
+                });
+            });
+        }
+
+        const togglesTooltips = document.querySelectorAll('#toggle-tooltips, #toggle-tooltips-general');
+
+        function applyTooltipsToggle(isEnabled) {
+            if (!isEnabled && tooltip) tooltip.classList.remove('show');
+            togglesTooltips.forEach(t => {
+                if (isEnabled) t.classList.add('active');
+                else t.classList.remove('active');
+            });
+        }
+
+        if (togglesTooltips.length > 0) {
+            applyTooltipsToggle(areTooltipsEnabled());
+            togglesTooltips.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const isNowActive = !toggle.classList.contains('active');
+                    applyTooltipsToggle(isNowActive);
+                    localStorage.setItem('shakePackTooltips', isNowActive);
                 });
             });
         }
@@ -953,6 +1001,17 @@
                     }
                 }
             });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            document.querySelectorAll('.theme-panel.active').forEach(panel => panel.classList.remove('active'));
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.theme-toggle')) return;
+            if (e.target.closest('.theme-panel')) return;
+            document.querySelectorAll('.theme-panel.active').forEach(panel => panel.classList.remove('active'));
         });
     });
 })();

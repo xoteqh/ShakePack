@@ -13,6 +13,15 @@
     const AVAILABLE_TAGS = ['#Fast', '#Smooth', '#Strong', '#Impact', '#Camera'];
     let selectedTags = [];
 
+    function newPresetId() {
+        return 'custom-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
+    }
+
+    function safeJsxNumber(value, fallback) {
+        const num = Number(value);
+        return isFinite(num) ? num : fallback;
+    }
+
     let isExportMode = false;
     let selectedForExport = [];
     const MAX_EXPORT = 10;
@@ -54,7 +63,7 @@
         initPreview();
     });
 
-    // --- 2. ПОЛЗУНКИ (ОБНОВЛЕНИЕ ЦИФР) ---
+    // --- 2. ПОЛЗУНКИ ---
     function initSliders() {
         const sliders = [
             { id: 'cp-amp', textId: 'cp-amp-text', fixed: 1 },
@@ -165,7 +174,7 @@
             const safeSeed = isFinite(seed) && seed > 0 ? Math.min(10, Math.max(0.1, seed)) : 1;
 
             const newPreset = {
-                id: 'custom-' + Date.now(),
+                id: newPresetId(),
                 name: name,
                 amp: amp,
                 freq: freq,
@@ -208,7 +217,7 @@
             card.className = 'cp-card';
             if (isExportMode) card.classList.add('exp-mode');
             
-            const tagsHTML = preset.tags ? preset.tags.map(t => `<span class="cp-tag active" style="font-size: 10px; margin: 0; padding: 3px 8px; pointer-events: none;">${escapeHtml(t)}</span>`).join('') : '';
+            const tagsHTML = Array.isArray(preset.tags) ? preset.tags.map(t => `<span class="cp-tag active" style="font-size: 10px; margin: 0; padding: 3px 8px; pointer-events: none;">${escapeHtml(t)}</span>`).join('') : '';
             
             const checkboxHTML = isExportMode 
                 ? `<div class="cp-checkbox ${selectedForExport.includes(preset.id) ? 'selected' : ''}" data-id="${preset.id}"></div>` 
@@ -219,10 +228,10 @@
                     <div style="display: flex; align-items: center; width: 100%;">
                         ${checkboxHTML}
                         <span class="cp-card-title" style="flex: 1; text-align: left;">${escapeHtml(preset.name)}</span>
-                        <div style="font-size: 10px; color: #8e8e9c; margin-left: 5px;">${preset.frames} ${getT().framesShort}</div>
+                        <div style="font-size: 10px; color: #8e8e9c; margin-left: 5px;">${escapeHtml(preset.frames)} ${getT().framesShort}</div>
                     </div>
                 </div>
-                <div class="cp-card-desc">Amp: ${preset.amp} | Freq: ${preset.freq} | Seed: ${preset.seed != null ? preset.seed : 1}</div>
+                <div class="cp-card-desc">Amp: ${escapeHtml(preset.amp)} | Freq: ${escapeHtml(preset.freq)} | Seed: ${escapeHtml(preset.seed != null ? preset.seed : 1)}</div>
                 <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; margin-bottom: 5px;">${tagsHTML}</div>
                 <div class="cp-card-actions" style="display: ${isExportMode ? 'none' : 'flex'};">
                     <button class="cp-card-btn apply" data-id="${preset.id}">${getT().applyBtn}</button>
@@ -332,6 +341,17 @@
         const fileInput = document.getElementById('cp-import-file');
         const confirmExportBtn = document.getElementById('cp-confirm-export-btn');
 
+        function exitExportMode() {
+            isExportMode = false;
+            selectedForExport = [];
+            if (exportBtn) {
+                exportBtn.innerText = getT().exportAll;
+                exportBtn.style.borderColor = "";
+            }
+            if (confirmExportBtn) confirmExportBtn.style.display = 'none';
+            renderPresetsList();
+        }
+
         if (exportBtn && confirmExportBtn) {
             exportBtn.addEventListener('click', () => {
                 if (customPresets.length === 0) {
@@ -347,12 +367,7 @@
                     confirmExportBtn.style.display = 'block';
                     renderPresetsList();
                 } else {
-                    isExportMode = false;
-                    selectedForExport = [];
-                    exportBtn.innerText = getT().exportAll;
-                    exportBtn.style.borderColor = "";
-                    confirmExportBtn.style.display = 'none';
-                    renderPresetsList();
+                    exitExportMode();
                 }
             });
         }
@@ -377,8 +392,11 @@
                     })();`;
 
                     csInterface.evalScript(askPathScript, (result) => {
-                        if (result === "CANCEL") return;
-                        if (typeof result !== 'string' || !result || /error/i.test(result)) {
+                        if (result === "CANCEL") {
+                            exitExportMode();
+                            return;
+                        }
+                        if (typeof result !== 'string' || !result) {
                             if (window.showError) window.showError('Failed to choose file.');
                             return;
                         }
@@ -401,13 +419,7 @@
                         csInterface.evalScript(writeScript, (writeResult) => {
                             if (writeResult === "SUCCESS") {
                                 if (window.showSuccess) window.showSuccess('Presets exported!');
-                                
-                                isExportMode = false;
-                                selectedForExport = [];
-                                exportBtn.innerText = getT().exportAll;
-                                exportBtn.style.borderColor = "";
-                                confirmExportBtn.style.display = 'none';
-                                renderPresetsList();
+                                exitExportMode();
                             } else {
                                 if (window.showError) window.showError('Failed to save file.');
                             }
@@ -423,12 +435,7 @@
                     downloadAnchor.remove();
                     
                     if (window.showSuccess) window.showSuccess('Presets exported!');
-                    isExportMode = false;
-                    selectedForExport = [];
-                    exportBtn.innerText = getT().exportAll;
-                    exportBtn.style.borderColor = "";
-                    confirmExportBtn.style.display = 'none';
-                    renderPresetsList();
+                    exitExportMode();
                 }
             });
         }
@@ -449,9 +456,9 @@
                             
                             const validPresets = imported.filter(p => 
                                 p && typeof p.name === 'string' && 
-                                typeof p.amp === 'number' && 
-                                typeof p.freq === 'number' && 
-                                typeof p.frames === 'number'
+                                typeof p.amp === 'number' && isFinite(p.amp) &&
+                                typeof p.freq === 'number' && isFinite(p.freq) &&
+                                typeof p.frames === 'number' && isFinite(p.frames)
                             );
 
                             if (validPresets.length === 0) {
@@ -466,7 +473,7 @@
                                 seed: (typeof p.seed === 'number' && isFinite(p.seed) && p.seed > 0)
                                     ? Math.min(10, Math.max(0.1, p.seed)) : 1,
                                 tags: Array.isArray(p.tags) ? p.tags.filter(t => typeof t === 'string') : [],
-                                id: 'custom-' + Date.now() + '-' + Math.floor(Math.random() * 1000)
+                                id: newPresetId()
                             }));
                             
                             customPresets = customPresets.concat(toAdd);
@@ -496,6 +503,9 @@
         if (typeof CSInterface === 'undefined') return;
         if (window.showLoadingBar) window.showLoadingBar();
 
+        const jsxFrames = safeJsxNumber(preset.frames, 19);
+        const jsxAmp = safeJsxNumber(preset.amp, 2);
+        const jsxFreq = safeJsxNumber(preset.freq, 5);
         const rawSeed = parseFloat(preset.seed);
         const safeSeed = isFinite(rawSeed) && rawSeed > 0 ? Math.min(10, Math.max(0.1, rawSeed)) : 1;
         
@@ -511,13 +521,12 @@
             function hasSapphire() {
                 try {
                     var effects = app.effects;
-                    var hasShake = false, hasDissolve = false;
+                    var hasDissolve = false;
                     for (var i = 0; i < effects.length; i++) {
                         var name = (effects[i].matchName || '') + '|' + (effects[i].displayName || '');
-                        if (name.indexOf('S_Shake') >= 0) hasShake = true;
                         if (name.indexOf('S_DissolveShake') >= 0) hasDissolve = true;
                     }
-                    return hasShake && hasDissolve;
+                    return hasDissolve;
                 } catch (e) {
                     return false;
                 }
@@ -526,15 +535,25 @@
             
             app.beginUndoGroup("Apply Custom Shake");
 
+            function normName(value) {
+                return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            }
+
             function findProp(fx, name) {
                 try { var p = fx.property(name); if (p) return p; } catch(e) {}
                 try {
-                    var key = String(name).toLowerCase();
+                    var key = normName(name);
+                    if (!key) return null;
+                    var fallback = null;
                     for (var i = 1; i <= fx.numProperties; i++) {
                         var cand = fx.property(i);
-                        var nm = ((cand.matchName || '') + ' ' + (cand.name || '')).toLowerCase();
-                        if (nm.indexOf(key) >= 0) return cand;
+                        var cn = normName(cand && cand.name);
+                        var mn = normName(cand && cand.matchName);
+                        if (cn === key || mn === key) return cand;
+                        if ((cn.indexOf(key) >= 0 || mn.indexOf(key) >= 0) &&
+                            (!fallback || cn.length < normName(fallback && fallback.name))) fallback = cand;
                     }
+                    return fallback;
                 } catch(e) {}
                 return null;
             }
@@ -547,7 +566,7 @@
             }
 
             function applySeed(fx, seed) {
-                var names = ["Random Seed", "Seed"];
+                var names = ["Seed", "Random Seed"];
                 for (var i = 0; i < names.length; i++) {
                     var p = findProp(fx, names[i]);
                     if (p) { try { p.setValue(seed); return true; } catch(e) {} }
@@ -559,9 +578,9 @@
 
             try {
                 var layerName = "SHAKE - ${escapeJsxString(preset.name)}";
-                var frames = ${preset.frames};
-                var amp = ${preset.amp};
-                var freq = ${preset.freq};
+                var frames = ${jsxFrames};
+                var amp = ${jsxAmp};
+                var freq = ${jsxFreq};
                 var seed = ${safeSeed};
                 if (!(frames > 0)) frames = 19;
                 if (!isFinite(amp)) amp = 2;
@@ -585,7 +604,7 @@
                 } else {
                     applyProp(fx, "Amplitude", amp);
                     applyProp(fx, "Frequency", freq);
-                    applySeed(fx, seed);
+                    if (!applySeed(fx, seed)) missingProps.push("Seed");
                     applyProp(fx, "Motion Blur", true);
                     applyProp(fx, "Mo Blur Length", 1.0);
                     applyProp(fx, "Wrap X", 3);
@@ -618,8 +637,11 @@
                 app.endUndoGroup();
             }
 
-            if (resultCode !== "SUCCESS") return resultCode;
-            if (missingProps.length > 0) return "ERROR_FX_PROPERTY: " + missingProps.join(", ");
+            if (resultCode !== "SUCCESS" || missingProps.length > 0) {
+                try { if (adjLayer) adjLayer.remove(); } catch (e) {}
+                if (resultCode !== "SUCCESS") return resultCode;
+                return "ERROR_FX_PROPERTY: " + missingProps.join(", ");
+            }
             return 'SUCCESS';
         })();`;
 

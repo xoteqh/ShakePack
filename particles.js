@@ -55,7 +55,7 @@ window.particlesJS = function(divId, config) {
     state.resizeHandler = function() {
         resize();
         dots.forEach(function(d) {
-            if(d.x > width) d.x = Math.random() * width;
+            if (d.x < 0 || d.x > width) d.x = Math.random() * width;
             if(d.y > height) d.y = Math.random() * height;
         });
     };
@@ -95,6 +95,9 @@ window.particlesJS = function(divId, config) {
             }
 
             d.x += Math.sin(d.y * 0.01) * 0.2;
+
+            if (d.x < -d.size * 2) d.x = width + d.size * 2;
+            else if (d.x > width + d.size * 2) d.x = -d.size * 2;
 
             ctx.shadowBlur = 8;
             ctx.shadowColor = primaryColor;

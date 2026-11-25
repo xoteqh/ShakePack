@@ -76,14 +76,12 @@
     filter: drop-shadow(0 0 8px var(--icon-glow));
 }
 
-/* Мини-игра */
 .falling-star {
     color: var(--primary);
     --icon-glow: var(--primary);
 }
 .falling-star .icon-svg { width: 100%; height: 100%; }
 
-/* Иконки прямо в тексте справки */
 .inline-icon {
     display: inline-flex;
     align-items: center;

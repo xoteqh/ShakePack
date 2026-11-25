@@ -21,7 +21,8 @@
 
     function readValue(id, key) {
         const entry = tuning[id];
-        return entry && isFinite(Number(entry[key])) ? clamp(entry[key]) : 1;
+        const raw = entry ? entry[key] : undefined;
+        return (typeof raw === 'number' && isFinite(raw)) ? clamp(raw) : 1;
     }
 
     window.getShakeTuning = function(id) {
