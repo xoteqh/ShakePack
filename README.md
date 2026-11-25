@@ -1,4 +1,4 @@
-# 🎬 ShakePack (v0.2.2 Beta)
+# 🎬 ShakePack (v0.2.3 Beta)
 
 **ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects, or create your own custom shakes!
 
@@ -63,6 +63,7 @@ ShakePack comes with **12 built-in color themes** to match your workflow. You ca
 - **Favorites** with Drag & Drop support.
 - **Neon Custom Icons**: hand-drawn vector icons instead of emoji — they follow your theme color and animate smoothly on hover.
 - **Seed Control:** the Seed slider (0.1–10) changes the shake pattern — dial in the exact motion you like right in the live preview.
+- **Cursor Tooltips:** turn the hover hints on/off in Cursor Effects — enabled by default. Any panel now closes with Esc or a click outside.
 - **Sapphire Status Indicator**: a green/red badge and dot in the footer show whether `S_Shake` and `S_DissolveShake` are available (checked on startup). If Sapphire is missing, no adjustment layer is created.
 - **Smart Positioning**: shakes (Adjustment Layers) appear exactly above the selected clip in the timeline.
 - **UI Customization**: 12 color themes, interface scale adjustment, custom cursor styles (Circle, Diamond, Square) and size.
@@ -114,7 +115,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 # 🇷🇺
 
-**ShakePack (v0.2.2 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
+**ShakePack (v0.2.3 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
 
 > ⚠️ **ВАЖНО: ЭТО БЕТА-ВЕРСИЯ**
 >
@@ -135,6 +136,7 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 - **Избранное** с возможностью перетаскивания (Drag & Drop).
 - **Неоновые иконки**: векторные иконки вместо смайликов — подхватывают цвет темы и плавно анимируются при наведении.
 - **Сид (Seed):** ползунок от 0.1 до 10 меняет рисунок тряски — подбирай нужное движение прямо в живом превью.
+- **Подсказки курсора:** включай/выключай подсказки при наведении в настройках курсора — по умолчанию включены. Любое окно теперь закрывается по Esc или кликом по фону.
 - **Индикатор Sapphire**: зелёная/красная плашка с точкой в футере показывает, доступны ли эффекты `S_Shake` и `S_DissolveShake` (проверка при запуске). Если Sapphire не найден, adjustment-слой не создаётся.
 - **Умное позиционирование**: шейки (Adjustment Layers) появляются ровно над выделенным клипом в таймлайне.
 - **Кастомизация интерфейса**: 12 цветовых тем, настройка масштаба, выбор стиля курсора (Круг, Алмаз, Квадрат) и его размера.
