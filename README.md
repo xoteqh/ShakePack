@@ -1,12 +1,8 @@
-# 🎬 ShakePack (v0.2.3 Beta)
+# 🎬 ShakePack (v1.0.0)
 
 **ShakePack** is a free panel for After Effects that allows you to quickly add stylish shakes to your layers using Sapphire effects, or create your own custom shakes!
 
-> ⚠️ **IMPORTANT: THIS IS A BETA VERSION**
->
-> **The plugin is stable, but may still contain minor bugs or unexpected behavior.** Please bear with me. I am actively working on improvements and bug fixes.
->
-> **If you found a bug or have a suggestion — please contact me on Discord: `xote._.`**. I will try to fix everything as soon as possible! *(If I don't reply, I'm sleeping 😴)*
+> 💬 **Questions, bugs or suggestions?** Contact me on Discord: `xote._.`. I will try to help as soon as possible! *(If I don't reply, I'm sleeping 😴)*
 
 ## 🎨 UI Themes
 
@@ -71,9 +67,19 @@ ShakePack comes with **12 built-in color themes** to match your workflow. You ca
 
 ## 📦 Installation
 
+**Easy way (Windows):** download `ShakePackInstaller.exe` from the latest release, run it and click **Install**. Administrator rights are required. The installer copies ShakePack into:
+
+`C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\ShakePack`
+
+It also enables debug mode for unsigned CEP extensions and shows a "Done" screen when finished. Restart After Effects and open `Window -> Extensions -> ShakePack`.
+
+To uninstall, run `ShakePackInstaller.exe --uninstall`.
+
+**Manual installation:**
+
 1. Download the latest release (or clone the repository).
 2. Unzip and place the `ShakePack` folder into your CEP extensions directory:
-   - **Windows:** `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\`
+   - **Windows:** `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions`
    - **macOS:** `/Library/Application Support/Adobe/CEP/extensions/`
 3. Restart After Effects.
 4. Open the panel: `Window -> Extensions -> ShakePack`.
@@ -115,13 +121,9 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 # 🇷🇺
 
-**ShakePack (v0.2.3 Beta)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
+**ShakePack (v1.0.0)** — это бесплатная панель для After Effects, которая позволяет быстро добавлять стильные шейки (тряску) на ваши слои с помощью эффектов Sapphire, а также создавать свои собственные шейки!
 
-> ⚠️ **ВАЖНО: ЭТО БЕТА-ВЕРСИЯ**
->
-> **Плагин стабилен, но может содержать мелкие баги или странное поведение.** Пожалуйста, отнеситесь с пониманием. Я активно работаю над улучшением и исправлением ошибок.
->
-> **Если вы нашли баг, или у вас есть предложение — пишите мне в Discord: `xote._.`**. Я постараюсь всё исправить как можно быстрее! *(если не отвечаю, сплю 😴)*
+> 💬 **Вопросы, баги или предложения?** Пиши мне в Discord: `xote._.`. Постараюсь помочь как можно быстрее! *(если не отвечаю, сплю 😴)*
 
 ## ✨ Что умеет плагин (на данный момент)
 
@@ -144,9 +146,19 @@ Done! In most cases that's all you need — the panel appears in the Extensions 
 
 ## 📦 Установка
 
+**Простой путь (Windows):** скачай `ShakePackInstaller.exe` из последнего релиза, запусти его и нажми **Install**. Понадобятся права администратора. Установщик сам положит плагин в:
+
+`C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\ShakePack`
+
+Также он включит режим отладки для неподписанных расширений и покажет экран «Готово». Перезапусти After Effects и открой `Window -> Extensions -> ShakePack`.
+
+Для удаления запусти `ShakePackInstaller.exe --uninstall`.
+
+**Ручная установка:**
+
 1. Скачайте последний релиз (или клонируйте репозиторий).
 2. Распакуйте и поместите папку `ShakePack` в директорию расширений CEP:
-   - **Windows:** `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\`
+   - **Windows:** `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions`
    - **macOS:** `/Library/Application Support/Adobe/CEP/extensions/`
 3. Перезапустите After Effects.
 4. Откройте панель: `Window -> Extensions -> ShakePack`.
